@@ -1,6 +1,6 @@
 # React reddit app
 
-A copy of reddit social network with much less feature. <i> This project is for training purposes only </i>
+A copy of reddit social network with much less features. <i> This project is for training purposes only </i>
 
 ### What is used
 
