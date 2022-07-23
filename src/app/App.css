@@ -16,6 +16,8 @@ html {
   --buttonTextOnHover: white;
 }
 
+
+
 .flex-center {
   display: flex;
   justify-content: center;
@@ -45,3 +47,21 @@ body {
   color: var(--buttonTextOnHover);
 }
 
+/* Page  */
+
+
+
+.content-container {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+
+.topNews-container {
+  padding-top: 1.5rem;
+}
+
+.topNews-container h4 {
+  padding-bottom: 1rem;
+  padding-left: .5rem;
+}
