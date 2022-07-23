@@ -1,0 +1,47 @@
+/* Universal styles */
+
+*, *::after, *::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-size: 14px;
+}
+
+:root {
+  --buttonMainColor: #1fb51f;
+  --buttonMainOnHoverColor: #1fb51f87;
+  --mainBGcolor: #0000002c;
+  --buttonTextOnHover: white;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  background-color: var(--mainBGcolor);
+}
+
+.button {
+  border: .1rem solid var(--buttonMainColor);
+  color: var(--buttonMainColor);
+  background: transparent;
+  width: 10rem;
+  border-radius: 1.5rem;
+  font-weight: 600;
+  padding: .5rem 0;
+  cursor: pointer;
+  transition: all .1s ease-in-out;
+}
+
+
+
+.button:hover {
+  background-color: var(--buttonMainOnHoverColor);
+  color: var(--buttonTextOnHover);
+}
+

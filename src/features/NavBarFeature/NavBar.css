@@ -1,0 +1,60 @@
+
+.header {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    background-color: white;
+}
+
+.header-container {
+    width: 100%;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    
+}
+
+.logo-searchBarContainer {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    
+}
+
+
+.loginButton-container {
+    margin-right: 5%;
+    
+}
+
+
+/* sizing different parts of logo */
+
+.char {
+    width: 2.5rem;
+    height: 3.5rem;
+}
+
+.reddit {
+    width: 5rem;
+    height: 2rem;
+}
+
+/* logo container */
+
+.logo {
+    width: 100%;
+    height: 100%;
+  
+  }
+  
+  .logo-wrapper {
+      display: flex;
+      align-items: center;
+      
+  }
+  
+  .logo-container {
+      padding: 3px 5px;
+  }
+
