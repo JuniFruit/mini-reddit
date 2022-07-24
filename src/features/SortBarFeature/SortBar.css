@@ -1,0 +1,39 @@
+
+
+
+.sortBar-container {
+    height: 4rem;
+    width: 100%;
+    padding: 0 .6rem;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    border-radius: .4rem;
+    
+    
+}
+
+.sortBar-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 40%
+   
+}
+
+.sortBar-buttons a {
+    width: fit-content;
+    background-color: var(--mainBGcolor);
+    color: var(--buttonMainColor);
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: .5rem .7rem .5rem 2.3rem;
+    
+    border-radius: 1rem;
+    border: none;
+}
+
+.sortBar-empty {
+    margin: 0 auto;
+}
+

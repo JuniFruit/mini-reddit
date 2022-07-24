@@ -4,6 +4,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: BentonSans, sans-serif;
 }
 html {
   font-size: 14px;
@@ -12,11 +13,16 @@ html {
 :root {
   --buttonMainColor: #1fb51f;
   --buttonMainOnHoverColor: #1fb51f87;
-  --mainBGcolor: #0000002c;
+  --mainBGcolor: #0000001c;
   --buttonTextOnHover: white;
+ 
 }
 
-
+a {
+  text-decoration: none;
+  
+  color: inherit;
+}
 
 .flex-center {
   display: flex;
@@ -64,4 +70,17 @@ body {
 .topNews-container h4 {
   padding-bottom: 1rem;
   padding-left: .5rem;
+}
+
+.sortBar {
+  margin: 1.2rem 0;
+  padding: 0 1.2rem;
+}
+
+.sortBar h4 {
+  padding: .7rem 0;
+}
+
+.post {
+  padding: 0 1.2rem;
 }
