@@ -66,9 +66,8 @@ app.get("/popular", async (req, res) => {
 
     try {
 
-        const response = await fetch('https://www.reddit.com/r/popular.json');
+        const response = await fetch('https://www.reddit.com/r/popular.json?geo_filter=TR');
         const data = await response.json();
-        console.log(data);
         res.send({status: 200, data: data})
 
     } catch (e) {
@@ -76,7 +75,32 @@ app.get("/popular", async (req, res) => {
     }
 })
 
+app.get('/news', async (req,res) => {
+    
+    try {
 
+        const response = await fetch('https://www.reddit.com/search.json?q=news');
+        const data = await response.json();
+        res.send({status: 200, data: data});
+
+    } catch(e) {
+        res.send({status: 'error', message: `Couldn't retrieve the data. Reason: ${e}`});
+    }
+})
+
+app.get('/subreddit_data', async (req, res) => {
+    
+    try {
+        console.log('Server reached')
+        const query = req.query.subreddit;
+        const response = await fetch(`https://www.reddit.com/r/${query}/about.json`);
+        const data = await response.json();
+        res.send({status: 200, data: data});
+
+    } catch(e) {
+        res.send({status: 'error', message: `Couldn't retrieve the data. Reason: ${e}`});
+    }
+})
 
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
