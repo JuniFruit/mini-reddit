@@ -1,14 +1,19 @@
-import { images } from "../../assets/images";
 import { NewsContainer } from "./NewsContainer";
 import './TopNews.css';
 import { useEffect, useState } from "react";
 import { numberOfNewsToShow } from "../../utilities/utilities";
-import { findNonSerializableValue } from "@reduxjs/toolkit";
+import { selectTopNews, fetchTopNews } from "./topNewsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import parse from 'html-react-parser'
 
-export const TopNews = (props) => {
+
+export const TopNews = () => {
 
     const [numberOfNews, setNumberOfNews] = useState(numberOfNewsToShow());
-    console.log(numberOfNews);
+    const dispatch = useDispatch();
+    const topNewsData = useSelector(selectTopNews);
+  
+    console.log(topNewsData)
 
     useEffect(() => {
 
@@ -22,29 +27,45 @@ export const TopNews = (props) => {
         }
     })
 
+    useEffect(() => {
+
+        dispatch(fetchTopNews());
+
+   
+    }, [dispatch]);
+
     const renderNews = () => {
-        const dataToShow = newsData.slice(0, numberOfNews);
-        
-        return dataToShow.map((data, index) => <NewsContainer key={index} data={data} />)
+
+        const dataToShow = topNewsData.data.children.slice(0, numberOfNews);
+
+        return dataToShow.map((child, index) => {
+            return <NewsContainer
+                key={index}
+                preview={parse(child.data.preview.images[0].resolutions[3].url.replace(/&amp;/, '&'))}
+                title={child.data.title}
+                subreddit={child.data.subreddit_name_prefixed}
+                subreddit_non_prefix={child.data.subreddit}
+            />
+        })
     }
 
-    const newsData = [{
-        headline: 'testNEws',
-        img: images.testImg,
-    },
-    {
-        headline: 'testNEws2',
-        img: images.testImg,
-    },{
-        headline: 'testNEws3',
-        img: images.testImg,
-    },{
-        headline: 'testNEws4',
-        img: images.testImg,
-    }]
+    const renderNewsBlock = () => {
+        if (!Object.values(topNewsData).length) return '';
+        return (
+            <div className="topNews-wrapper">
+                <h4>Top news</h4>
+                <div className="news-container">
+
+                    {renderNews()}
+                </div>
+            </div>
+
+        )
+    }
+
+
     return (
-        <div className="news-container">
-            {renderNews()}
-        </div>
+        renderNewsBlock()
+
     )
 }
