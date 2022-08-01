@@ -1,38 +1,39 @@
 
 import { NavBar } from '../features/NavBarFeature/NavBar';
 import { TopNews } from '../features/TopNewsFeature/TopNews.js';
-import { NewsContainer } from '../features/TopNewsFeature/NewsContainer.js';
-import { Post } from '../features/PostFeature/Post';
-import { BrowserRouter, Routes } from 'react-router-dom';
+import { PostsList } from '../features/PostFeature/PostsList';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { SortBar } from '../features/SortBarFeature/SortBar';
-import { useEffect } from 'react';
+import React from 'react';
+import { Login } from '../components/Login/Login';
 
 
 const App = () => {
 
-  
+
 
   return (
     <div className="App">
-      
-      <NavBar />
-      
-      <div className="content-container">
+      <BrowserRouter>
+          <Routes>
+            <Route path='/reddit_login' element={<Login />} />
+          </Routes>
+          <NavBar />  
+          <div className='content-container'>
+            <Routes>
+              <Route path='/' element={<><TopNews /> <SortBar/> <PostsList/></>} />
+            </Routes>
+          </div>
+          
+        
 
-        <div className="topNews-container">
-          <h4>Top news</h4>
-          <TopNews />
-        </div>
-        <div className='sortBar'>
-          <h4>Popular posts</h4>
-          <SortBar />
-        </div>
-        <div className='post'>
-          <Post />
-        </div>
-      </div>
 
+
+
+
+
+      </BrowserRouter>
 
     </div>
   );

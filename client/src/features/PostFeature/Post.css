@@ -1,12 +1,21 @@
+.posts {
+    margin-top: 1.5rem;
+    padding: 0 2rem;
+    width: 100%;
+}
+
+
+
 .post-container {
-    height: fit-content;
+    max-height: 40rem;
+    overflow: hidden;
     width: 100%;
     background-color: white;
     border-radius: .4rem;
     display: flex;
     flex-grow: 1;
-    
-    
+    margin-bottom: 1.2rem;
+
 }
 
 .vote-arrows-container {
@@ -34,11 +43,28 @@
 }
 
 
-.post-img-container {
+.post-description {
     width: 100%;
     margin: 0 auto;
+    pointer-events: none;
+}
+
+.post-img-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .post-img-container img {
-    
+    max-height: 512px;
+    max-width: 100%;
+
+}
+
+
+/* description paragraphs */
+
+.md p {
+    padding-bottom: .5rem;
+    padding-right: 1rem;
 }

@@ -1,4 +1,15 @@
+.sortBar {
+    margin-top: 3rem;
+    padding: 0 2rem;
+}
 
+.sortBar h4 {
+    padding: .7rem 0;
+}
+
+.post {
+    padding: 0 1.2rem;
+}
 
 
 .sortBar-container {
@@ -9,8 +20,8 @@
     display: flex;
     align-items: center;
     border-radius: .4rem;
-    
-    
+
+
 }
 
 .sortBar-buttons {
@@ -18,22 +29,28 @@
     align-items: center;
     justify-content: space-between;
     width: 40%
-   
 }
 
 .sortBar-buttons a {
-    width: fit-content;
-    background-color: var(--mainBGcolor);
-    color: var(--buttonMainColor);
-    font-weight: bold;
-    font-size: 1.1rem;
-    padding: .5rem .7rem .5rem 2.3rem;
+    display: flex;
+    align-items: center;
     
-    border-radius: 1rem;
+    background-color: rgba(89, 88, 88, 0.047);
+    color: var(--buttonMainColor);
+    font-weight: 500;
+    padding: .6rem .6rem;
+    border-radius: 1.2rem;
     border: none;
+}
+
+.sortBar-buttons a:hover {
+    background-color: rgba(0, 0, 0, 0.11);
+}
+
+.sortBar-button span {
+    padding: 0 .3rem
 }
 
 .sortBar-empty {
     margin: 0 auto;
 }
-
