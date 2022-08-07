@@ -1,4 +1,5 @@
 
+/* Determines how many news containers will be shown in Top news section */
 
 export const numberOfNewsToShow = () => {
 
@@ -12,7 +13,7 @@ export const numberOfNewsToShow = () => {
 }
 
 
-/* Making resizing happening less often */
+/* Making resizing happening less often (not used)*/
 
 export const debounce = (func, ms) => {
     let timer;
@@ -23,4 +24,44 @@ export const debounce = (func, ms) => {
             func.apply(this)
         }, ms)
     }
+}
+
+/* Converts server time and returns how much time elapsed */
+
+export const elapsedTime = (serverUTC) => {
+
+    const serverMillisecondsUTC = serverUTC * 1000;
+    const currentDate = new Date();
+    
+    const elapsedMinutes = Math.floor((currentDate - serverMillisecondsUTC) / 60000);
+    const elapsedHours = Math.floor(elapsedMinutes / 60);
+    const elapsedDays = Math.floor(elapsedHours / 24);
+    const elapsedWeeks = Math.floor(elapsedDays / 7);
+    const elapsedMonths = Math.floor(elapsedWeeks / 4);
+    const elapsedYears = Math.floor(elapsedMonths / 12);
+   
+
+    if (elapsedMinutes < 60) return `${elapsedMinutes} minute${pluralize(elapsedMinutes)} ago`;
+    if (elapsedHours < 24) return `${elapsedHours} hour${pluralize(elapsedHours)} ago`;
+    if (elapsedDays < 7) return `${elapsedDays} day${pluralize(elapsedDays)} ago`;
+    if (elapsedWeeks < 4) return `${elapsedWeeks} week${pluralize(elapsedWeeks)} ago`;
+    if (elapsedMonths < 12) return `${elapsedMonths} month${pluralize(elapsedMonths)} ago`;
+    
+    return `${Math.floor(elapsedYears)} year${pluralize(elapsedYears)} ago`;
+
+
+}
+
+const pluralize = (num) => {
+
+    if (num > 1) return 's'
+}
+
+
+export const truncLargeNumber = (num) => {
+
+    if (Math.floor(num) > 1000) {
+        return `${(num / 1000).toFixed(1)}K`;
+    }
+    return num;
 }
