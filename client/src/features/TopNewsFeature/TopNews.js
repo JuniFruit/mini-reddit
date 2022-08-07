@@ -12,8 +12,8 @@ export const TopNews = () => {
     const [numberOfNews, setNumberOfNews] = useState(numberOfNewsToShow());
     const dispatch = useDispatch();
     const topNewsData = useSelector(selectTopNews);
+   
   
-    console.log(topNewsData)
 
     useEffect(() => {
 
@@ -29,7 +29,22 @@ export const TopNews = () => {
 
     useEffect(() => {
 
-        dispatch(fetchTopNews());
+        const loadCountryTopNews = async () => {
+            try {
+
+            const response = await fetch('check_user_geo');
+            const data = await response.json();
+            
+            dispatch(fetchTopNews(data.data.country))
+
+            } catch (e) {
+            console.log(e)
+            }
+        }
+       
+        loadCountryTopNews();
+        
+        
 
    
     }, [dispatch]);
@@ -41,7 +56,7 @@ export const TopNews = () => {
         return dataToShow.map((child, index) => {
             return <NewsContainer
                 key={index}
-                preview={parse(child.data.preview.images[0].resolutions[3].url.replace(/&amp;/, '&'))}
+                preview={parse(child.data.preview.images[0].source.url)}
                 title={child.data.title}
                 subreddit={child.data.subreddit_name_prefixed}
                 subreddit_non_prefix={child.data.subreddit}

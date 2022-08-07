@@ -1,43 +1,46 @@
+import parse from 'html-react-parser';
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSubredditData, selectSubredditData } from "../subredditSlice";
 
 
 
-export const NewsContainer = (props) => {
+export const NewsContainer = ({subreddit_non_prefix, preview, title, subreddit}) => {
     
     const dispatch = useDispatch();
     const subredditData = useSelector(selectSubredditData);
-   
+  
+
     useEffect(() => {
 
-        dispatch(fetchSubredditData(props.subreddit_non_prefix));
+        dispatch(fetchSubredditData(subreddit_non_prefix));
 
     }, [dispatch])
 
-    const renderSubredditImg = () => {
-        if (!Object.values(subredditData).length) return '';
+    const renderNewsImage = () => {
 
-        console.log(subredditData.data.icon_img)
-        return subredditData.data.icon_img
+        if (!subredditData[subreddit_non_prefix]) return '';
+        
+        return <img src={parse(subredditData[subreddit_non_prefix].data.community_icon)} onError={(e) => {e.target.onerror = null; e.target.src=' '}} />
+
     }
 
     const trimmedTitle = () => {
-        if (props.title.length > 45) {
-            const trimmed = props.title.slice(0, 40).concat('...');
+        if (title.length > 50) {
+            const trimmed = title.slice(0, 47).concat('...');
             return trimmed
         }
-        return props.title
+        return title
     }
     return (
         <a className="news-wrapper">
-            <div className="news" style={{ background: "url" + "(" + props.preview + ")" + "center center / cover no-repeat transparent" }}>
+            <div className="news" style={{ background: "url" + "(" + preview + ")" + "center center / cover no-repeat transparent" }}>
                 <div className="news-title-wrapper">
                     <div className="news-title">
                         <h4>{trimmedTitle()}</h4>
                         <div className="news-title-subreddit">
-                            <img src={renderSubredditImg()} onError={(e) => {e.target.onerror = null; e.target.src=' '}} />
-                            <p>{props.subreddit}</p>
+                            {renderNewsImage()}
+                            <p>{subreddit}</p>
                         </div>
                         
 

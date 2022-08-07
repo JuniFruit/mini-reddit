@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
-export const fetchTopNews = createAsyncThunk('news/fetchTopNews', async () => {
+export const fetchTopNews = createAsyncThunk('news/fetchTopNews', async (country) => {
 
     try {
-        const response = await fetch("/news");
+        const response = await fetch(`/news?country=${country}`);
         const data = await response.json();
         return data
     } catch (e) {
@@ -34,6 +34,6 @@ const topNewsSlice = createSlice({
     }
 })
 
-export const selectTopNews = (state) => state.topNewsSlice.data;
+export const selectTopNews = (state) => state.topNewsReducer.data;
 
 export default topNewsSlice.reducer;
