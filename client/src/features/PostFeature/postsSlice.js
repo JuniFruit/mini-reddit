@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const fetchPopularPosts = createAsyncThunk('posts/fetchPopularPosts', async () => {
 
@@ -14,6 +14,8 @@ export const fetchPopularPosts = createAsyncThunk('posts/fetchPopularPosts', asy
     
 });
 
+export const removePost = createAction('posts/removePost')
+
 const postsSlice = createSlice({
 
     name: 'posts',
@@ -21,6 +23,15 @@ const postsSlice = createSlice({
         data: {},
         errMessage: ''
     },
+
+    reducers: {
+        removePost: (state, action) => {
+            
+            state.data.data.children = state.data.data.children.filter(child => child.data.id !== action.payload);
+            
+        }
+    },
+
     extraReducers: (builder) => {
         builder
             .addCase(fetchPopularPosts.rejected, (state, action) => {

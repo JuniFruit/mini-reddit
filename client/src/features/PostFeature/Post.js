@@ -1,54 +1,143 @@
-import  parse  from 'html-react-parser'
+import parse from 'html-react-parser'
+import Icon from '../../assets/icons';
+import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { selectSubredditData, fetchSubredditData } from '../subredditSlice';
+import { useEffect } from 'react';
+import { elapsedTime, truncLargeNumber } from '../../utilities/utilities';
+import { TwitterTweetEmbed } from 'react-twitter-embed'
+
+
 
 export const Post = (props) => {
 
-    // replaces all the html entities with regular signs to render it in react
+    const dispatch = useDispatch();
+    const subredditData = useSelector(selectSubredditData);
+
+
+    useEffect(() => {
+
+        dispatch(fetchSubredditData(props.subreddit_non_prefixed))
+
+    }, [dispatch])
+
+    const renderSubredditIcon = () => {
+        
+        if (!subredditData[props.subreddit_non_prefixed]) return '';
+        
+        return <img src={parse(subredditData[props.subreddit_non_prefixed].data.community_icon)} onError={(e) => { e.target.onerror = null; e.target.src = ' ' }} />
+
+    }
+
+    const renderPostVideo = () => {
+        if (props.is_video === false) return '';
+
+        return <video src={props.entire_data.secure_media.reddit_video.fallback_url} controls></video>
+
+    }
+
+    const renderEmbeddedMedia = () => {
+        if (!props.entire_data.media) return '';
+        if (Object.keys(props.entire_data.media).length === 0) return '';
+        if (props.entire_data.media.reddit_video) return '';
+        return <TwitterTweetEmbed tweetId='1554882192961982465' />
+    }
+
+
+
     const renderHtmlDescription = () => {
-       if (!props.selfText) return '';
-       const regExpLessSign = /&lt;/ig;
-       const regExpGreaterSign = /&gt;/ig;
-       const regExpApostrophe = /&amp;#39;/ig;
-       const regExpQuotes = /&amp;quot;/ig
-       const html = props.selfText.replaceAll(regExpLessSign, '<');
-       const html2 = html.replaceAll(regExpGreaterSign, '>');
-       const html3 = html2.replaceAll(regExpApostrophe, '\'');
-       const html4 = html3.replaceAll(regExpQuotes, '\"');
-     
-       return html4
-    } 
+        if (!props.selfText) return '';
+
+        return parse(props.selfText);
+    }
+
+    const handleHide = () => {
+        props.hidePost(props.id)
+    }
+
+    const handleClick = (e) => {
+        e.currentTarget.lastChild.classList.toggle('active')
+       
+
+    }
 
     return (
-       
-            
-            <div className='post-container'>
-                <div className='vote-arrows-container'>
-                    <div className='vote-arrows'>
-                        <a href='' className='arrow-up'>Up</a>
-                        <span className='votes-number'>{props.votes} </span>
-                        <a href='' className='arrow-down'>Down</a>
-                    </div>
+
+
+        <div className='post-container'>
+            <div className='vote-arrows-container'>
+                <div className='vote-arrows'>
+                    <button><Icon icon="arrow-up" className="ic_arrow_up post-icons" /></button>
+                    <span className='votes-number'>{truncLargeNumber(props.votes)} </span>
+                    <button><Icon icon="arrow-down" className="ic_arrow_down post-icons" /></button>
                 </div>
-                <div className='post-content'>
+            </div>
+            <div className='post-wrapper'>
+                <div className='post-header'>
                     <div className='post-author'>
-                        <p>Post created by {props.byUser}</p>
+                        <div className='post-author-subreddit'>
+                            {renderSubredditIcon()}
+                            <Link to={'/'}><span>{props.subreddit}</span></Link>
+                        </div>
+                        <p className='post-author-dot'>•</p>
+                        <div className='post-author-description'>
+                            <p>Post created by {props.byUser} {elapsedTime(props.created_time)}</p>
+                        </div>
+
                     </div>
                     <div className='post-title'>
                         <h3>{parse(props.title)}</h3>
                     </div>
-                    <a className='post-description' href="#">
-                        <div className="description-data">
-                        
-                          {parse(renderHtmlDescription())}
-                          
+                    <div className='post-content'>
+                        <Link className='post-description' to={'/'}>
+                            <div className="description-data">
+
+                                {parse(renderHtmlDescription())}
+
+                            </div>
+
+                        </Link>
+                        <div className='post-media-container flex-align-center'>
+                            <img src={props.url} onError={(e) => { e.target.onerror = null; e.target.src = ' ' }} />
+                            {renderPostVideo()}
+                            {renderEmbeddedMedia()}
                         </div>
-                        
-                    </a>
-                    <a className='post-img-container' href="#">
-                        <img src={props.url} onError={(e) => {e.target.onerror = null; e.target.src=' '}} />
-                    </a>
+                    </div>
                 </div>
-            
+                <div className='post-bottom'>
+                    <Link className='post-comments flex-align-center' id='bottom' to={'/'}>
+                        <Icon icon="comment" className="ic_comment post-icons" />
+                        <span>{truncLargeNumber(props.num_comments)}</span>
+                        <span>Comments</span>
+                    </Link>
+                    <div className='post-share flex-align-center' id='bottom' onClick={handleClick}>
+                        <button className='flex-align-center'>
+                            <Icon icon="share2" className="ic_share post-icons" />
+                            <span>Share</span>
+                        </button>
+                        <button className='post-share-menu flex-align-center menu'>
+                            <Icon icon="link" className="ic_link post-icons" />
+                            <span>Copy link</span>
+                        </button>
+                    </div>
+                    <div className='post-options flex-align-center' onClick={handleClick} id='bottom'>
+                        <button>
+                            <Icon icon="triple-dots" className="ic_dots post-icons" />
+                        </button>
+                        <button className='post-options-menu flex-align-center menu' onClick={handleHide}>
+                            <div>
+                                <Icon icon="eye-hide" className="ic_hide post-icons" />
+                                <span>Hide</span>
+                            </div>
+
+                        </button>
+                    </div>
+                </div>
             </div>
+
+
+
+        </div>
 
     )
 }
