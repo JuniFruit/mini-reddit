@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icons';
-  src:  url('fonts/icons.eot?ciluso');
-  src:  url('fonts/icons.eot?ciluso#iefix') format('embedded-opentype'),
-    url('fonts/icons.ttf?ciluso') format('truetype'),
-    url('fonts/icons.woff?ciluso') format('woff'),
-    url('fonts/icons.svg?ciluso#icons') format('svg');
+  src:  url('fonts/icons.eot?4cpsrd');
+  src:  url('fonts/icons.eot?4cpsrd#iefix') format('embedded-opentype'),
+    url('fonts/icons.ttf?4cpsrd') format('truetype'),
+    url('fonts/icons.woff?4cpsrd') format('woff'),
+    url('fonts/icons.svg?4cpsrd#icons') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,8 +25,26 @@ i {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.ic_comment:before {
+  content: "\eae3";
+}
+.ic_eye-hide:before {
+  content: "\eae2";
+}
+.ic_triple-dots:before {
+  content: "\eae1";
+}
+.ic_arrow-down-svgrepo-com-1:before {
+  content: "\eae5";
+}
+.ic_arrow-down-transparent:before {
+  content: "\eae4";
+}
 .ic_hot-svgrepo-com:before {
   content: "\e903";
+}
+.ic_arrow-up-transparent:before {
+  content: "\eae0";
 }
 .ic_home:before {
   content: "\e900";
