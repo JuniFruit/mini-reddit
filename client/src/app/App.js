@@ -7,6 +7,8 @@ import './App.css';
 import { SortBar } from '../features/SortBarFeature/SortBar';
 import React from 'react';
 import { Login } from '../components/Login/Login';
+import { SubredditList } from '../features/SubredditListFeature/SubredditList';
+
 
 
 const App = () => {
@@ -16,17 +18,37 @@ const App = () => {
   return (
     <div className="App">
       <BrowserRouter>
+
+        <Routes>
+          <Route path='/reddit_login' element={<Login />} />
+        </Routes>
+        <NavBar />
+        <div className='page-container'>
           <Routes>
-            <Route path='/reddit_login' element={<Login />} />
+            <Route path='/' element={<><TopNews /></>} />
           </Routes>
-          <NavBar />  
+       
           <div className='content-container'>
-            <Routes>
-              <Route path='/' element={<><TopNews /> <SortBar/> <PostsList/></>} />
-            </Routes>
+            <h4>Popular posts</h4>
+            <div className='content-wrapper'>
+              <div className='content-posts'>
+
+                <Routes>
+                  <Route path='/' element={<><SortBar /> <PostsList /></>} />
+                </Routes>
+              </div>
+              <div className='content-top-subreddits'>
+                <Routes>
+                  <Route path='/' element={<SubredditList />} />
+                </Routes>
+              </div>
+            </div>
+
+
           </div>
-          
-        
+        </div>
+
+
 
 
 
