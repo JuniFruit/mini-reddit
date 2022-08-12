@@ -22,8 +22,9 @@
 
 .searchBar-form input:focus,
 .searchBar-form input:hover  {
-    box-shadow: 0 0 3px 0 var(--buttonMainOnHoverColor);
+    box-shadow: 0 0 3px var(--buttonMainOnHoverColor);
     border-color: var(--buttonMainOnHoverColor);
+    border-radius: .5rem;
     outline: none;
   }
 
