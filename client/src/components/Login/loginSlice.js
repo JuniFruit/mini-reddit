@@ -3,9 +3,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const fetchAccessToken = createAsyncThunk(
     'login/fetchAccessToken', async (query) => {
         try {
-            const response = await fetch(`/reddit_login?code=${query}`);
-            const data = await response.json();
-            return data
+            const userResponse = await fetch(`/reddit_login?code=${query}`);
+            const userData = await userResponse.json();
+
+            const userSubsResponse = await fetch(`/user_subreddits`);
+            const userSubsData = await userSubsResponse.json();
+
+            return {userData, userSubsData}
         } catch (e) {
             return e
         }
@@ -17,7 +21,7 @@ const loginSlice = createSlice({
 
     name: 'login',
     initialState: {
-        token: 'test',
+        data: {},
         isLogged: false,
         errMessage: ''
 
@@ -29,13 +33,13 @@ const loginSlice = createSlice({
 
             .addCase(fetchAccessToken.rejected, (state, action) => {
                 state.isLogged = false;
-                state.token = '';
+                state.data = {};
                 state.errMessage = action.payload
             })
             .addCase(fetchAccessToken.fulfilled, (state, action) => {
                 state.isLogged = true;
-                state.token = action.payload.token;
-                
+               
+                state.data = action.payload;
                 state.errMessage = '';
             })
     }
@@ -43,7 +47,8 @@ const loginSlice = createSlice({
 })
 
 
-export const selectToken = (state) => state.loginReducer.token;
+export const selectUserData = (state) => state.loginReducer.data.userData.data;
+export const selectUserSubs = (state) => state.loginReducer.data.userSubsData;
 export const selectIsLogged = (state) => state.loginReducer.isLogged;
 export const selectErrorMessage = (state) => state.loginSlice.errMessage;
 

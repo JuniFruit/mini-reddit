@@ -10,16 +10,17 @@ export const Login = () => {
     const dispatch = useDispatch()
     const [searchParams] = useSearchParams()
     const navigate = useNavigate();
-    
-
+   
     useEffect(() => {
-       
+
         const query = searchParams.get('code');
         dispatch(fetchAccessToken(query));
-        
-        return () => {
-            navigate('/',{replace: true})    
-        }
-                
-    }, [dispatch])
+
+
+        navigate('/',{replace: true})    
+
+
+    }, []);
+
+    return
 }
