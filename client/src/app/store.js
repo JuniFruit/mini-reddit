@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import loginReducer from "../components/Login/loginSlice";
-import postsReducer from "../features/PostFeature/postsSlice";
+import postsReducer from "../features/PageContentFeature/postsSlice";
 import topNewsReducer from "../features/TopNewsFeature/topNewsSlice";
 import subredditReducer from "../features/subredditSlice";
-import topSubredditsReducer from "../features/SubredditListFeature/topSubredditsSlice";
+import subredditListReducer from "../features/SubredditListFeature/subredditListSlice";
 
 
 const store = configureStore({
@@ -12,7 +12,7 @@ const store = configureStore({
         postsReducer,
         topNewsReducer,
         subredditReducer,
-        topSubredditsReducer,
+        subredditListReducer,
      
     }
     
