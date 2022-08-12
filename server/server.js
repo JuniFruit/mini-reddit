@@ -1,4 +1,5 @@
 const express = require("express");
+const errorMessage = require('./utility');
 require('dotenv').config();
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -17,7 +18,7 @@ app.get("/reddit_login", async (req, res) => {
 
     // if (access_token) res.send({token: access_token});
     try {
-
+        
         const code = req.query.code;
         const encodedHeader = Buffer.from(`${process.env.CLIENT_ID}:${process.env.SECRET_KEY}`).toString('base64');
 
@@ -31,7 +32,7 @@ app.get("/reddit_login", async (req, res) => {
         })
 
         const access_obj = await response.json();
-        console.log(access_obj)
+        
         const userResponse = await fetch('https://oauth.reddit.com/api/v1/me', {
             method: 'GET',
             headers: {
@@ -39,14 +40,17 @@ app.get("/reddit_login", async (req, res) => {
             }
         })
         const user = await userResponse.json();
-
+        
         res.send({
-            token: access_obj.access_token,
+            
             data: {
-                [user.name]: {
-                    user: user.name,
-                    userId: user.id,
-                    userIcon: user.icon_img
+                user: {
+                    name: user.name,
+                    id: user.id,
+                    icon: user.icon_img,
+                    pref_geo: user.pref_geopopular,
+                    total_karma: user.total_karma,
+                    
                 }
 
             }
@@ -56,25 +60,67 @@ app.get("/reddit_login", async (req, res) => {
 
 
     } catch (e) {
-        res.send({ status: 'error', message: 'Authorization failed. Reason ' + e })
+        res.send(errorMessage(e))
     }
 })
 
+/* Data outh requests */
 
-// Data requests
+app.get('/user_subreddits', async (req, res) => {
 
-app.get("/popular", async (req, res) => {
+    const headers = {
+        Authorization: `Bearer ${access_token}`
+    };
 
     try {
+        const response = await fetch('https://oauth.reddit.com/subreddits/mine/subscriber', {
+            headers: headers
+        })
         
-        const response = await fetch('https://www.reddit.com/r/popular.json?geo_filter=TR');
         const data = await response.json();
-        res.send({status: 200, data: data})
+        
+        
+        
+        res.send({
+            status: 200, 
+            userSubs: data
+        })
+            
 
-    } catch (e) {
-        res.send({status: 'error', message: `Couldn't retrieve the data. Reason: ${e}`});
+    } catch(e) {
+        res.send(errorMessage(e))
     }
 })
+
+app.get('/posts_auth', async (req, res) => {
+
+        
+    try {
+        const subreddit = req.query.subreddit === 'undefined' ? '' : req.query.subreddit;
+        const sort = req.query.sort;
+        
+        const response = await fetch(`https://oauth.reddit.com/${subreddit}/${sort}`, {
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+        })
+
+        const data = await response.json();
+        
+        if (sort === 'hot') res.send({status: 200, hot: data});
+        if (sort === 'top') res.send({status: 200, top: data});
+        if (sort === 'new') res.send({status: 200, new: data});
+        
+    } catch (e) {
+        res.send(errorMessage(e))
+    }
+})
+
+
+// Data requests 
+
+
+
 
 app.get('/check_user_geo', async (req, res) => {
 
@@ -85,9 +131,11 @@ app.get('/check_user_geo', async (req, res) => {
         res.send({status: 200, data: data})
 
     } catch (e) {
-        res.send({status: 'error', message: `Couldn't retrieve the data. Reason: ${e}`})
+        res.send(errorMessage(e))
     }
 })
+
+/* Returns top news (technically it's a search request with Country and News parameters) */
 
 app.get('/news', async (req,res) => {
     
@@ -98,9 +146,11 @@ app.get('/news', async (req,res) => {
         res.send({status: 200, data: data});
 
     } catch(e) {
-        res.send({status: 'error', message: `Couldn't retrieve the data. Reason: ${e}`});
+        res.send(errorMessage(e))
     }
 })
+
+/* Returns all the info about the subreddit passed into the parameter */
 
 app.get('/subreddit_data', async (req, res) => {
     
@@ -112,23 +162,46 @@ app.get('/subreddit_data', async (req, res) => {
         res.send({status: 200, data: data});
 
     } catch(e) {
-        res.send({status: 'error', message: `Couldn't retrieve the data. Reason: ${e}`});
+        res.send(errorMessage(e))
     }
 })
 
+/* Returns posts from www.reddit.com no token required */
+
+app.get('/posts_no_auth', async (req, res) => {
+
+    try {
+        const subreddit = req.query.subreddit === 'undefined' ? '' : req.query.subreddit;
+        const sort = req.query.sort;
+        
+        const response = await fetch(`https://www.reddit.com/${subreddit}/${sort}.json`);
+        const data = await response.json();
+        
+        if (sort === 'hot') res.send({status: 200, hot: data});
+        if (sort === 'top') res.send({status: 200, top: data});
+        if (sort === 'new') res.send({status: 200, new: data});
+
+    } catch (e) {
+        res.send(errorMessage(e))
+    }
+
+})
+
+/* Returns top 7 subreddits */
+
 app.get('/top_subreddits', async (req, res) => {
-    
+  
     try {
 
         const response = await fetch('https://www.reddit.com/subreddits.json');
         const data = await response.json();
         const slicedChildren = data.data.children.slice(0, 7);
 
-        res.send({status: 200, data: slicedChildren})
+        res.send({status: 200, topSubs: slicedChildren})
 
     } catch (e) {
 
-        res.send({status: 'error', message: `Couldn't retrieve data. Reason: ${e}`});s
+        res.send(errorMessage(e));
 
     }
 })
@@ -136,3 +209,4 @@ app.get('/top_subreddits', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
 });
+
