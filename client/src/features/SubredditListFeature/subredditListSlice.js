@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const fetchTopSubreddits = createAsyncThunk('topSubreddits/fetchTopSubreddits', async () => {
+export const fetchSubredditList = createAsyncThunk('subredditList/fetchSubredditList', async (loginBoolean) => {
 
     try {
-        // fetches top subreddits from reddit
-        const response = await fetch(`/top_subreddits`);
+        const endpoint = loginBoolean ? '/user_subreddits' : '/top_subreddits'
+        const response = await fetch(endpoint);
         const data = await response.json();
         
         return data;
@@ -15,9 +15,9 @@ export const fetchTopSubreddits = createAsyncThunk('topSubreddits/fetchTopSubred
     
 });
 
-const topSubredditsSlice = createSlice({
+const subredditListSlice = createSlice({
 
-    name: 'topSubreddits',
+    name: 'subredditList',
     initialState: {
         data: {},
         errMessage: '',
@@ -26,25 +26,25 @@ const topSubredditsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchTopSubreddits.rejected, (state, action) => {
+            .addCase(fetchSubredditList.rejected, (state, action) => {
                 state.errMessage = action.payload.message;
                 
             })
-            .addCase(fetchTopSubreddits.fulfilled, (state, action) => {
+            .addCase(fetchSubredditList.fulfilled, (state, action) => {
              
                 state.data = action.payload.data
                 state.errMessage = '';
                 
             })
-            .addCase(fetchTopSubreddits.pending, (state, action) => {
+            .addCase(fetchSubredditList.pending, (state, action) => {
                 state.errMessage = '';
              
             })
     }
 })
 
-export const selectTopSubreddits = (state) => state.topSubredditsReducer.data;
+export const selectSubreddits = (state) => state.subredditListReducer.data;
 
 
 
-export default topSubredditsSlice.reducer;
+export default subredditListSlice.reducer;
