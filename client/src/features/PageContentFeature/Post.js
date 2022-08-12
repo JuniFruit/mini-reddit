@@ -38,9 +38,9 @@ export const Post = (props) => {
 
     const renderEmbeddedMedia = () => {
         if (!props.entire_data.media) return '';
-        if (Object.keys(props.entire_data.media).length === 0) return '';
         if (props.entire_data.media.reddit_video) return '';
-        return <TwitterTweetEmbed tweetId='1554882192961982465' />
+        if (!props.entire_data.media.oembed) return '';
+        return <TwitterTweetEmbed tweetId={props.entire_data.media.oembed.url.split('/')[5]} />
     }
 
 
@@ -100,7 +100,7 @@ export const Post = (props) => {
                         <div className='post-media-container flex-align-center'>
                             <img src={props.url} onError={(e) => { e.target.onerror = null; e.target.src = ' ' }} />
                             {renderPostVideo()}
-                            {renderEmbeddedMedia()}
+                            {/* {renderEmbeddedMedia()} */}
                         </div>
                     </div>
                 </div>

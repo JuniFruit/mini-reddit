@@ -32,21 +32,22 @@ export const elapsedTime = (serverUTC) => {
 
     const serverMillisecondsUTC = serverUTC * 1000;
     const currentDate = new Date();
-    
-    const elapsedMinutes = Math.floor((currentDate - serverMillisecondsUTC) / 60000);
+
+    const elapsedSeconds = Math.floor((currentDate - serverMillisecondsUTC) / 1000)
+    const elapsedMinutes = Math.floor(elapsedSeconds / 60);
     const elapsedHours = Math.floor(elapsedMinutes / 60);
     const elapsedDays = Math.floor(elapsedHours / 24);
     const elapsedWeeks = Math.floor(elapsedDays / 7);
     const elapsedMonths = Math.floor(elapsedWeeks / 4);
     const elapsedYears = Math.floor(elapsedMonths / 12);
-   
 
+    if (elapsedSeconds < 60) return `just now`;
     if (elapsedMinutes < 60) return `${elapsedMinutes} minute${pluralize(elapsedMinutes)} ago`;
     if (elapsedHours < 24) return `${elapsedHours} hour${pluralize(elapsedHours)} ago`;
     if (elapsedDays < 7) return `${elapsedDays} day${pluralize(elapsedDays)} ago`;
     if (elapsedWeeks < 4) return `${elapsedWeeks} week${pluralize(elapsedWeeks)} ago`;
     if (elapsedMonths < 12) return `${elapsedMonths} month${pluralize(elapsedMonths)} ago`;
-    
+
     return `${Math.floor(elapsedYears)} year${pluralize(elapsedYears)} ago`;
 
 
@@ -54,7 +55,8 @@ export const elapsedTime = (serverUTC) => {
 
 const pluralize = (num) => {
 
-    if (num > 1) return 's'
+    if (num > 1) return 's';
+    return '';
 }
 
 
@@ -64,4 +66,13 @@ export const truncLargeNumber = (num) => {
         return `${(num / 1000).toFixed(1)}K`;
     }
     return num;
+}
+
+/* Redirects user to reddit to login user */
+
+export const redirectToRedditLogin = () => {
+    
+    const scope = 'history identity mysubreddits vote submit wikiread read report subscribe flair'
+    window.location.href = `https://www.reddit.com/api/v1/authorize?client_id=N_FuvhLdY7m1D5QjJ6YRXA&response_type=code&state=test&redirect_uri=http://localhost:3000/reddit_login&duration=temporary&scope=${scope}`
+
 }

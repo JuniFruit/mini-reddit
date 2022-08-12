@@ -10,17 +10,17 @@ export const SortBar = () => {
             <div className='sortBar-container'>
                 <div className='sortBar-buttons'>
 
-                    <Link to={'/'} className='sortBar-button' >
+                    <Link to={'/hot'} className='sortBar-button' >
                         <Icon icon="hot-svgrepo-com" className="ic_home icons" />
 
                         <span>Hot</span>
                     </Link>
-                    <Link to={'/'} className='sortBar-button' >
+                    <Link to={'/new'} className='sortBar-button' >
                         <Icon icon="play" className="ic_play icons" />
-                        <span>Test</span>
+                        <span>New</span>
                     </Link>
-                    <Link to={'/'} className='sortBar-button' >
-                        <span>Everywhere</span>
+                    <Link to={'/top'} className='sortBar-button' >
+                        <span>Top</span>
                         <Icon icon="compass" className="ic_location icons" />
                         
                     </Link>

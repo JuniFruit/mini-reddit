@@ -1,14 +1,25 @@
-/* Post entire container styles */
+/* Page entire container styles */
 
-.posts {
+
+
+.content-container {
     margin-top: 1.5rem;
-    
+    padding: 0 2rem;
 }
 
+.content-wrapper {
+    display: flex;
 
+}
+
+.content-container h4 {
+    margin: .7rem 0;
+}
+
+/* Post styles */
 
 .post-container {
-    
+
     background-color: white;
     border-radius: .4rem;
     display: flex;
@@ -41,6 +52,7 @@
     margin: .5rem 0;
     cursor: pointer;
 }
+
 [class*='ic_arrow']:hover {
     background-color: var(--mainBGcolor);
     border-radius: .2rem;
@@ -76,7 +88,7 @@
     max-height: 1.5rem;
     border-radius: 50%;
     margin-right: .3rem;
-   
+
 }
 
 .post-author-subreddit span {
@@ -104,11 +116,11 @@
 
 .post-wrapper {
     width: 100%;
-   
+
 }
 
 .post-header {
-    
+
     padding-top: 1rem;
     padding-left: .6rem;
     width: 100%;
@@ -160,14 +172,14 @@
 
 .post-bottom {
     display: flex;
-    
+
 }
 
 #bottom {
     padding: .5rem .7rem;
     margin: .2rem .2rem;
     position: relative;
-   
+
 }
 
 #bottom:hover {
@@ -181,12 +193,3 @@
     color: var(--postIconColor);
     margin-left: .5rem;
 }
-
-
-
-
-
-
-
-
-

@@ -1,9 +1,11 @@
 import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const fetchPopularPosts = createAsyncThunk('posts/fetchPopularPosts', async () => {
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async ({loginBoolean, sort, subreddit}) => {
 
     try {
-        const response = await fetch("/popular");
+        let endpoint = loginBoolean ? '/posts_auth' : '/posts_no_auth';
+        
+        const response = await fetch(`${endpoint}?subreddit=${subreddit}&sort=${sort}`);
         const data = await response.json();
         
         return data;
@@ -34,12 +36,12 @@ const postsSlice = createSlice({
 
     extraReducers: (builder) => {
         builder
-            .addCase(fetchPopularPosts.rejected, (state, action) => {
+            .addCase(fetchPosts.rejected, (state, action) => {
                 state.errMessage = action.payload.message
             })
-            .addCase(fetchPopularPosts.fulfilled, (state, action) => {
-               
-                state.data = action.payload.data
+            .addCase(fetchPosts.fulfilled, (state, action) => {
+                
+                state.data[Object.keys(action.payload)[1]] = action.payload[Object.keys(action.payload)[1]];
                 state.errMessage = ''
             })
     }

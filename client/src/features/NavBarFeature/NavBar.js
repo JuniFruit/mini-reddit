@@ -3,26 +3,24 @@ import './NavBar.css'
 import { images } from "../../assets/images"
 import { useSelector } from "react-redux"
 import { selectIsLogged } from '../../components/Login/loginSlice';
+import { ProfileInfo } from "../../components/Profile/ProfileInfo";
+import { redirectToRedditLogin } from "../../utilities/utilities";
 
 
 
 export const NavBar = () => {
     const loggedIn = useSelector(selectIsLogged)
-    console.log(`Logged value is ${loggedIn}`)
-      
-    const scope = 'history edit identity privatemessages wikiread flair'
-
+ 
     
-
-    const renderButton = () => {
-        
-        if (loggedIn) return <button onClick={handleClick} className="login-button button">Log Out</button>
+    const renderProfile = () => {
         if (!loggedIn) return <button onClick={handleClick} className="login-button button">Log In</button>
+
+        return <ProfileInfo />
     }
     const handleClick = () => {
 
         if (!loggedIn) {
-            window.location.href = `https://www.reddit.com/api/v1/authorize?client_id=N_FuvhLdY7m1D5QjJ6YRXA&response_type=code&state=test&redirect_uri=http://localhost:3000/reddit_login&duration=temporary&scope=${scope}`
+            redirectToRedditLogin();
         }
 
 
@@ -44,7 +42,7 @@ export const NavBar = () => {
              
                 </div>
                 <div className="loginButton-container">
-                    {renderButton()}
+                    {renderProfile()}
                 </div>
             </div>
 

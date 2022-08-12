@@ -1,4 +1,3 @@
-
 .header {
     display: flex;
     align-items: center;
@@ -14,20 +13,20 @@
     padding: 0 15px;
     display: flex;
     align-items: center;
-    
+
 }
 
 .logo-searchBarContainer {
     display: flex;
     align-items: center;
     flex-grow: 1;
-    
+
 }
 
 
 .loginButton-container {
     margin-right: 5%;
-    
+
 }
 
 
@@ -48,16 +47,15 @@
 .logo {
     width: 100%;
     height: 100%;
-  
-  }
-  
-  .logo-wrapper {
-      display: flex;
-      align-items: center;
-      
-  }
-  
-  .logo-container {
-      padding: 3px 5px;
-  }
 
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+
+}
+
+.logo-container {
+    padding: 3px 5px;
+}
