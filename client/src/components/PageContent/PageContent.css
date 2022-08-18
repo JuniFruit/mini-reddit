@@ -1,0 +1,47 @@
+
+
+.content-container {
+    margin-top: 1.5rem;
+    padding: 0 2rem;
+    position: relative;
+}
+
+.content-wrapper {
+    display: flex;
+
+}
+
+.content-container h4 {
+    margin: .7rem 0;
+}
+
+.side-listing-container {
+    width: 25rem;
+    height: fit-content;
+    margin-left: 2rem;
+    overflow: hidden;
+    background-color: white;
+    border-radius: .4rem;
+    
+    
+}
+
+.bottom-no-content {
+    text-align: center;
+    margin-bottom: .5rem
+}
+
+.back-top-button {
+    display: flex;
+    justify-content: center;
+    margin-top: .8rem;
+    position: sticky;
+    top: 93%;
+}
+
+
+@media screen and (max-width: 900px) {
+    .side-listing {
+        display: none;
+    }
+}

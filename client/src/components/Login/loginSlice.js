@@ -1,15 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const fetchAccessToken = createAsyncThunk(
-    'login/fetchAccessToken', async (query) => {
+export const fetchUserData = createAsyncThunk(
+    'login/fetchUserData', async (query) => {
         try {
             const userResponse = await fetch(`/reddit_login?code=${query}`);
             const userData = await userResponse.json();
-
-            const userSubsResponse = await fetch(`/user_subreddits`);
-            const userSubsData = await userSubsResponse.json();
-
-            return {userData, userSubsData}
+            const dataToStore = {
+                userData
+            }
+            return dataToStore
         } catch (e) {
             return e
         }
@@ -23,7 +22,8 @@ const loginSlice = createSlice({
     initialState: {
         data: {},
         isLogged: false,
-        errMessage: ''
+        errMessage: '',
+        isUserLoading: false
 
     },
     
@@ -31,25 +31,29 @@ const loginSlice = createSlice({
     extraReducers: (builder) => {
         builder
 
-            .addCase(fetchAccessToken.rejected, (state, action) => {
+            .addCase(fetchUserData.rejected, (state, action) => {
                 state.isLogged = false;
-                state.data = {};
-                state.errMessage = action.payload
+                state.errMessage = action.payload;
+                state.isUserLoading = false
             })
-            .addCase(fetchAccessToken.fulfilled, (state, action) => {
+            .addCase(fetchUserData.fulfilled, (state, action) => {
                 state.isLogged = true;
-               
-                state.data = action.payload;
+                state.data = action.payload.userData;
                 state.errMessage = '';
+                state.isUserLoading = false;
+            })
+            .addCase(fetchUserData.pending, (state, action) => {
+                state.isLogged = false;
+                state.errMessage = '';
+                state.isUserLoading = true;
             })
     }
 
 })
 
-
-export const selectUserData = (state) => state.loginReducer.data.userData.data;
-export const selectUserSubs = (state) => state.loginReducer.data.userSubsData;
+export const selectIsUserLoading = (state) => state.loginReducer.isUserLoading; 
+export const selectUserData = (state) => state.loginReducer.data.data;
 export const selectIsLogged = (state) => state.loginReducer.isLogged;
-export const selectErrorMessage = (state) => state.loginSlice.errMessage;
+export const selectErrorMessage = (state) => state.loginReducer.errMessage;
 
 export default loginSlice.reducer;

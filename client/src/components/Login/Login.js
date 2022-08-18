@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { useNavigate, useSearchParams } from "react-router-dom"
 
-import { fetchAccessToken } from "./loginSlice"
+import { fetchUserData } from "./loginSlice"
 
 
 export const Login = () => {
@@ -14,7 +14,7 @@ export const Login = () => {
     useEffect(() => {
 
         const query = searchParams.get('code');
-        dispatch(fetchAccessToken(query));
+        dispatch(fetchUserData(query));
 
 
         navigate('/',{replace: true})    

@@ -1,0 +1,50 @@
+
+.sortBar-container {
+    height: 4rem;
+    width: 100%;
+    padding: 0 .6rem;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    border-radius: .4rem;
+    margin-bottom: .9rem;
+
+
+}
+
+.sortBar-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 40%
+}
+
+.sortBar-buttons a {
+    display: flex;
+    align-items: center;
+    
+    background-color: rgba(89, 88, 88, 0.047);
+    color: var(--postIconColor);
+    font-weight: 500;
+    padding: .6rem .6rem;
+    border-radius: 1.2rem;
+    border: none;
+}
+
+.sortBar-buttons a:hover {
+    background-color: rgba(0, 0, 0, 0.11);
+}
+
+.sortBar-button-active {
+    color: var(--buttonMainColor) !important;
+    background-color: rgba(0, 0, 0, 0.11) !important;
+
+}
+
+.sortBar-button span {
+    padding: 0 .3rem
+}
+
+.sortBar-empty {
+    margin: 0 auto;
+}

@@ -1,0 +1,228 @@
+
+/* Post styles */
+
+.post-container {
+
+    background-color: white;
+    border-radius: .4rem;
+    display: flex;
+    margin-bottom: 1.2rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.post-container:hover {
+    border: 1px solid rgba(0, 0, 0, 0.126);
+}
+
+/* Post vote arrows section */
+
+.vote-arrows-container {
+    width: 2.7rem;
+    height: 100%;
+    background-color: #00000006;
+}
+
+
+.vote-arrows {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+.vote-arrows span {
+    font-size: .8rem;
+    font-weight: 500;
+}
+
+[class*='ic_arrow'] {
+    margin: .5rem 0;
+    cursor: pointer;
+}
+
+[class*='ic_arrow']:hover {
+    background-color: var(--mainBGcolor);
+    border-radius: .2rem;
+}
+
+[class*='ic_arrow_up']:hover {
+    color: var(--buttonMainColor)
+}
+
+[class*='ic_arrow_down']:hover {
+    color: rgb(212, 32, 0);
+}
+
+
+
+/* Post author section */
+
+.post-author {
+
+    display: flex;
+    align-items: center;
+    margin: 0 .5rem;
+
+}
+
+.post-author-subreddit {
+    display: flex;
+    align-items: center;
+}
+
+.post-author-subreddit img {
+    max-width: 1.5rem;
+    max-height: 1.5rem;
+    border-radius: 50%;
+    margin-right: .3rem;
+
+}
+
+.post-author-subreddit span {
+    font-weight: 600;
+    cursor: pointer;
+    font-size: .9rem;
+}
+
+.post-author-subreddit span:hover {
+    text-decoration: underline;
+}
+
+.post-author-dot {
+    margin: 0 .3rem
+}
+
+.post-author-description {
+    font-size: .8rem;
+    font-weight: 400;
+    color: var(--postIconColor);
+}
+
+
+/* Post title and content section */
+
+.post-wrapper {
+    width: 100%;
+
+}
+
+.post-header {
+
+    padding-top: 1rem;
+    padding-left: .6rem;
+    width: 100%;
+}
+
+
+.post-title {
+    padding: .7rem .4rem;
+}
+
+.post-content {
+    width: 100%;
+    max-width: 580px;
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+}
+
+.url a {
+    text-decoration: underline;
+    color: var(--buttonMainColor);
+    font-size: .7rem;
+}
+
+.url a:hover {
+    color: var(--buttonMainOnHoverColor)
+}
+
+.post-description {
+    width: 100%;
+    
+}
+
+
+.post-media-container {
+    overflow: hidden;
+    margin: 0 auto;
+    width: 100%;
+}
+
+
+.post-media-container video {
+    width: 100%;
+    max-height: 512px;
+}
+
+.post-media-img-container {
+    
+    display: flex;
+    justify-content: center;
+}
+
+.post-media-img-container img {
+    max-width: 100%;
+    max-height: 512px;
+}
+
+
+iframe {
+    width: 100%;
+    height: 450px;
+
+}
+
+
+
+
+/* description paragraphs */
+
+.description-data {
+    max-height: 180px;
+    background-image: linear-gradient(180deg, black 70%, rgba(0, 0, 0, 0.045));
+    background-clip: text;
+    color: transparent;
+    overflow: hidden;
+}
+
+.description-data p {
+    font-size: 1.1rem;
+    font-weight: 300;
+    padding-right: 1rem;
+    margin: 1rem 0;
+}
+
+.description-data a {
+    text-decoration: underline;
+    
+    color: var(--buttonMainColor)
+}
+
+/* Bottom section of a post */
+
+.post-bottom {
+    display: flex;
+
+}
+
+#bottom {
+    padding: .5rem .7rem;
+    margin: .2rem .2rem;
+    position: relative;
+
+}
+
+#bottom:hover {
+    background-color: var(--mainBGcolor);
+    border-radius: .2rem;
+}
+
+.post-bottom span {
+    font-size: .9rem;
+    font-weight: 700;
+    color: var(--postIconColor);
+    margin-left: .5rem;
+}

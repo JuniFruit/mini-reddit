@@ -8,7 +8,8 @@ import './Profile.css';
 export const ProfileInfo = () => {
 
     const profileData = useSelector(selectUserData);
-    console.log(profileData)
+    if (!Object.keys(profileData).length) return '';
+
     return (
 
         <div className='profile-container flex-align-center'>
