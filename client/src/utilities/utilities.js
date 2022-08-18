@@ -15,7 +15,7 @@ export const numberOfNewsToShow = () => {
 
 /* Making resizing happening less often (not used)*/
 
-export const debounce = (func, ms) => {
+export const debounce = (func, ms = 500) => {
     let timer;
     return () => {
         clearTimeout(timer);
@@ -68,10 +68,19 @@ export const truncLargeNumber = (num) => {
     return num;
 }
 
+export const truncTitle = (title) => {
+    
+    if (title.length > 50) {
+        const trimmed = title.slice(0, 47).concat('...');
+        return trimmed
+    }
+    return title
+}
+
 /* Redirects user to reddit to login user */
 
 export const redirectToRedditLogin = () => {
-    
+
     const scope = 'history identity mysubreddits vote submit wikiread read report subscribe flair'
     window.location.href = `https://www.reddit.com/api/v1/authorize?client_id=N_FuvhLdY7m1D5QjJ6YRXA&response_type=code&state=test&redirect_uri=http://localhost:3000/reddit_login&duration=temporary&scope=${scope}`
 

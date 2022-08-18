@@ -42,6 +42,7 @@ body {
 }
 
 
+
 /* Headings */
 
 
@@ -138,9 +139,7 @@ a {
 
 }
 
-/* Posts and subreddit list styles  */
-
-
+/* Page styles */
 
 .page-container {
   max-width: 1080px;

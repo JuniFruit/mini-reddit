@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import loginReducer from "../components/Login/loginSlice";
-import postsReducer from "../features/PageContentFeature/postsSlice";
+import postsReducer from "../components/PostComponent/postsSlice";
 import topNewsReducer from "../features/TopNewsFeature/topNewsSlice";
 import subredditReducer from "../features/subredditSlice";
-import subredditListReducer from "../features/SubredditListFeature/subredditListSlice";
+import subredditListReducer from "../components/SideListing/subredditListSlice";
 
 
 const store = configureStore({
