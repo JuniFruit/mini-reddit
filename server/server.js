@@ -34,7 +34,7 @@ app.get("/reddit_login", async (req, res) => {
         const access_obj = await response.json();
         
         const userResponse = await fetch('https://oauth.reddit.com/api/v1/me', {
-            method: 'GET',
+            
             headers: {
                 Authorization: `Bearer ${access_obj.access_token}`
             }
@@ -79,11 +79,11 @@ app.get('/user_subreddits', async (req, res) => {
         
         const data = await response.json();
         
-        
+        const slicedChildren = data.data.children.slice();
         
         res.send({
             status: 200, 
-            userSubs: data
+            data: slicedChildren
         })
             
 
@@ -98,18 +98,24 @@ app.get('/posts_auth', async (req, res) => {
     try {
         const subreddit = req.query.subreddit === 'undefined' ? '' : req.query.subreddit;
         const sort = req.query.sort;
+        const after = req.query.after;
+        const count = req.query.count;
         
-        const response = await fetch(`https://oauth.reddit.com/${subreddit}/${sort}`, {
+        const response = await fetch(`https://oauth.reddit.com/${subreddit}/${sort}?after=${after}&count=${count}`, {
             headers: {
                 Authorization: `Bearer ${access_token}`
             }
         })
 
         const data = await response.json();
-        
-        if (sort === 'hot') res.send({status: 200, hot: data});
-        if (sort === 'top') res.send({status: 200, top: data});
-        if (sort === 'new') res.send({status: 200, new: data});
+        console.log('Server reached')
+        const dataToSend = {
+            after: data.data.after,
+            dist: data.data.dist,
+            children: data.data.children
+        }
+
+        res.send(dataToSend)
         
     } catch (e) {
         res.send(errorMessage(e))
@@ -143,7 +149,7 @@ app.get('/news', async (req,res) => {
         const country = req.query.country;
         const response = await fetch(`https://www.reddit.com/search.json?q=${country}%20news&source=trending`);
         const data = await response.json();
-        res.send({status: 200, data: data});
+        res.send({status: 200, data: data.data.children});
 
     } catch(e) {
         res.send(errorMessage(e))
@@ -172,14 +178,20 @@ app.get('/posts_no_auth', async (req, res) => {
 
     try {
         const subreddit = req.query.subreddit === 'undefined' ? '' : req.query.subreddit;
-        const sort = req.query.sort;
-        
-        const response = await fetch(`https://www.reddit.com/${subreddit}/${sort}.json`);
+        const sort = req.query.sort;  
+        const after = req.query.after;
+        const count = req.query.count  
+        console.log('Server no auth reached')
+        const response = await fetch(`https://www.reddit.com/${subreddit}/${sort}.json?after=${after}&count=${count}`);
         const data = await response.json();
         
-        if (sort === 'hot') res.send({status: 200, hot: data});
-        if (sort === 'top') res.send({status: 200, top: data});
-        if (sort === 'new') res.send({status: 200, new: data});
+        const dataToSend = {
+            after: data.data.after,
+            dist: data.data.dist,
+            children: data.data.children
+        }
+                
+        res.send(dataToSend)
 
     } catch (e) {
         res.send(errorMessage(e))
@@ -192,13 +204,12 @@ app.get('/posts_no_auth', async (req, res) => {
 app.get('/top_subreddits', async (req, res) => {
   
     try {
-
+        
         const response = await fetch('https://www.reddit.com/subreddits.json');
         const data = await response.json();
-        const slicedChildren = data.data.children.slice(0, 7);
-
-        res.send({status: 200, topSubs: slicedChildren})
-
+        const slicedChildren = data.data.children.slice();
+        res.send({status: 200, data: slicedChildren})
+        
     } catch (e) {
 
         res.send(errorMessage(e));
