@@ -6,8 +6,12 @@ export const fetchSubredditData = createAsyncThunk('subreddit/fetchSubredditData
         // fetches the subreddit data. Expects non prefixed subreddit name, example 'worldnews'
         const response = await fetch(`/subreddit_data?subreddit=${subreddit}`);
         const data = await response.json();
+       
+        const dataToStore = {
+            [data.data.data.display_name]: data.data
+        }
         
-        return data;
+        return dataToStore;
     } catch (e) {
         
         return e.message
@@ -32,7 +36,10 @@ const subredditSlice = createSlice({
             })
             .addCase(fetchSubredditData.fulfilled, (state, action) => {
              
-                state.data[action.payload.data.data.display_name] = action.payload.data
+                state.data = {
+                    ...state.data,
+                    ...action.payload
+                }
                 state.errMessage = '';
                 state.isSubredditDataLoading = false;
             })
@@ -44,6 +51,7 @@ const subredditSlice = createSlice({
 })
 
 export const selectSubredditData = (state) => state.subredditReducer.data;
+export const selectIsSubredditDataLoading = (state) => state.subredditReducer.isSubredditDataLoading;
 
 
 

@@ -1,0 +1,75 @@
+.loadingBar-container {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;  
+    background-color: rgba(255, 255, 255, 0.14);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    animation-name: breathe;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate-reverse;
+    animation-timing-function: ease-in-out;
+}
+
+.loading-content {
+    display: flex;
+      
+}
+
+.loading-spinner {
+    width: 2rem;
+    position: relative;
+    margin: 0 .7rem;
+    
+   
+}
+
+.loading-spinner > div {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: .3rem solid transparent;
+    position: absolute;
+    bottom: -.3rem;
+     
+}
+
+.spin {
+    border-top: .3rem solid var(--buttonMainColor) !important;
+    animation-name: spin;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: cubic-bezier(0, 0, 0, 0);
+}
+
+.spin2 {
+    border: .3rem solid rgba(0, 0, 0, 0.188) !important;
+}
+
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes breathe {
+    from {
+        background-color: white;
+        color: black;
+    }
+
+    to {
+        background-color: rgba(255, 255, 255, 0.173);
+        color: rgba(0, 0, 0, 0.522);
+    }
+}

@@ -32,10 +32,10 @@ export const TopNews = () => {
         const loadCountryTopNews = async () => {
             try {
 
-            const response = await fetch('check_user_geo');
+            const response = await fetch('/check_user_geo');
             const data = await response.json();
-            
-            dispatch(fetchTopNews(data.data.country))
+            if (data.status === 'error') throw new Error(data.message);
+            dispatch(fetchTopNews())
 
             } catch (e) {
             console.log(e)
@@ -50,8 +50,9 @@ export const TopNews = () => {
     }, [dispatch]);
 
     const renderNews = () => {
-
-        const dataToShow = topNewsData.data.children.slice(0, numberOfNews);
+        if (!topNewsData.length) return '';
+        
+        const dataToShow = topNewsData.slice(0, numberOfNews);
 
         return dataToShow.map((child, index) => {
             return <NewsContainer
