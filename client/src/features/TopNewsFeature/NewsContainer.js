@@ -1,29 +1,30 @@
-import parse from 'html-react-parser';
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSubredditData, selectSubredditData } from "../subredditSlice";
+import { fetchSubredditData, selectSubredditDataByName } from "../subredditSlice";
 import { truncTitle } from '../../utilities/utilities';
 
+// Renders a piece of news 
 
 export const NewsContainer = ({ subreddit_non_prefix, preview, title, subreddit }) => {
 
     const dispatch = useDispatch();
-    const subredditData = useSelector(selectSubredditData);
+    const subredditData = useSelector(state => selectSubredditDataByName(state, subreddit_non_prefix));
 
 
     useEffect(() => {
-
+        if (Object.keys(subredditData).length) return;
         dispatch(fetchSubredditData(subreddit_non_prefix));
 
     }, [dispatch])
+    
 
     const renderNewsImage = () => {
 
-        if (!subredditData[subreddit_non_prefix]) return '';
+        if (!Object.keys(subredditData).length) return '';
 
         return <img
-            src={parse(subredditData[subreddit_non_prefix].data.community_icon)} 
-            onError={(e) => { e.target.onerror = null; e.target.src = parse(subredditData[subreddit_non_prefix].data.icon_img) }} />
+            src={subredditData.data.icon_img} 
+            onError={(e) => { e.target.onerror = null; e.target.src = subredditData.data.community_icon.replace(/&amp;/g, '&') }} />
 
     }
 
@@ -48,3 +49,4 @@ export const NewsContainer = ({ subreddit_non_prefix, preview, title, subreddit 
 
     )
 }
+

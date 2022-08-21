@@ -5,15 +5,16 @@ import { numberOfNewsToShow } from "../../utilities/utilities";
 import { selectTopNews, fetchTopNews } from "./topNewsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import parse from 'html-react-parser'
+import React from 'react'
 
+//Renders news at the top of the page 
 
-export const TopNews = () => {
+export let TopNews = () => {
 
     const [numberOfNews, setNumberOfNews] = useState(numberOfNewsToShow());
     const dispatch = useDispatch();
     const topNewsData = useSelector(selectTopNews);
-   
-  
+
 
     useEffect(() => {
 
@@ -47,7 +48,7 @@ export const TopNews = () => {
         
 
    
-    }, [dispatch]);
+    }, []);
 
     const renderNews = () => {
         if (!topNewsData.length) return '';
@@ -68,7 +69,7 @@ export const TopNews = () => {
     const renderNewsBlock = () => {
         if (!Object.values(topNewsData).length) return '';
         return (
-            <div className="topNews-wrapper">
+            <div className="topNews-wrapper page-container">
                 <h4>Top news</h4>
                 <div className="news-container">
 
@@ -85,3 +86,5 @@ export const TopNews = () => {
 
     )
 }
+
+TopNews = React.memo(TopNews)
