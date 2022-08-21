@@ -24,7 +24,7 @@ export const PostContent = (props) => {
         }
     }
 
-    console.log(props.singlePost)
+    
     const renderPostImage = () => {
 
         return (

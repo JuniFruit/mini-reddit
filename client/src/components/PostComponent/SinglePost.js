@@ -6,7 +6,7 @@ import { SideListing } from "../SideListing/SideListing";
 import { BackToTopButton } from "../../features/BackToTopButton/BackToTopButton";
 import { useEffect } from "react";
 import { selectIsLogged } from "../Login/loginSlice";
-
+import { fetchPostComments } from "../../features/CommentsFeature/commentsSlice";
 
 export const SinglePost = () => {
 
@@ -17,7 +17,9 @@ export const SinglePost = () => {
     const isLogged = useSelector(selectIsLogged);
 
     useEffect(() => {
-        dispatch(fetchPosts({subreddit, isLogged}))
+        dispatch(fetchPosts({subreddit, isLogged}));
+        dispatch(fetchPostComments({subreddit, postId, title}))
+        
     }, [])
     
     if (!data) return;

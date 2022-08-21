@@ -24,6 +24,7 @@ export const PostsList = ({data, sort, subreddit, backToTop, singlePost}) => {
             return <Post
                 key={index}                
                 hidePost={hidePost}
+                postId={child.data.id}
                 votes={child.data.ups}
                 byUser={child.data.author}
                 title={parse(child.data.title)}

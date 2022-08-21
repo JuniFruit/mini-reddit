@@ -5,11 +5,12 @@ import { PostBottomControls } from './PostBottomControls';
 import { PostAuthor } from './PostAuthor';
 import { PostVote } from './PostVote';
 import { PostContent } from './PostContent';
+import { CommentsList } from '../../features/CommentsFeature/CommentList';
 
 // Renders the entire post data
 
 export const Post = (props) => {
-   
+
     const dispatch = useDispatch();
     const subredditData = useSelector(state => selectSubredditDataByName(state, props.subreddit_non_prefixed));
 
@@ -19,11 +20,11 @@ export const Post = (props) => {
         dispatch(fetchSubredditData(props.subreddit_non_prefixed))
 
     }, []);
-   
+
 
     if (!Object.keys(subredditData).length) return;
 
-    
+
 
     const handleHide = () => {
         props.hidePost(props.id)
@@ -34,25 +35,30 @@ export const Post = (props) => {
 
 
     }
-    
+
     return (
 
 
         <div className='post-container'>
-            <PostVote votes={props.votes} />
+            <div className='vote-arrows-container'>
+                <div className='vote-arrows'>
+                    <PostVote votes={props.votes} />
+                </div>
+            </div>
+            
             <div className='post-wrapper'>
                 <div className='post-header'>
-                    <PostAuthor 
-                        subreddit={props.subreddit} 
-                        title={props.title} 
-                        byUser={props.byUser} 
+                    <PostAuthor
+                        subreddit={props.subreddit}
+                        title={props.title}
+                        byUser={props.byUser}
                         subreddit_non_prefixed={props.subreddit_non_prefixed}
                         created_time={props.created_time}
                         icon_img={subredditData.data.icon_img}
                         community_icon={subredditData.data.community_icon.replace(/&amp;/g, '&')}
                         backToTop={props.backToTop}
-                        
-                        
+
+
                     />
                     <div className='post-content'>
                         <PostContent
@@ -60,17 +66,17 @@ export const Post = (props) => {
                             entire_data={props.entire_data}
                             is_video={props.is_video}
                             selfText={props.selfText}
-                            url={props.url} 
+                            url={props.url}
                             singlePost={props.singlePost}
                         />
 
                     </div>
-                    <PostBottomControls 
-                        num_comments={props.num_comments} 
-                        permalink={props.permalink} 
+                    <PostBottomControls
+                        num_comments={props.num_comments}
+                        permalink={props.permalink}
                     />
                 </div>
-                
+                {props.singlePost ? <CommentsList postId={props.postId} /> : ''}
             </div>
 
 
