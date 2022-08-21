@@ -1,0 +1,86 @@
+/* Author section */
+.author-img-container {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+}
+
+.author-img-container img {
+    width: 100%;
+    height: 100%;
+}
+
+.comment-author>span {
+    margin: 0 .3rem;
+    font-size: .9rem;
+
+}
+
+.comment-author> :last-child {
+    font-weight: 500;
+    color: var(--postIconColor);
+}
+
+/* Comment body section */
+
+.comment-body {
+    margin: 1rem .7rem;
+    font-size: 1.1rem;
+    font-weight: 300;
+}
+
+/* Controls section */
+
+.ic_comment {
+    color: var(--postIconColor);
+    width: 1.5rem;
+    height: 1.5rem;
+
+}
+
+.comment-arrows  [class*='ic_arrow']:hover {
+    background-color: rgba(255, 255, 255, 0) !important;
+}
+
+.comment-arrows:hover {
+    background-color: white;
+}
+
+
+.comment-controls>div {
+
+    margin: 0 .3rem;
+
+    border-radius: .2rem;
+
+}
+
+
+
+.comment-controls>div:hover {
+    background-color: var(--mainBGcolor);
+}
+
+
+.comment-reply>button span {
+    margin-left: .5rem;
+}
+
+.comment-arrows {
+    display: flex;
+
+    align-items: center;
+
+}
+
+#bottom-comment {
+    height: 2rem;
+    margin-bottom: .3rem;
+    padding: 0 .5rem;
+    
+}
+
+#bottom-comment > button {
+    color: var(--postIconColor);
+    font-weight: 500;
+}
