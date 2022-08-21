@@ -1,0 +1,7 @@
+.back-top-button {
+    display: flex;
+    justify-content: center;
+    margin-top: .8rem;
+    position: sticky;
+    top: 93%;
+}
