@@ -2,12 +2,14 @@ import { truncLargeNumber } from "../../utilities/utilities";
 import Icon from "../../assets/icons";
 import { Link } from "react-router-dom";
 
+//Renders bottom buttons and controls of a post
+
 export const PostBottomControls = (props) => {
 
 
     return (
         <div className='post-bottom'>
-            <Link className='post-comments flex-align-center' id='bottom' to={'/'}>
+            <Link className='post-comments flex-align-center' id='bottom' to={props.permalink}>
                 <Icon icon="comment" className="ic_comment post-icons" />
                 <span>{!props.num_comments ? 'No' : truncLargeNumber(props.num_comments)}</span>
                 <span>Comments</span>

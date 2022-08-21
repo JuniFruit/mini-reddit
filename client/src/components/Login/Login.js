@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 
 import { fetchUserData } from "./loginSlice"
 
+//Handles the login redirect logic
 
 export const Login = () => {
 

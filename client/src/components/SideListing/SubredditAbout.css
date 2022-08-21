@@ -1,0 +1,127 @@
+div[class^='subreddit-about'][class$='header'] {
+    height: 3rem;
+    background-color: var(--buttonMainColor);
+    display: flex;
+    align-items: center;
+}
+
+div[class^='subreddit-about'][class$='header'] > h3 {
+    margin-left: 1rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: white;
+}
+
+div[class^='subreddit-about'][class$='container'] { 
+    margin-bottom: 3rem;
+}
+
+div[class^='subreddit-about'] div:not([class$='header']) {
+    margin: .8rem 0;
+}
+
+[class*="subreddit-about"] a {
+    color: var(--buttonMainColor)
+}
+
+[class*="subreddit-about"] a:hover {
+    color: var(--buttonMainOnHoverColor)
+}
+
+[class*="subreddit-about"] h1 {
+    font-size: 1.5rem;
+}
+[class*="subreddit-about"] h2 {
+    font-size: 1.4rem;
+}
+
+/* About  block */
+
+.subreddit-about-description {
+    padding: 0 1rem;
+    font-size: 1.1rem;
+    
+}
+
+.subreddit-about-stats {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 1rem
+}
+
+.subreddit-about-stats > div {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.subreddit-about-stats div > span {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--postIconColor)
+}
+
+.subreddit-about-stats div > h4 {
+    
+    font-weight: 500;
+    
+}
+
+.line {
+    border: 1px solid rgba(0, 0, 0, 0.103);
+    margin: 1rem 2rem;
+}
+
+.subreddit-about-creation {
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+}
+
+.subreddit-about-creation > span {
+    margin-left: .5rem;
+    color: rgba(0, 0, 0, 0.701);
+    font-weight: 500;
+}
+
+.subreddit-creation-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--postIconColor)
+}
+
+.subreddit-about-noContent {
+    width: 5rem;
+
+}
+
+
+/* Info block */
+
+.subreddit-about-info-text > div {
+    padding: 0 2.5rem;
+}
+
+.subreddit-about-info-text ol > li {
+    padding: .7rem 0;
+    
+    font-size: 1.1rem;
+    line-height: 1.2rem;
+    
+}
+
+.subreddit-about-info-text ul > li {
+    padding: .7rem 0;
+    
+    font-size: 1.1rem;
+    line-height: 1.2rem;
+    
+}
+
+
+
+/* Mods block */
+
+.subreddit-about-mods-container > p {
+    padding: .7rem
+}

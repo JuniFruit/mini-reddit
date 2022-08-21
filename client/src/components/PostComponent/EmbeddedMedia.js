@@ -1,6 +1,8 @@
 import parse from 'html-react-parser'
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 
+// Renders embedded media within a post
+
 export const EmbeddedMedia = ({data}) => {
 
    

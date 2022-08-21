@@ -5,8 +5,9 @@ import { useSelector } from "react-redux"
 import { selectIsLogged } from '../Login/loginSlice';
 import { ProfileInfo } from "../Profile/ProfileInfo";
 import { redirectToRedditLogin } from "../../utilities/utilities";
+import { Link } from 'react-router-dom'
 
-
+// Renders navigation bar
 
 export const NavBar = () => {
     const loggedIn = useSelector(selectIsLogged)
@@ -30,13 +31,13 @@ export const NavBar = () => {
             <div className="header-container">
                 <div className="logo-searchBarContainer">
                     <div className="logo-wrapper">
-                        <div className="logo-container char">
+                        <Link to={'/'} className="logo-container char">
                             <img alt="logo" src={images.logoChar} className="logo"></img>
-                        </div>
-                        <div className="logo-container reddit flex-align-center">
+                        </Link>
+                        <Link to={'/'} className="logo-container reddit flex-align-center">
                             <span>Mini</span>
                             <span>Social</span>
-                        </div>
+                        </Link>
                         
                     </div>
                     <SearchBar />

@@ -1,33 +1,35 @@
 import { useEffect } from "react";
-import parse from 'html-react-parser';
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom"
 import { images } from "../../assets/images";
 import './SubredditList.css';
 import { fetchSubredditList, selectSubreddits } from "./subredditListSlice";
-import { selectIsLogged } from "../Login/loginSlice";
 
-export const SubredditList = () => {
+
+// Makes a call to grab and render top subreddits. Renderes different data whether you're logged or not
+
+export const SubredditList = ({ backToTop, isLogged }) => {
 
     const dispatch = useDispatch();
     const subredditsList = useSelector(selectSubreddits);
-    const isLogged = useSelector(selectIsLogged);
     
 
+
     useEffect(() => {
-        if (Object.keys(subredditsList).length !== 0) return;
+        if (Object.keys(subredditsList).length) return;
         dispatch(fetchSubredditList(isLogged));
 
     }, [isLogged])
 
+    
 
 
     const renderTopSubreddits = () => {
         if (!Object.keys(subredditsList).length) return '';
         let subredditsToRender = [];
         subredditsToRender = subredditsList.slice();
-        
-        return subredditsList.map((child, index) => {
+
+        return subredditsToRender.map((child, index) => {
             return (
                 <li key={index}>
                     <div className="subreddit-item flex-align-center">
@@ -37,13 +39,16 @@ export const SubredditList = () => {
                             </div>
                             <span>•</span>
                             <div className="subreddit-item-info flex-align-center">
-                                <img src={parse(child.data.community_icon)} onError={(e) => { e.target.onerror = null; e.target.src = images.defaultCommunityImg }} />
+                                <img
+                                    src={child.data.icon_img === '' ? child.data.community_icon.replace(/&amp;/, '&') : child.data.icon_img}
+                                    onError={(e) => { e.target.onerror = null; e.target.src = images.defaultCommunityImg }}
+                                />
                                 <span>{child.data.display_name_prefixed}</span>
                             </div>
                         </div>
 
                         <div className="subreddit-item-button">
-                            <Link to={'/'} className="button">
+                            <Link to={`/${child.data.display_name_prefixed}`} onClick={backToTop} className="button">
                                 View
                             </Link>
                         </div>
@@ -55,22 +60,25 @@ export const SubredditList = () => {
     }
 
     return (
-        <div className="subreddits-container">
-            <div className="subreddits-header" style={{ background: "url" + "(" + images.bannerImg + ")" + "center center / auto no-repeat transparent" }} >
+        <div className="side-listing-container">
+            <div className="listing-header" 
+                 style={{ background: "url" + "(" + images.bannerImg + ")" + "center center / auto no-repeat transparent" }} >
                 <div>
-                    <h4 className="subreddits-heading">{isLogged ? 'My communities' : 'Top communities'}</h4>
+                    <h4 className="listing-heading">{isLogged ? 'My communities' : 'Top communities'}</h4>
                 </div>
 
             </div>
-            <div className="subreddits-content">
+            <div className="listing-content">
 
-                <ol>
+               <ol>
                     {renderTopSubreddits()}
-
-                </ol>
-
+               </ol>
 
             </div>
         </div>
+
+
     )
 }
+
+

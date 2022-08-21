@@ -1,6 +1,7 @@
 import { truncLargeNumber } from "../../utilities/utilities"
 import Icon from "../../assets/icons"
 
+// Renders vote arrows of a post
 
 export const PostVote = (props) => {
 

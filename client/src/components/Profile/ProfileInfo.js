@@ -4,6 +4,7 @@ import parse from 'html-react-parser'
 import Icon from '../../assets/icons';
 import './Profile.css';
 
+// Renders profile info block at the top of the page 
 
 export const ProfileInfo = () => {
 

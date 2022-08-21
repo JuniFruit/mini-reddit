@@ -1,12 +1,12 @@
-/* Top reddits container and header styles */
 
+/* List of subreddits styles */
 
-.subreddits-header {
+.listing-header {
     height: 6rem;
     
 }
 
-.subreddits-header > div {
+.listing-header > div {
     height: 100%;
     display: flex;
     align-items: flex-end;
@@ -14,19 +14,17 @@
     
 }
 
-.subreddits-heading {
+.listing-heading {
     margin: .7rem 1.5rem !important;
     color: white;
 }
 
-/* Content styles */
-
-li {
+.listing-content ol > li {
     padding: .5rem 0;
     border-top: 1px solid var(--mainBGcolor);   
 }
 
-li::marker {
+.listing-content ol > li::marker {
     content: ''
 }
 

@@ -1,31 +1,39 @@
 import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const fetchPosts = createAsyncThunk('posts/fetchPosts', 
-    async ({isLogged, sort, subreddit, after, previousChildren = []}) => {
 
-    try {
-        let endpoint = isLogged ? '/posts_auth' : '/posts_no_auth';
+export const fetchPosts = createAsyncThunk('posts/fetchPosts',
+    async ({ isLogged = false, sort = '', subreddit, after = '', previousChildren = [] }) => {
+
+        try {
+            let endpoint = isLogged ? '/posts_auth' : '/posts_no_auth';
+ 
+            const response = await fetch(`${endpoint}?subreddit=${subreddit}&sort=${sort}&after=${after}&count=${25}`);
+            const data = await response.json();
+
+            if (data.status === 'error') throw new Error(data.message);
         
-        const response = await fetch(`${endpoint}?subreddit=${subreddit}&sort=${sort}&after=${after}&count=25`);
-        const data = await response.json();
-        if (data.status === 'error') throw new Error(data.message);
-        
-        console.log(data.children)
-        console.log(previousChildren)
-        const dataToStore = {
-            [sort]: {
-                after: data.after,
-                dist: data.dist,
-                children: [...previousChildren, ...data.children]
+
+            const dataToStore = {
+                [subreddit]: {
+                    children: [...previousChildren, ...data.children],
+                    [sort]: {
+                        after: data.after,
+                        dist: data.dist,
+                        children: [...previousChildren, ...data.children]
+                    }
+
+                }
             }
+
+
+
+            return dataToStore;
+        } catch (e) {
+
+            return e
         }
-        return dataToStore;
-    } catch (e) {
-        
-        return e
-    }
-    
-});
+
+    });
 
 export const removePost = createAction('posts/removePost')
 
@@ -33,17 +41,17 @@ const postsSlice = createSlice({
 
     name: 'posts',
     initialState: {
-        data: {},
+        data: {undefined: {}},
         errMessage: '',
         isPostsLoading: false,
-        
+
     },
 
     reducers: {
         removePost: (state, action) => {
-            
+
             state.data.data.children = state.data.data.children.filter(child => child.data.id !== action.payload);
-            
+
         }
     },
 
@@ -54,10 +62,18 @@ const postsSlice = createSlice({
                 state.isPostsLoading = false
             })
             .addCase(fetchPosts.fulfilled, (state, action) => {
-                
+                // Structures data by subreddits and by sort
+             
+                const subreddit = Object.keys(action.payload)[0];
+                const sort = Object.values(action.payload)[0]
                 state.data = {
-                    ...state.data,
-                   ...action.payload
+                        ...state.data,
+                        [subreddit]: {
+                        ...state.data[subreddit],
+                        ...action.payload[subreddit]
+                      
+                        }
+                    
                 }
                 state.isPostsLoading = false;
                 state.errMessage = '';
@@ -69,7 +85,17 @@ const postsSlice = createSlice({
     }
 })
 
-export const selectPostsData = (state) => state.postsReducer.data;
+export const selectPostsData = (state, subreddit) => state.postsReducer.data[subreddit] ? state.postsReducer.data[subreddit] : {};
 export const selectIsPostsLoading = (state) => state.postsReducer.isPostsLoading;
+export const selectPostsPagination = (state, subreddit, sort) => 
+    state.postsReducer.data[subreddit] && state.postsReducer.data[subreddit][sort] ? state.postsReducer.data[subreddit][sort].after : '';
+
+
+export const selectSinglePost = (state, subreddit, postId) => {
+    if (!state.postsReducer.data[subreddit]) return;
+    const singlePost = state.postsReducer.data[subreddit].children.filter(child => child.data.id === postId);
+    
+    return { children: [{...singlePost[0]}] }
+}
 
 export default postsSlice.reducer;

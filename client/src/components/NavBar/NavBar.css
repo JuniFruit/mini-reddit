@@ -29,6 +29,15 @@
 
 }
 
+.loginButton-container > button {
+    color: var(--staticButtonColor)!important;
+    border: .1rem solid var(--staticButtonColor)!important;
+}
+.loginButton-container > button:hover {
+    background-color: var(--staticOnHoverButton)!important;
+    color: var(--buttonTextOnHover)!important;
+}
+
 
 /* sizing different parts of logo */
 
@@ -43,7 +52,7 @@
 }
 
 .reddit span:nth-child(2) {
-    color: var(--buttonMainColor);
+    color: var(--staticButtonColor);
 }
 
 /* logo container */
@@ -62,4 +71,8 @@
 
 .logo-container {
     padding: 3px 5px;
+}
+
+.logo-container > span {
+    pointer-events: none;
 }

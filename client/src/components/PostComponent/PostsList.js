@@ -3,32 +3,33 @@ import { Post } from '../PostComponent/Post';
 import { useDispatch } from 'react-redux';
 import { removePost } from '../PostComponent/postsSlice.js';
 import { SortBar } from '../SortBar/SortBar';
+import parse from 'html-react-parser'
 
+// Renders a list of posts based on data from LoadPosts component
 
-export const PostsList = ({data, sort}) => {
+export const PostsList = ({data, sort, subreddit, backToTop, singlePost}) => {
     
-   
+
     const hidePost = (id) => {
         // dispatch(removePost(id));
     }    
     const renderPosts = () => {
         if (!data) return;
-        if (!data.children.length) return 'No posts';
         let postsToRender = [].concat(data.children);
-        
+       
 
-        return postsToRender.map((child) => {
+        return postsToRender.map((child, index) => {
 
             if (child.data.thumbnail === 'nsfw') return; //If a post has a nudity or other nsfw content, It returns
             return <Post
-                key={child.data.id}                
+                key={index}                
                 hidePost={hidePost}
                 votes={child.data.ups}
                 byUser={child.data.author}
-                title={child.data.title}
-                url={child.data.url}
+                title={parse(child.data.title)}
+                url={parse(child.data.url)}
                 thumbnail={child.data.thumbnail}
-                selfText={child.data.selftext}
+                selfText={parse(child.data.selftext)}
                 num_comments={child.data.num_comments}
                 created_time={child.data.created_utc}
                 subreddit={child.data.subreddit_name_prefixed}
@@ -37,6 +38,8 @@ export const PostsList = ({data, sort}) => {
                 is_video={child.data.is_video}
                 post_hint={child.data.post_hint}
                 entire_data={child.data}
+                backToTop={backToTop}
+                singlePost={singlePost}
             />
         })
     }
@@ -44,10 +47,11 @@ export const PostsList = ({data, sort}) => {
     return (
 
         <div className="posts">
-            <SortBar sort={sort} />
+            {!sort ? '' : <SortBar sort={sort} subreddit={subreddit} />}
 
             {renderPosts()}
         </div>
 
     )
 }
+
