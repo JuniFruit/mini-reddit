@@ -25,6 +25,8 @@ body {
   --mainBGcolor: #3679321c;
   --buttonTextOnHover: white;
   --postIconColor: rgba(0, 0, 0, 0.384);
+  --staticButtonColor: #1fb51f;
+  --staticOnHoverButton: #1fb51f87;
 
 
 }
@@ -54,6 +56,11 @@ h3 {
 h4 {
   font-size: 1.1rem;
   font-weight: 600;
+}
+
+h5 {
+  font-size: .9rem;
+  font-weight: 500;
 }
 
 /* Universal buttons */
@@ -147,6 +154,18 @@ a {
 }
 
 
+/* Tables */
+
+table {
+  border: 1px solid rgba(0, 0, 0, 0.141);
+  margin: .5rem 0;
+}
+th, td {
+  border: 1px solid #bbb;
+  background-color: var(--mainBGcolor);
+  padding: 2px 8px 0;
+  text-align: left;
+}
 
 
 

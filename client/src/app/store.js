@@ -4,6 +4,7 @@ import postsReducer from "../components/PostComponent/postsSlice";
 import topNewsReducer from "../features/TopNewsFeature/topNewsSlice";
 import subredditReducer from "../features/subredditSlice";
 import subredditListReducer from "../components/SideListing/subredditListSlice";
+import commentsReducer from "../features/CommentsFeature/commentsSlice";
 
 
 const store = configureStore({
@@ -13,6 +14,7 @@ const store = configureStore({
         topNewsReducer,
         subredditReducer,
         subredditListReducer,
+        commentsReducer
      
     }
     

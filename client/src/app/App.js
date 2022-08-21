@@ -1,88 +1,41 @@
-
 import { NavBar } from '../components/NavBar/NavBar';
-import { TopNews } from '../features/TopNewsFeature/TopNews.js';
 import { PageContent } from '../components/PageContent/PageContent';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-
 import React from 'react';
 import { Login } from '../components/Login/Login';
-import { LoadingBar } from '../features/LoadingBar/LoadingBar';
-import { selectIsSubListLoading } from '../components/SideListing/subredditListSlice';
-import { useSelector } from 'react-redux';
-import { selectIsPostsLoading } from '../components/PostComponent/postsSlice';
-import { selectIsNewsLoading } from '../features/TopNewsFeature/topNewsSlice';
-import { selectIsSubredditDataLoading } from '../features/subredditSlice';
-import { selectIsUserLoading } from '../components/Login/loginSlice';
-
-
-
-
+import { LoadingBar } from '../features/LoadingBar/LoadingBar'
+import { SinglePost } from '../components/PostComponent/SinglePost';
+import { TopNews } from '../features/TopNewsFeature/TopNews';
 
 const App = () => {
 
-  const subsLoading = useSelector(selectIsSubListLoading);
-  const postsLoading = useSelector(selectIsPostsLoading);
-  const newsLoading = useSelector(selectIsNewsLoading);
-  const subDataLoading = useSelector(selectIsSubredditDataLoading);
-  const userLoading = useSelector(selectIsUserLoading);
 
-
-  const renderLoadingBar = () => {
-    const loadingStates = {
-      subDataLoading,
-      newsLoading,
-      userLoading,
-      postsLoading,
-      subsLoading
-    }
-
-    if (Object.values(loadingStates).some(item => item === true)) return <LoadingBar />
-
-    return;
-  }
 
   return (
-    <div className="App">
-      <NavBar />
-      <div className='page-container'>
-        <BrowserRouter>
+    <BrowserRouter>
+      <div className="App">
+        <NavBar />
+        <div className='none'>
 
           <Routes>
+            <Route path='/' element={<><TopNews /><PageContent /></>} />
             <Route path='reddit_login' element={<Login />} />
-          </Routes>
-          
+            <Route path=':sort' element={<><TopNews /><PageContent /></>} />
 
-          
 
-          <Routes>
 
-            <Route path='/' element={<><TopNews /> <PageContent /></>}>
-              <Route path=':sort' element={<><TopNews /> <PageContent /></>} />
-              <Route path='r/:subreddit' element={<PageContent />} />
-              <Route path='r/:subreddit/:sort' element={<PageContent />} />
+
+            <Route path='/r' >
+              <Route path=':subreddit' element={<PageContent />} />
+              <Route path=':subreddit/:sort' element={<PageContent />} />
+              <Route path=':subreddit/comments/:postId/:title/' element={<SinglePost />} />
             </Route>
-
-
           </Routes>
-
-
-          
-
-
-
-
-
-
-
-
-
-
-
-        </BrowserRouter>
+        </div>
+        <LoadingBar />
       </div>
-      {renderLoadingBar()}
-    </div>
+    </BrowserRouter>
   );
 }
 
