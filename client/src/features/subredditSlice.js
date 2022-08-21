@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 
 export const fetchSubredditData = createAsyncThunk('subreddit/fetchSubredditData', async (subreddit) => {
 
@@ -53,6 +53,7 @@ const subredditSlice = createSlice({
 export const selectSubredditData = (state) => state.subredditReducer.data;
 export const selectIsSubredditDataLoading = (state) => state.subredditReducer.isSubredditDataLoading;
 
+export const selectSubredditDataByName = createSelector([selectSubredditData, (state, subreddit) => subreddit], (data, subreddit) => {return {...data[subreddit]}})
 
 
 export default subredditSlice.reducer;
