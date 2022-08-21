@@ -61,7 +61,9 @@ const pluralize = (num) => {
 
 
 export const truncLargeNumber = (num) => {
-
+    if (Math.floor(num) > 1000000) {
+        return `${(num / 1000000).toFixed(1)}M`
+    }
     if (Math.floor(num) > 1000) {
         return `${(num / 1000).toFixed(1)}K`;
     }
@@ -69,7 +71,7 @@ export const truncLargeNumber = (num) => {
 }
 
 export const truncTitle = (title) => {
-    
+
     if (title.length > 50) {
         const trimmed = title.slice(0, 47).concat('...');
         return trimmed
@@ -84,4 +86,29 @@ export const redirectToRedditLogin = () => {
     const scope = 'history identity mysubreddits vote submit wikiread read report subscribe flair'
     window.location.href = `https://www.reddit.com/api/v1/authorize?client_id=N_FuvhLdY7m1D5QjJ6YRXA&response_type=code&state=test&redirect_uri=http://localhost:3000/reddit_login&duration=temporary&scope=${scope}`
 
+}
+
+
+/* Changes root color variables */
+
+export const setStyles = (color, backgroundColor) => {
+
+    if (!color) return resetStyles();
+    let mainColor = color;
+    let bgColor = backgroundColor;
+    if (mainColor.length === 0) return;
+    if (bgColor.length === 0) bgColor = mainColor;
+    // '#cfcfcf'
+
+    window.document.documentElement.style.setProperty('--buttonMainColor', mainColor);
+    window.document.documentElement.style.setProperty('--buttonMainOnHoverColor', `${mainColor}87`);
+    window.document.documentElement.style.setProperty('--mainBGcolor', `${bgColor}74`);
+}
+
+/* Changes root color variables back to original */
+
+export const resetStyles = () => {
+    window.document.documentElement.style.setProperty('--buttonMainColor', '#1fb51f');
+    window.document.documentElement.style.setProperty('--buttonMainOnHoverColor', '#1fb51f87');
+    window.document.documentElement.style.setProperty('--mainBGcolor', '#3679321c');
 }
