@@ -96,11 +96,11 @@ app.get('/posts_auth', async (req, res) => {
 
         
     try {
-        const subreddit = req.query.subreddit === 'undefined' ? '' : req.query.subreddit;
+        const subreddit = req.query.subreddit === 'undefined' ? '' : `r/${req.query.subreddit}`;
         const sort = req.query.sort;
         const after = req.query.after;
         const count = req.query.count;
-        
+      
         const response = await fetch(`https://oauth.reddit.com/${subreddit}/${sort}?after=${after}&count=${count}`, {
             headers: {
                 Authorization: `Bearer ${access_token}`
@@ -108,7 +108,7 @@ app.get('/posts_auth', async (req, res) => {
         })
 
         const data = await response.json();
-        console.log('Server reached')
+
         const dataToSend = {
             after: data.data.after,
             dist: data.data.dist,
@@ -126,7 +126,25 @@ app.get('/posts_auth', async (req, res) => {
 // Data requests 
 
 
+app.get('/post_comments', async (req, res) => {
 
+    try {
+        const subreddit = req.query.subreddit;
+        const postId = req.query.postId;
+        const title = req.query.title;
+
+        const response = await fetch(`https://www.reddit.com/r/${subreddit}/comments/${postId}/${title}.json`);
+        const data = await response.json();
+
+        const dataToSend = {
+            [data[0].data.children[0].data.id]: [...data[1].data.children]
+        }
+        res.send(dataToSend);
+
+    } catch (e) {
+        res.send(errorMessage(e))
+    }
+})
 
 app.get('/check_user_geo', async (req, res) => {
 
@@ -177,20 +195,20 @@ app.get('/subreddit_data', async (req, res) => {
 app.get('/posts_no_auth', async (req, res) => {
 
     try {
-        const subreddit = req.query.subreddit === 'undefined' ? '' : req.query.subreddit;
+        const subreddit = req.query.subreddit === 'undefined' ? '' : `r/${req.query.subreddit}`;
         const sort = req.query.sort;  
         const after = req.query.after;
         const count = req.query.count  
-        console.log('Server no auth reached')
+        
         const response = await fetch(`https://www.reddit.com/${subreddit}/${sort}.json?after=${after}&count=${count}`);
         const data = await response.json();
-        
+
         const dataToSend = {
             after: data.data.after,
             dist: data.data.dist,
             children: data.data.children
         }
-                
+    
         res.send(dataToSend)
 
     } catch (e) {
