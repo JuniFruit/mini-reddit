@@ -2,7 +2,7 @@ import { NewsContainer } from "./NewsContainer";
 import './TopNews.css';
 import { useEffect, useState } from "react";
 import { numberOfNewsToShow } from "../../utilities/utilities";
-import { selectTopNews, fetchTopNews } from "./topNewsSlice";
+import { selectTopNews, fetchUserGeoNews } from "./topNewsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import parse from 'html-react-parser'
 import React from 'react'
@@ -30,23 +30,7 @@ export let TopNews = () => {
 
     useEffect(() => {
 
-        const loadCountryTopNews = async () => {
-            try {
-
-            const response = await fetch('/check_user_geo');
-            const data = await response.json();
-            if (data.status === 'error') throw new Error(data.message);
-            dispatch(fetchTopNews())
-
-            } catch (e) {
-            console.log(e)
-            }
-        }
-       
-        loadCountryTopNews();
-        
-        
-
+        dispatch(fetchUserGeoNews())
    
     }, []);
 
