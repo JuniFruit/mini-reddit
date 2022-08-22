@@ -1,17 +1,17 @@
-import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { compose, createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts',
-    async ({ isLogged = false, sort = '', subreddit, after = '', previousChildren = [] }) => {
+    async ({ isLogged = false, sort = '', subreddit, after = '', previousChildren = [] }, thunkAPI) => {
 
         try {
             let endpoint = isLogged ? '/posts_auth' : '/posts_no_auth';
  
             const response = await fetch(`${endpoint}?subreddit=${subreddit}&sort=${sort}&after=${after}&count=${25}`);
             const data = await response.json();
-
-            if (data.status === 'error') throw new Error(data.message);
-        
+            console.log(response.data)
+            
+            if (response.status !== 200 ) throw new Error(data.message)
 
             const dataToStore = {
                 [subreddit]: {
@@ -25,12 +25,12 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts',
                 }
             }
 
+        
 
-
-            return dataToStore;
+            return data;
         } catch (e) {
+            return thunkAPI.rejectWithValue(e.message)
 
-            return e
         }
 
     });
@@ -58,6 +58,7 @@ const postsSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchPosts.rejected, (state, action) => {
+                
                 state.errMessage = action.payload;
                 state.isPostsLoading = false
             })
@@ -97,5 +98,7 @@ export const selectSinglePost = (state, subreddit, postId) => {
     
     return { children: [{...singlePost[0]}] }
 }
+
+export const selectPostsErr = (state) => state.postsReducer.errMessage
 
 export default postsSlice.reducer;

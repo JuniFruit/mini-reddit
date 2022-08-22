@@ -1,16 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchUserData = createAsyncThunk(
-    'login/fetchUserData', async (query) => {
+    'login/fetchUserData', async (query, thunkAPI) => {
         try {
             const userResponse = await fetch(`/reddit_login?code=${query}`);
             const userData = await userResponse.json();
+            
+            if (userResponse.status !== 200 ) throw new Error(userData.message)
+
             const dataToStore = {
                 userData
             }
             return dataToStore
         } catch (e) {
-            return e
+            return thunkAPI.rejectWithValue(e.message)
         }
 
     }
@@ -54,6 +57,6 @@ const loginSlice = createSlice({
 export const selectIsUserLoading = (state) => state.loginReducer.isUserLoading; 
 export const selectUserData = (state) => state.loginReducer.data.data;
 export const selectIsLogged = (state) => state.loginReducer.isLogged;
-export const selectErrorMessage = (state) => state.loginReducer.errMessage;
+export const selectLoginErr = (state) => state.loginReducer.errMessage;
 
 export default loginSlice.reducer;
