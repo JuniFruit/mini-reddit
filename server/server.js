@@ -60,7 +60,7 @@ app.get("/reddit_login", async (req, res) => {
 
 
     } catch (e) {
-        res.send(errorMessage(e))
+        res.status(e.status).send(errorMessage(e));
     }
 })
 
@@ -88,7 +88,7 @@ app.get('/user_subreddits', async (req, res) => {
             
 
     } catch(e) {
-        res.send(errorMessage(e))
+        res.status(400).send(errorMessage(e));
     }
 })
 
@@ -118,7 +118,8 @@ app.get('/posts_auth', async (req, res) => {
         res.send(dataToSend)
         
     } catch (e) {
-        res.send(errorMessage(e))
+        res.status(400).send(errorMessage(e));
+        
     }
 })
 
@@ -142,7 +143,7 @@ app.get('/post_comments', async (req, res) => {
         res.send(dataToSend);
 
     } catch (e) {
-        res.send(errorMessage(e))
+        res.status(400).send(errorMessage(e));
     }
 })
 
@@ -152,10 +153,11 @@ app.get('/check_user_geo', async (req, res) => {
 
         const response = await fetch('http://ip-api.com/json/');
         const data = await response.json();
-        res.send({status: 200, data: data})
+        res.send({data: data})
 
     } catch (e) {
-        res.send(errorMessage(e))
+        
+        res.status(400).send(errorMessage(e));
     }
 })
 
@@ -167,10 +169,10 @@ app.get('/news', async (req,res) => {
         const country = req.query.country;
         const response = await fetch(`https://www.reddit.com/search.json?q=${country}%20news&source=trending`);
         const data = await response.json();
-        res.send({status: 200, data: data.data.children});
+        res.send({data: data.data.children});
 
     } catch(e) {
-        res.send(errorMessage(e))
+        res.status(400).send(errorMessage(e));
     }
 })
 
@@ -183,10 +185,10 @@ app.get('/subreddit_data', async (req, res) => {
         const query = req.query.subreddit;
         const response = await fetch(`https://www.reddit.com/r/${query}/about.json`);
         const data = await response.json();
-        res.send({status: 200, data: data});
+        res.send({data: data});
 
     } catch(e) {
-        res.send(errorMessage(e))
+        res.status(400).send(errorMessage(e));
     }
 })
 
@@ -211,8 +213,10 @@ app.get('/posts_no_auth', async (req, res) => {
     
         res.send(dataToSend)
 
+
     } catch (e) {
-        res.send(errorMessage(e))
+        
+        res.status(400).send(errorMessage(e));
     }
 
 })
@@ -226,11 +230,12 @@ app.get('/top_subreddits', async (req, res) => {
         const response = await fetch('https://www.reddit.com/subreddits.json');
         const data = await response.json();
         const slicedChildren = data.data.children.slice();
-        res.send({status: 200, data: slicedChildren})
+        res.send({data: slicedChildren})
         
     } catch (e) {
 
-        res.send(errorMessage(e));
+        res.status(400).send(errorMessage(e));
+      
 
     }
 })

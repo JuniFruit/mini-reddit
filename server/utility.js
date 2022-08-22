@@ -3,8 +3,7 @@
 const errorMessage = (e) => {
 
     return {
-        status: 'error',
-        message: `Couldn't retrieve the data. Reason ${e}`
+       message: `Couldn't retrieve the data. Reason ${e}`
     }
 }
 
