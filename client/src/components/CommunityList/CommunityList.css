@@ -1,0 +1,34 @@
+.communityList-container {
+    width: 100%;
+    background-color: white;
+    border-radius: .4rem;
+    
+}
+
+.communityCard-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .3rem .5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.055);
+    margin: .3rem 0;
+    cursor: pointer;
+}
+
+.communityCard-container:hover {
+   background-color: rgba(0, 0, 0, 0.027);
+}
+
+.community-img {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+}
+
+.community-description {
+    display: flex;
+}
+
+.community-description > div > div {
+    margin: .3rem 1rem;
+}
