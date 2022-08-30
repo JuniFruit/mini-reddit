@@ -1,12 +1,12 @@
 
 .profile-container {
-    border-bottom: 1px solid var(--mainBGcolor);
+    border-bottom: 1px solid var(--staticBGcolor);
     cursor: pointer;
 }
 
 .profile-content {
     display: flex;
-    border-bottom: 1px solid var(--mainBGcolor)
+    border-bottom: 1px solid var(--staticBGcolor)
 }
 
 .profile-icon img {
@@ -37,6 +37,16 @@
     width: .8rem;
     height: .8rem;
     color: var(--postIconColor)
+}
+
+.profile-container > .menu {
+    width: 100% !important;
+
+}
+
+.profile-container > .menu > div > button > span {
+    font-weight: 500;
+    margin-left: .5rem;
 }
 
 @media screen and (max-width: 500px) {

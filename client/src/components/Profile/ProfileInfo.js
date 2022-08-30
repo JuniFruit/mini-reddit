@@ -1,7 +1,7 @@
 import { selectUserData } from '../Login/loginSlice';
 import { useSelector } from 'react-redux';
-import parse from 'html-react-parser'
 import Icon from '../../assets/icons';
+import { DropdownMenu } from '../../features/Dropdown/DropdownMenu';
 import './Profile.css';
 
 // Renders profile info block at the top of the page 
@@ -13,10 +13,10 @@ export const ProfileInfo = () => {
 
     return (
 
-        <div className='profile-container flex-align-center'>
+        <div className='profile-container flex-align-center dropdown'>
             <div className='profile-content'>
                 <div className='profile-icon'>
-                    <img src={parse(profileData.user.icon)} onError={(e) => {e.target.onerror = null; e.target.src = ' '}}/>
+                    <img src={profileData.user.icon} onError={(e) => { e.target.onerror = null; e.target.src = ' ' }} />
                 </div>
                 <div className='profile-info'>
                     <span>{profileData.user.name}</span>
@@ -26,7 +26,23 @@ export const ProfileInfo = () => {
                     </div>
                 </div>
             </div>
-            <button className=''><Icon icon="circle-down" className="ic_circle-down post-icons"></Icon></button>
+
+            <DropdownMenu>
+                <div>
+                    <button>
+                        <Icon icon="profile" className="post-icons"></Icon>
+                        <span>Profile</span>
+                    </button>
+
+                </div>
+                <div>
+                    <button>
+                        <Icon icon="exit" className="post-icons"></Icon>
+                        <span>Log out</span>
+                    </button>
+                </div>
+            </DropdownMenu>
+            
         </div>
     )
 }

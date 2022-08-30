@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom"
-import { images } from "../../assets/images";
+import { images } from "../../../assets/images";
 import './SubredditList.css';
 import { fetchSubredditList, selectSubreddits } from "./subredditListSlice";
 
@@ -13,12 +13,14 @@ export const SubredditList = ({ backToTop, isLogged }) => {
     const dispatch = useDispatch();
     const subredditsList = useSelector(selectSubreddits);
     
-
+   
 
     useEffect(() => {
         if (Object.keys(subredditsList).length) return;
-        dispatch(fetchSubredditList(isLogged));
-
+        const promise = dispatch(fetchSubredditList(isLogged));
+        return () => {
+            promise.abort();
+        }
     }, [isLogged])
 
     

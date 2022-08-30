@@ -5,10 +5,9 @@ export const fetchSubredditList = createAsyncThunk('subredditList/fetchSubreddit
     try {
         const endpoint = loginBoolean ? '/user_subreddits' : '/top_subreddits'
         const response = await fetch(endpoint);
-        
+        if (response.status !== 200 ) throw new Error(response.statusText)
         const data = await response.json();
         
-        if (response.status !== 200 ) throw new Error(data.message)
         return data;
     } catch (e) {
         
