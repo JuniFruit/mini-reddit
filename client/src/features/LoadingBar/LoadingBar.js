@@ -1,11 +1,14 @@
 import './LoadingBar.css'
 
-import { selectIsSubListLoading } from '../../components/SideListing/subredditListSlice';
+import { selectIsSubListLoading } from '../../components/SideListing/SubredditTopList/subredditListSlice';
 import { useSelector } from 'react-redux';
 import { selectIsPostsLoading } from '../../components/PostComponent/postsSlice';
 import { selectIsNewsLoading } from '../../features/TopNewsFeature/topNewsSlice';
 import { selectIsSubredditDataLoading } from '../../features/subredditSlice';
 import { selectIsUserLoading } from '../../components/Login/loginSlice';
+import { selectIsCommentsListFetching } from '../CommentsFeature/commentsSlice';
+import { selectIsCommentsAuthorFetching } from '../CommentsFeature/commentAuthorSlice';
+import { selectIsSearchFetching } from '../../components/SearchResults/searchResultsSlice';
 
 // Renders loading bar at the bottom of the page when something is being fetched
 
@@ -16,6 +19,9 @@ export const LoadingBar = () => {
     const newsLoading = useSelector(selectIsNewsLoading);
     const subDataLoading = useSelector(selectIsSubredditDataLoading);
     const userLoading = useSelector(selectIsUserLoading);
+    const commentsLoading = useSelector(selectIsCommentsListFetching);
+    const commentAuthorData = useSelector(selectIsCommentsAuthorFetching)
+    const searchLoading = useSelector(selectIsSearchFetching)
 
 
     const renderLoadingBar = () => {
@@ -24,13 +30,15 @@ export const LoadingBar = () => {
             newsLoading,
             userLoading,
             postsLoading,
-            subsLoading
+            subsLoading,
+            commentsLoading,
+            commentAuthorData,
+            searchLoading
         }
 
         if (Object.values(loadingStates).some(item => item === true)) {
 
             return (
-
                 <div className="loadingBar-container">
                     <div className="loading-content">
                         <div className="loading-heading">
@@ -46,12 +54,17 @@ export const LoadingBar = () => {
                     </div>
                 </div>
             )
+
         };
+        return '';
+
     }
 
     return (
         <>
-            {renderLoadingBar()}
+
+        {renderLoadingBar()}
+
         </>
     )
 }

@@ -1,0 +1,69 @@
+
+.error-section {
+    position: sticky;
+    top: 5rem;
+    right: 2rem;
+    z-index: 105;
+}
+
+.error-container {
+    position: absolute;
+    
+    right: 2rem;
+}
+
+.error-wrapper {
+    margin: .8rem 0;
+    background-color: white;
+    border-radius: .4rem;
+    min-height: 8rem;
+    max-height: 13rem;
+    min-width: 15rem;
+    max-width: 25rem;
+    padding: 1rem .6rem;
+    animation: slideIn .5s ease-in-out;
+    position: sticky;
+    box-shadow: -.2rem .2rem .5rem var(--postIconColor);
+}
+
+.error-close > button {
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--postIconColor);
+    margin-right: .5rem;
+    
+}
+
+.error-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: .6rem 0;
+}
+
+.error-content > h4 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+
+}
+
+.error-content > p {
+    font-size: .9rem;
+}
+
+.error-handling {
+    display: flex;
+    justify-content: center;
+    color: var(--postIconColor);
+    font-weight: 500;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(1000px);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
