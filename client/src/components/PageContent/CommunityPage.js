@@ -24,7 +24,7 @@ export let CommunityPage = ({ subreddit }) => {
             }
         }
         fetchSubredditData()
-
+        
 
     }, [])
     
@@ -35,14 +35,15 @@ export let CommunityPage = ({ subreddit }) => {
         setStyles(subredditData.data.primary_color, subredditData.data.banner_background_color)
 
     }
-    console.log(subredditData)
+    
     const setBannerStyles = () => {
 
         if (!subredditData.data.banner_background_image.length) return;
 
         return {
 
-            background: `url(${subredditData.data.banner_background_image.replace(/&amp;/, '&')}) center center / cover no-repeat transparent`
+            background: 
+            `url(${subredditData.data.banner_background_image.replace(/&amp;/, '&')}) center center / cover no-repeat transparent`
         }
     }
 
@@ -57,9 +58,9 @@ export let CommunityPage = ({ subreddit }) => {
             <div className="community-theme-switch">
                 <span>Community theme</span>
                 <div className="theme-switch-button">
-                    <label class="switch">
+                    <label className="switch">
                         <input type="checkbox" defaultChecked onChange={handleSwitchChange}></input>
-                        <span class="slider round"></span>
+                        <span className="slider round"></span>
                     </label>
                 </div>
 

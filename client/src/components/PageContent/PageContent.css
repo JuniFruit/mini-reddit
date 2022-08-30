@@ -1,5 +1,7 @@
 /* Page styles */
-
+.container {
+  position: relative;
+}
 
 
 .content-container {
@@ -10,6 +12,7 @@
 
 .content-wrapper {
     display: flex;
+    margin: .8rem 0;
 
 }
 
@@ -165,3 +168,37 @@
   .slider.round:before {
     border-radius: 50%;
   }
+
+  /* Not found page */
+
+  .notfound-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  .notfound-page > svg {
+    width: 10rem;
+    height: 10rem;
+    color: var(--postIconColor);
+    margin: 1rem 0;
+  }
+
+  .notfound-page > span {
+    font-weight: 500;
+    color: var(--postIconColor)
+  }
+
+  .notfound-page > a {
+    color: var(--staticButtonColor)
+  }
+
+  .notfound-page > a:hover {
+    color: var(--staticOnHoverButton)
+  }
+
+.singlePost-page-container {
+
+}
