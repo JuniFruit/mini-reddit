@@ -1,13 +1,14 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export const fetchSubredditData = createAsyncThunk('subreddit/fetchSubredditData', async (subreddit, thunkAPI) => {
 
     try {
         // fetches the subreddit data. Expects non prefixed subreddit name, example 'worldnews'
         const response = await fetch(`/subreddit_data?subreddit=${subreddit}`);
+        if (response.status !== 200 ) throw new Error(response.statusText)
         const data = await response.json();
         
-        if (response.status !== 200 ) throw new Error(data.message)
+      
         const dataToStore = {
             [data.data.data.display_name]: data.data
         }
@@ -54,7 +55,7 @@ const subredditSlice = createSlice({
 export const selectSubredditData = (state) => state.subredditReducer.data;
 export const selectIsSubredditDataLoading = (state) => state.subredditReducer.isSubredditDataLoading;
 
-export const selectSubredditDataByName = createSelector([selectSubredditData, (state, subreddit) => subreddit], (data, subreddit) => {return {...data[subreddit]}})
+export const selectSubredditDataByName = (state, subreddit) => {return {...state.subredditReducer.data[subreddit]}}
 
 export const selectSubredditErr = (state) => state.subredditReducer.errMessage;
 
