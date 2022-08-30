@@ -1,6 +1,7 @@
 
 /* Determines how many news containers will be shown in Top news section */
 
+
 export const numberOfNewsToShow = () => {
 
     const width = window.innerWidth;
@@ -12,6 +13,9 @@ export const numberOfNewsToShow = () => {
 
 }
 
+export const randomNum = (num) => {
+    return Math.floor(Math.random() * num);
+}
 
 /* Making resizing happening less often (not used)*/
 
@@ -70,10 +74,10 @@ export const truncLargeNumber = (num) => {
     return num;
 }
 
-export const truncTitle = (title) => {
+export const truncTitle = (title, maxSize = 50) => {
 
-    if (title.length > 50) {
-        const trimmed = title.slice(0, 47).concat('...');
+    if (title.length > maxSize) {
+        const trimmed = title.slice(0, maxSize).concat('...');
         return trimmed
     }
     return title
@@ -81,11 +85,13 @@ export const truncTitle = (title) => {
 
 /* Redirects user to reddit to login user */
 
-export const redirectToRedditLogin = () => {
+export const redirectToRedditLogin = (location) => {
 
     const scope = 'history identity mysubreddits vote submit wikiread read report subscribe flair'
-    window.location.href = `https://www.reddit.com/api/v1/authorize?client_id=N_FuvhLdY7m1D5QjJ6YRXA&response_type=code&state=test&redirect_uri=http://localhost:3000/reddit_login&duration=temporary&scope=${scope}`
-
+    window.location.href = `https://www.reddit.com/api/v1/authorize?client_id=N_FuvhLdY7m1D5QjJ6YRXA&response_type=code&state=test&redirect_uri=http://localhost:3000/reddit_login&duration=temporary&scope=${scope}`;
+    
+    // Used to memo current location to navigate back to the same page after login
+    window.sessionStorage.setItem('currentHref', location) 
 }
 
 
@@ -112,3 +118,32 @@ export const resetStyles = () => {
     window.document.documentElement.style.setProperty('--buttonMainOnHoverColor', '#1fb51f87');
     window.document.documentElement.style.setProperty('--mainBGcolor', '#3679321c');
 }
+
+// Recursive function to add more comments to a particular place in a comments tree
+
+export const mapReplies = ({ arrToMap, idToFind, currentId, subredditId, dataToAdd }) => {
+    console.log(`arr ${arrToMap} currentId ${currentId} idToFind ${idToFind}`)
+
+    
+    // currentId && currentId == subredditId
+
+    if (idToFind === currentId) {
+        return  [...arrToMap, ...dataToAdd];
+
+       
+    }
+
+    arrToMap.forEach = ((child) => {
+        if (!child.data.replies) return;
+
+        mapReplies({
+            arrToMap: child.data.replies.data.children,
+            idToFind,
+            currentId: child.data.name,
+            dataToAdd,
+            subredditId
+        })
+    })
+}
+
+// reconstructing the replies tree to return it into the slice
