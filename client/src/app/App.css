@@ -17,6 +17,7 @@ html {
 
 body {
   background-color: var(--mainBGcolor);
+  
 }
 
 :root {
@@ -27,6 +28,10 @@ body {
   --postIconColor: rgba(0, 0, 0, 0.384);
   --staticButtonColor: #1fb51f;
   --staticOnHoverButton: #1fb51f87;
+  --staticBGcolor: #3679321c;
+  --postMaxHeight: 512px;
+  --postMaxWidth: 100%;
+  --postContentMaxWidth: 512px;
 
 
 }
@@ -92,38 +97,6 @@ button {
   cursor: pointer;
 }
 
-/* Menus */
-
-button[class*='menu'] {
-  display: none;
-}
-
-.active {
-  display: flex !important;
-}
-
-.menu {
-  width: fit-content;
-  height: fit-content;
-  position: absolute;
-  top: 46px;
-  left: 0px;
-  background-color: white;
-  border-radius: .2rem;
-
-  box-shadow: 0px 2px 3px var(--mainBGcolor), 0px -2px 3px var(--mainBGcolor);
-}
-
-.menu div {
-  display: flex;
-  align-items: center;
-
-
-}
-
-.menu div:hover {
-  background-color: var(--mainBGcolor);
-}
 
 /* Links and icons */
 
@@ -153,6 +126,9 @@ a {
   margin: 0 auto;
 }
 
+.app-page {
+  position: relative;
+}
 
 /* Tables */
 
@@ -160,12 +136,37 @@ table {
   border: 1px solid rgba(0, 0, 0, 0.141);
   margin: .5rem 0;
 }
-th, td {
+
+th,
+td {
   border: 1px solid #bbb;
   background-color: var(--mainBGcolor);
   padding: 2px 8px 0;
   text-align: left;
 }
 
+/* Misc */
 
+hr {
+  margin: 1rem 0;
+}
 
+.noselect {
+  -webkit-touch-callout: none;
+ 
+  -webkit-user-select: none;
+ 
+  -khtml-user-select: none;
+ 
+  -moz-user-select: none;
+
+  -ms-user-select: none;
+  
+  user-select: none;
+  
+}
+
+i {
+  
+  font-style: italic;
+}

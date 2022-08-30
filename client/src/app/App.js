@@ -7,6 +7,9 @@ import { Login } from '../components/Login/Login';
 import { LoadingBar } from '../features/LoadingBar/LoadingBar'
 import { SinglePost } from '../components/PostComponent/SinglePost';
 import { TopNews } from '../features/TopNewsFeature/TopNews';
+import { ErrorsList } from '../features/ErrorPopup/ErrorsList';
+import { NotFound } from '../components/PageContent/NotFoundPage';
+import { SearchPage } from '../components/SearchResults/SearchPage';
 
 const App = () => {
 
@@ -16,7 +19,8 @@ const App = () => {
     <BrowserRouter>
       <div className="App">
         <NavBar />
-        <div className='none'>
+        <ErrorsList />
+        <div className='app-page'>
 
           <Routes>
             <Route path='/' element={<><TopNews /><PageContent /></>} />
@@ -31,6 +35,10 @@ const App = () => {
               <Route path=':subreddit/:sort' element={<PageContent />} />
               <Route path=':subreddit/comments/:postId/:title/' element={<SinglePost />} />
             </Route>
+            <Route path='/search' element={<SearchPage />} />
+            
+
+            <Route path='*' element={<NotFound />} />
           </Routes>
         </div>
         <LoadingBar />
