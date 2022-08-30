@@ -1,0 +1,50 @@
+/* Menus */
+
+.dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.menu {
+  width: max-content;
+  position: absolute;
+  top: calc(100% + .25rem);
+  left: 0;
+  background-color: white;
+  border-radius: .4rem;
+  transform: translateY(-.25rem);
+  pointer-events: none;
+  box-shadow: .2rem .2rem 1rem rgba(0, 0, 0, 0.100), 0 .2rem 1rem rgba(0, 0, 0, 0.100);
+  opacity: 0;
+  transition: all .1s ease-in-out;
+  overflow: hidden;
+}
+
+.menu>div:hover {
+  background-color: rgba(0, 0, 0, 0.084);
+
+}
+
+.menu>div>button:hover>span {
+  color: var(--staticButtonColor)
+}
+
+.menu>div>button:hover>svg {
+  color: rgba(0, 0, 0, 0.637)
+}
+
+
+
+
+.menu>div>button {
+  padding: .5rem;
+  color: var(--postIconColor);
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-active>.menu {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
