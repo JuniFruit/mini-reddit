@@ -11,14 +11,16 @@ export const Login = () => {
     const dispatch = useDispatch()
     const [searchParams] = useSearchParams()
     const navigate = useNavigate();
+    
    
+
     useEffect(() => {
 
         const query = searchParams.get('code');
         dispatch(fetchUserData(query));
 
 
-        navigate('/',{replace: true})    
+        navigate(window.sessionStorage.currentHref,{replace: true})    
 
 
     }, []);

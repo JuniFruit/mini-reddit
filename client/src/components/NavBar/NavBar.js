@@ -5,23 +5,25 @@ import { useSelector } from "react-redux"
 import { selectIsLogged } from '../Login/loginSlice';
 import { ProfileInfo } from "../Profile/ProfileInfo";
 import { redirectToRedditLogin } from "../../utilities/utilities";
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 // Renders navigation bar
 
 export const NavBar = () => {
-    const loggedIn = useSelector(selectIsLogged)
+    const isLogged = useSelector(selectIsLogged)
  
-    
+    const location = useLocation();
+
     const renderProfile = () => {
-        if (!loggedIn) return <button onClick={handleClick} className="login-button button">Log In</button>
+        if (!isLogged) return <button onClick={handleClick} className="login-button button">Log In</button>
 
         return <ProfileInfo />
     }
     const handleClick = () => {
 
-        if (!loggedIn) {
-            redirectToRedditLogin();
+        if (!isLogged) {
+                       
+            redirectToRedditLogin(location.pathname);
         }
 
 
@@ -35,8 +37,8 @@ export const NavBar = () => {
                             <img alt="logo" src={images.logoChar} className="logo"></img>
                         </Link>
                         <Link to={'/'} className="logo-container reddit flex-align-center">
-                            <span>Mini</span>
-                            <span>Social</span>
+                            <span className="noselect">Mini</span>
+                            <span className="noselect">Social</span>
                         </Link>
                         
                     </div>

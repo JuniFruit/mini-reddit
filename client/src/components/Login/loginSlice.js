@@ -4,10 +4,9 @@ export const fetchUserData = createAsyncThunk(
     'login/fetchUserData', async (query, thunkAPI) => {
         try {
             const userResponse = await fetch(`/reddit_login?code=${query}`);
+            if (userResponse.status !== 200 ) throw new Error(userResponse.statusText)
             const userData = await userResponse.json();
             
-            if (userResponse.status !== 200 ) throw new Error(userData.message)
-
             const dataToStore = {
                 userData
             }
