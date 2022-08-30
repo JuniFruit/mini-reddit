@@ -1,12 +1,19 @@
 .topNews-wrapper {
     padding-top: 1.5rem;
-    
+    margin-bottom: 2rem;
 }
 
-.topNews-wrapper h4 {
+.topNews-wrapper>div {
     padding-bottom: 1rem;
-    padding-left: .5rem;
 }
+
+.topNews-wrapper>div>h4 {
+    margin-left: 1rem;
+}
+.topNews-header>.dropdown>h4  {
+    margin-left: .3rem;
+}
+
 
 .news-container {
     height: 13rem;
@@ -17,6 +24,7 @@
     padding: 0 1rem;
     background-color: transparent;
     flex-grow: 1;
+    cursor: pointer;
 }
 
 .news-wrapper {
@@ -25,13 +33,13 @@
     border-radius: .5rem;
     overflow: hidden;
     margin: 0 .4rem;
-    
+    background: linear-gradient(white, black);
 }
 
 .news {
     width: 100%;
     height: 100%;
-    
+
 }
 
 .news-title-wrapper {
@@ -44,14 +52,15 @@
 
 .news-title {
     color: white;
-   
+
     padding: 1rem .7rem;
-    
+
 }
 
-.news-title h4{
+.news-title h4 {
     padding: .7rem 0;
 }
+
 .news-title-subreddit {
     display: flex;
     align-items: center;
@@ -61,8 +70,7 @@
     max-width: 1.3rem;
     max-height: 1.3rem;
     border-radius: 50%;
-    
+
     margin-right: .3rem;
 }
-
 

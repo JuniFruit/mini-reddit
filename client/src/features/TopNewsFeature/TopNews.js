@@ -1,21 +1,48 @@
+import React, { createElement } from 'react'
 import { NewsContainer } from "./NewsContainer";
 import './TopNews.css';
 import { useEffect, useState } from "react";
 import { numberOfNewsToShow } from "../../utilities/utilities";
-import { selectTopNews, fetchUserGeoNews } from "./topNewsSlice";
+import { selectTopNews, fetchTopNews, selectUserGeo } from "./topNewsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import parse from 'html-react-parser'
-import React from 'react'
+import { randomNum } from '../../utilities/utilities';
+import { DropdownMenu } from '../Dropdown/DropdownMenu';
+
+const COUNTRIES = ['Canada', 'Russia', 'Turkey',]
+
 
 //Renders news at the top of the page 
 
 export let TopNews = () => {
 
-    const [numberOfNews, setNumberOfNews] = useState(numberOfNewsToShow());
     const dispatch = useDispatch();
     const topNewsData = useSelector(selectTopNews);
+    const userGeo = useSelector(selectUserGeo)
 
+    const [country, setCountry] = useState('')
 
+    const [numberOfNews, setNumberOfNews] = useState(numberOfNewsToShow());
+  
+
+    const handleClick = (e) => {
+        e.preventDefault();
+        setCountry(e.currentTarget.lastChild.innerHTML)
+    }
+    const renderButtons = () => {
+
+        const nodes = COUNTRIES.map(country => {
+            return (
+            <div>
+                <button onClick={handleClick}>
+                    <span>{country}</span>
+                </button>
+            </div>)
+        })
+
+        return nodes.map(node => node)
+    }
+
+    renderButtons();
     useEffect(() => {
 
         const handleResize = () => {
@@ -29,23 +56,27 @@ export let TopNews = () => {
     })
 
     useEffect(() => {
+        if (topNewsData.length) return;
 
-        dispatch(fetchUserGeoNews())
-   
-    }, []);
+        const newsPromise = dispatch(fetchTopNews(country))
+        return () => {
+            newsPromise.abort();
+        }
+    }, [numberOfNews, country]);
 
     const renderNews = () => {
         if (!topNewsData.length) return '';
-        
+
+
         const dataToShow = topNewsData.slice(0, numberOfNews);
 
         return dataToShow.map((child, index) => {
             return <NewsContainer
                 key={index}
-                preview={parse(child.data.preview.images[0].source.url)}
-                title={child.data.title}
-                subreddit={child.data.subreddit_name_prefixed}
-                subreddit_non_prefix={child.data.subreddit}
+                preview={child.urlToImage}
+                title={child.title}
+                source={child.source.name}
+                permalink={child.url}
             />
         })
     }
@@ -54,8 +85,19 @@ export let TopNews = () => {
         if (!Object.values(topNewsData).length) return '';
         return (
             <div className="topNews-wrapper page-container">
-                <h4>Top news</h4>
-                <div className="news-container">
+                <div className='topNews-header flex-align-center'>
+                    <h4>Top news in</h4>
+                    <div className='dropdown'>
+                        <h4>{!country ? userGeo.country : country}</h4>
+
+
+                        <DropdownMenu>
+                            {renderButtons()}
+                        </DropdownMenu>
+                    </div>
+                </div>
+
+                <div className="news-container noselect">
 
                     {renderNews()}
                 </div>
