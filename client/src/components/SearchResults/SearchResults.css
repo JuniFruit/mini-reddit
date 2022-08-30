@@ -1,0 +1,16 @@
+
+.type-buttons {
+    padding: 1rem 0;
+}
+
+.type-buttons > .button {
+    margin: 0 .5rem;
+    background-color: var(--staticButtonColor);
+    color: white;
+    width: 8rem;
+    font-size: .9rem;
+}
+
+.type-buttons > .button:hover {
+    background-color: var(--staticOnHoverButton);
+}
