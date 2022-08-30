@@ -1,4 +1,4 @@
-import { compose, createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts',
@@ -6,16 +6,18 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts',
 
         try {
             let endpoint = isLogged ? '/posts_auth' : '/posts_no_auth';
- 
-            const response = await fetch(`${endpoint}?subreddit=${subreddit}&sort=${sort}&after=${after}&count=${25}`);
+
+            const response = await fetch(`${endpoint}?subreddit=${subreddit}&sort=${sort}&after=${after}&count=25`);
+            if (response.status !== 200) throw new Error(response.statusText)
             const data = await response.json();
-            console.log(response.data)
-            
-            if (response.status !== 200 ) throw new Error(data.message)
+
+
+
 
             const dataToStore = {
                 [subreddit]: {
-                    children: [...previousChildren, ...data.children],
+                    sr_detail: { ...data.children[0].data.sr_detail },
+
                     [sort]: {
                         after: data.after,
                         dist: data.dist,
@@ -25,9 +27,9 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts',
                 }
             }
 
-        
 
-            return data;
+
+            return dataToStore;
         } catch (e) {
             return thunkAPI.rejectWithValue(e.message)
 
@@ -41,64 +43,83 @@ const postsSlice = createSlice({
 
     name: 'posts',
     initialState: {
-        data: {undefined: {}},
+        data: { undefined: {} },
         errMessage: '',
         isPostsLoading: false,
 
     },
-
     reducers: {
+        
+        addSinglePost: (state, action) => {
+
+            state.data[action.payload.subreddit] = {
+                ...state.data[action.payload.subreddit],
+                singlePost: action.payload.data[0],
+                sr_detail: action.payload.data[0].data.sr_detail
+            }
+        },
+        popSinglePost: (state, action) => {
+            state.data[action.payload] = {
+                ...state.data[action.payload],
+                singlePost: ''
+            }
+        },
         removePost: (state, action) => {
 
-            state.data.data.children = state.data.data.children.filter(child => child.data.id !== action.payload);
-
+            state.data[action.payload.subreddit][action.payload.sort].children = state.data[action.payload.subreddit][action.payload.sort]
+                .children.filter(child => child.data.id !== action.payload.id)
         }
+
     },
+
 
     extraReducers: (builder) => {
         builder
             .addCase(fetchPosts.rejected, (state, action) => {
-                
+
                 state.errMessage = action.payload;
                 state.isPostsLoading = false
             })
             .addCase(fetchPosts.fulfilled, (state, action) => {
                 // Structures data by subreddits and by sort
-             
+
                 const subreddit = Object.keys(action.payload)[0];
-                const sort = Object.values(action.payload)[0]
+
                 state.data = {
-                        ...state.data,
-                        [subreddit]: {
+                    ...state.data,
+                    [subreddit]: {
                         ...state.data[subreddit],
                         ...action.payload[subreddit]
-                      
-                        }
-                    
+
+                    }
+
                 }
                 state.isPostsLoading = false;
                 state.errMessage = '';
             })
             .addCase(fetchPosts.pending, (state, action) => {
                 state.errMessage = '';
+                if (state.isPostsLoading === true) return;
                 state.isPostsLoading = true;
             })
     }
 })
 
-export const selectPostsData = (state, subreddit) => state.postsReducer.data[subreddit] ? state.postsReducer.data[subreddit] : {};
+export const selectPostsData = (state, subreddit, sort) => state.postsReducer.data[subreddit] ? state.postsReducer.data[subreddit][sort] : null;
 export const selectIsPostsLoading = (state) => state.postsReducer.isPostsLoading;
-export const selectPostsPagination = (state, subreddit, sort) => 
-    state.postsReducer.data[subreddit] && state.postsReducer.data[subreddit][sort] ? state.postsReducer.data[subreddit][sort].after : '';
 
-
-export const selectSinglePost = (state, subreddit, postId) => {
+export const selectSinglePost = (state, subreddit) => {
     if (!state.postsReducer.data[subreddit]) return;
-    const singlePost = state.postsReducer.data[subreddit].children.filter(child => child.data.id === postId);
-    
-    return { children: [{...singlePost[0]}] }
+
+    const singlePost = state.postsReducer.data[subreddit].singlePost;
+
+    return { children: [{ ...singlePost }], sr_detail: { ...state.postsReducer.data[subreddit].sr_detail } }
 }
 
-export const selectPostsErr = (state) => state.postsReducer.errMessage
+
+
+export const selectPostsErr = (state) => state.postsReducer.errMessage;
+
+export const { addSinglePost, popSinglePost } = postsSlice.actions;
 
 export default postsSlice.reducer;

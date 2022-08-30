@@ -1,0 +1,16 @@
+
+
+.back-button > button {
+    display: flex;
+    align-items: center;
+    font-family: 500;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.backBtn-icon {
+    width: 1.3rem;
+    height: 1.3rem;
+    color: white;
+    margin: 0 .3rem
+}

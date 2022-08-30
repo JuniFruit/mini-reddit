@@ -1,14 +1,30 @@
 
 /* Post styles */
+.posts {
+   width: 45rem;
+
+}
+
+.post-top-bar {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.296);
+    height: 3rem;
+    padding: 0 .7rem;
+    display: flex;
+    align-items: center;
+    border-radius: .2rem;
+}
+
+
 
 .post-container {
-
+    width: 100%;
     background-color: white;
     border-radius: .4rem;
     display: flex;
     margin-bottom: 1.2rem;
     border: 1px solid transparent;
-    cursor: pointer;
+    
 }
 
 .post-container:hover {
@@ -61,16 +77,15 @@
 /* Post author section */
 
 .post-author {
-
     display: flex;
     align-items: center;
     margin: 0 .5rem;
-
 }
 
 .post-author-subreddit {
     display: flex;
     align-items: center;
+    
 }
 
 .post-author-subreddit img {
@@ -78,7 +93,6 @@
     max-height: 1.5rem;
     border-radius: 50%;
     margin-right: .3rem;
-
 }
 
 .post-author-subreddit span {
@@ -114,19 +128,36 @@
     padding-top: 1rem;
     padding-left: .6rem;
     width: 100%;
+    
 }
 
 
 .post-title {
     padding: .7rem .4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+   
 }
+
+ .thumbnail {
+    width: 100%;
+    max-width: 10rem;
+    height: 8rem;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: .4rem;
+    margin-right: 2rem;
+}
+
+
 
 .post-content {
     width: 100%;
-    max-width: 580px;
     display: flex;
     flex-direction: column;
-    cursor: default;
+     
 }
 
 .url a {
@@ -149,24 +180,25 @@
     overflow: hidden;
     margin: 0 auto;
     width: 100%;
-    max-height: 512px;
+    max-width: var(--postContentMaxWidth);
+    
 }
 
 
 .post-media-container video {
     width: 100%;
-   
+    max-height: var(--postMaxHeight);
 }
 
 .post-media-img-container {
-    
     display: flex;
     justify-content: center;
 }
 
 .post-media-img-container img {
     max-width: 100%;
-    max-height: 512px;
+    max-height: var(--postMaxHeight);
+   
 }
 
 
@@ -187,10 +219,12 @@ iframe {
     background-clip: text;
     color: transparent;
     overflow: hidden;
+    min-width: 100%;
+    max-width: var(--postContentMaxWidth);
 }
 
 .description-data p {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 300;
     padding-right: 1rem;
     margin: 1rem 0;
@@ -211,14 +245,16 @@ iframe {
 
 }
 
-#bottom {
+
+
+#bottom > :first-child{
     padding: .5rem .7rem;
     margin: .2rem .2rem;
-    position: relative;
+    
 
 }
 
-#bottom:hover {
+#bottom > :first-child:hover {
     background-color: var(--mainBGcolor);
     border-radius: .2rem;
 }

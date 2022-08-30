@@ -19,7 +19,7 @@ export const PostContent = (props) => {
     const changePostStyles = () => {
         if (!props.singlePost) return;
         return {
-            maxHeight: 'fit-content',
+            maxHeight: '100%',
             backgroundImage:  'linear-gradient(180deg, black, black)'
         }
     }
@@ -29,7 +29,7 @@ export const PostContent = (props) => {
 
         return (
             <div className='post-media-img-container' >
-                <img  style={changePostStyles()} src={props.url} onError={(e) => { e.target.onerror = null; e.target.src = ' ' }} />
+                <img   src={props.url} onError={(e) => { e.target.onerror = null; e.target.src = ' ' }} />
             </div>
         )
     }

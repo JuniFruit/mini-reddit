@@ -1,42 +1,76 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { PostsList } from "./PostsList";
-import { fetchPosts, selectSinglePost } from "./postsSlice";
+import { selectSinglePost } from "./postsSlice";
 import { SideListing } from "../SideListing/SideListing";
 import { BackToTopButton } from "../../features/BackToTopButton/BackToTopButton";
-import { useEffect } from "react";
-import { selectIsLogged } from "../Login/loginSlice";
-import { fetchPostComments } from "../../features/CommentsFeature/commentsSlice";
+import { useEffect, useState } from "react";
+import { CommentsBlock } from "../../features/CommentsFeature/CommentsBlock";
+import { fetchPostComments, selectIsCommentsListFetching, selectPostComments } from "../../features/CommentsFeature/commentsSlice";
+import { WriteComment } from "../../features/CommentsFeature/WriteComment";
+import { CommentSortBar } from "../../features/CommentsFeature/CommentSortBar";
+
+
 
 export const SinglePost = () => {
 
-    const { postId, title } = useParams();
+    const { postId, title, subreddit } = useParams();
     const dispatch = useDispatch();
-    const {subreddit} = useParams();
-    const data = useSelector(state => selectSinglePost(state, subreddit, postId));
-    const isLogged = useSelector(selectIsLogged);
+    const data = useSelector(state => selectSinglePost(state, subreddit));
+    const comments = useSelector(state => selectPostComments(state, postId))
+    const isFetching = useSelector(selectIsCommentsListFetching)
+
+    const [commentSort, setCommentSort] = useState('top')
+
+    const changeCommentSort = (sort) => {
+        setCommentSort(sort)
+    }
+
 
     useEffect(() => {
-        dispatch(fetchPosts({subreddit, isLogged}));
-        dispatch(fetchPostComments({subreddit, postId, title}))
-        
-    }, [])
-    
-    if (!data) return;
+        if (comments?.[commentSort]) return;
+
+        const commentPromise = dispatch(fetchPostComments({ subreddit, title, postId, commentSort }));
+       
+
+        return () => {
+            commentPromise.abort();
+
+        }
+    }, [commentSort])
+
+   
+
     return (
         <>
-            
-            <div className='container'>
-                
-                <div className='page-container content-container'>
-                    
-                    <div className='content-wrapper'>
 
-                        <PostsList data={data} singlePost={true} />
+            <div className='singlePost-page-container'>
+
+                <div className='page-container content-container'>
+
+                    <div className='content-wrapper'>
+                        <div >
+                            <PostsList data={data?.children} singlePost={true} isMinified={false} isFetching={isFetching}/>
+
+                            <div className="comments-block">
+
+                                <WriteComment />
+                                <CommentSortBar changeCommentSort={changeCommentSort} commentSort={commentSort} />
+                                <CommentsBlock
+                                    postId={postId}
+                                    title={title}
+                                    subreddit={subreddit}
+                                    commentSort={commentSort}/>
+                            </div>
+
+
+
+                        </div>
+
 
                         <div className='side-listing'>
                             <div>
-                                <SideListing subreddit={subreddit} />
+                                <SideListing subreddit={subreddit} postId={postId} singlePost={true} />
 
                             </div>
                             <BackToTopButton />

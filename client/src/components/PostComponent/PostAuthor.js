@@ -5,13 +5,13 @@ import { images } from '../../assets/images';
 //Renders a description and author credentials as well as a title of a post
 
 export const PostAuthor = (props) => {
-   
+
     const renderSubredditIcon = () => {
-        
-        
+
+
 
         return <img
-            src={props.icon_img !== '' ?  props.icon_img : props.community_icon.replace(/&amp;/, '&')}
+            src={props.icon_img || props.community_icon}
             onError={(e) => { e.target.onerror = null; e.target.src = images.defaultCommunityImg }}
         />
 
@@ -30,8 +30,19 @@ export const PostAuthor = (props) => {
                 </div>
 
             </div>
-            <div className='post-title'>
+            <div className='post-title' onClick={props.navigateToComments}>
                 <h3>{props.title}</h3>
+                {props.isMinified && props.thumbnail
+                    ?
+                    <div
+                        className="thumbnail"
+                        style={{background: `url(${props.thumbnail}) center center / cover transparent`}}
+                    >
+                        
+                    </div>
+                    :
+                    ''
+                }
             </div>
 
 

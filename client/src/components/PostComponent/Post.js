@@ -1,51 +1,47 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchSubredditData, selectSubredditDataByName } from '../../features/subredditSlice';
-import { useEffect } from 'react';
 import { PostBottomControls } from './PostBottomControls';
 import { PostAuthor } from './PostAuthor';
 import { PostVote } from './PostVote';
 import { PostContent } from './PostContent';
-import { CommentsList } from '../../features/CommentsFeature/CommentList';
+import { useNavigate } from 'react-router-dom';
 
 // Renders the entire post data
 
 export const Post = (props) => {
 
-    const dispatch = useDispatch();
-    const subredditData = useSelector(state => selectSubredditDataByName(state, props.subreddit_non_prefixed));
 
-    useEffect(() => {
-        // Makes a call to fetch data of the current subreddit
-        if (Object.keys(subredditData).length) return;
-        dispatch(fetchSubredditData(props.subreddit_non_prefixed))
-
-    }, []);
-
-
-    if (!Object.keys(subredditData).length) return;
-
-
+    const navigate = useNavigate();
 
     const handleHide = () => {
-        props.hidePost(props.id)
+        props.hidePost(props.postId)
     }
 
-    const handleClick = (e) => {
-        e.currentTarget.lastChild.classList.toggle('active')
+    const navigateToComments = () => {
 
-
+        navigate(`${props.permalink}`)
     }
+
+    const copyToClipboard = (value) => {
+        console.log(window.location.href.split(/(\/r\w*?\d*?\/\w*?\d*?\w*)/)[0])
+        if (value === 'copy link') navigator.clipboard.writeText(`http://localhost:3000${props.permalink}`);
+        if (value === 'reddit link') navigator.clipboard.writeText(`https://www.reddit.com/${props.permalink}`)
+    }
+
+
+
 
     return (
 
 
         <div className='post-container'>
-            <div className='vote-arrows-container'>
-                <div className='vote-arrows'>
-                    <PostVote votes={props.votes} />
-                </div>
-            </div>
-            
+            {props.isMinified
+                ? ''
+                :
+                <div className='vote-arrows-container'>
+                    <div className='vote-arrows'>
+                        <PostVote votes={props.votes} />
+                    </div>
+                </div>}
+
             <div className='post-wrapper'>
                 <div className='post-header'>
                     <PostAuthor
@@ -54,29 +50,44 @@ export const Post = (props) => {
                         byUser={props.byUser}
                         subreddit_non_prefixed={props.subreddit_non_prefixed}
                         created_time={props.created_time}
-                        icon_img={subredditData.data.icon_img}
-                        community_icon={subredditData.data.community_icon.replace(/&amp;/g, '&')}
+                        icon_img={props.sr_detail.icon_img}
+                        community_icon={props.sr_detail.community_icon}
                         backToTop={props.backToTop}
+                        navigateToComments={navigateToComments}
+                        isMinified={props.isMinified}
+                        thumbnail={props.thumbnail}
+
 
 
                     />
                     <div className='post-content'>
-                        <PostContent
-                            post_hint={props.post_hint}
-                            entire_data={props.entire_data}
-                            is_video={props.is_video}
-                            selfText={props.selfText}
-                            url={props.url}
-                            singlePost={props.singlePost}
-                        />
+
+                        {props.isMinified
+                            ?
+                            ''
+                            :
+                            <PostContent
+                                post_hint={props.post_hint}
+                                entire_data={props.entire_data}
+                                is_video={props.is_video}
+                                selfText={props.selfText}
+                                url={props.url}
+                                singlePost={props.singlePost}
+                            />}
+
 
                     </div>
                     <PostBottomControls
                         num_comments={props.num_comments}
                         permalink={props.permalink}
+                        handleHide={handleHide}
+                        singlePost={props.singlePost}
+                        copyToClipboard={copyToClipboard}
+                        isMinified={props.isMinified}
                     />
                 </div>
-                {props.singlePost ? <CommentsList postId={props.postId} /> : ''}
+
+
             </div>
 
 
