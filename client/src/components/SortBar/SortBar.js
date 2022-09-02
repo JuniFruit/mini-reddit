@@ -2,29 +2,33 @@ import './SortBar.css'
 import Icon from '../../assets/icons'
 import { Link } from 'react-router-dom'
 
-export const SortBar = ({sort, subreddit}) => {
+export const SortBar = ({changeSort}) => {
 
+    const handleClick = (e) => {
+        e.preventDefault(); 
+        changeSort(e.currentTarget.lastChild.innerHTML.toLowerCase());
+    }
     return (
         <div className='sortBar'>
             
             <div className='sortBar-container'>
                 <div className='sortBar-buttons'>
 
-                    <Link to={subreddit ? `/r/${subreddit}/hot` : '/hot'} className={sort === 'hot' ? 'sortBar-button sortBar-button-active' : 'sortBar-button'} >
+                    <button onClick={handleClick}>
                         <Icon icon="hot-svgrepo-com" className="ic_hot icons" />
 
                         <span>Hot</span>
-                    </Link>
-                    <Link to={subreddit ? `/r/${subreddit}/new` : '/new'} className={sort === 'new' ? 'sortBar-button sortBar-button-active' : 'sortBar-button'} >
+                    </button>
+                    <button onClick={handleClick} >
                         <Icon icon="feed" className="ic_new icons" />
                         <span>New</span>
-                    </Link>
-                    <Link to={subreddit ? `/r/${subreddit}/top` : '/top'} className={sort === 'top' ? 'sortBar-button sortBar-button-active' : 'sortBar-button'} >
+                    </button>
+                    <button onClick={handleClick}>
                         <Icon icon="stats-bars2" className="ic_top icons" />
                         <span>Top</span>
 
                         
-                    </Link>
+                    </button>
 
                 </div>
                 <div className='sortBar-empty'></div>

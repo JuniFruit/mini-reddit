@@ -10,6 +10,7 @@ import { TopNews } from '../features/TopNewsFeature/TopNews';
 import { ErrorsList } from '../features/ErrorPopup/ErrorsList';
 import { NotFound } from '../components/PageContent/NotFoundPage';
 import { SearchPage } from '../components/SearchResults/SearchPage';
+import VideoPlayer  from '../components/VideoPlayer/VideoPlayer';
 
 const App = () => {
 
@@ -21,18 +22,12 @@ const App = () => {
         <NavBar />
         <ErrorsList />
         <div className='app-page'>
-
+    
           <Routes>
             <Route path='/' element={<><TopNews /><PageContent /></>} />
             <Route path='reddit_login' element={<Login />} />
-            <Route path=':sort' element={<><TopNews /><PageContent /></>} />
-
-
-
-
             <Route path='/r' >
               <Route path=':subreddit' element={<PageContent />} />
-              <Route path=':subreddit/:sort' element={<PageContent />} />
               <Route path=':subreddit/comments/:postId/:title/' element={<SinglePost />} />
             </Route>
             <Route path='/search' element={<SearchPage />} />

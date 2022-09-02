@@ -10,7 +10,7 @@ import { usePrevPropValue } from "../../hooks/usePrevPropValue";
 
 //Loads and paginates data for posts
 
-export const LoadPosts = ({ sort, subreddit, backToTop }) => {
+export const LoadPosts = ({ sort, subreddit, backToTop, changeSort }) => {
 
     const isFetching = useSelector(selectIsPostsLoading)
    
@@ -53,6 +53,7 @@ export const LoadPosts = ({ sort, subreddit, backToTop }) => {
             isMinified={false}
             after={after}
             isFetching={isFetching}
+            changeSort={changeSort}
             fakeAmount={3}
             />
 

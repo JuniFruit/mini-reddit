@@ -29,9 +29,10 @@ body {
   --staticButtonColor: #1fb51f;
   --staticOnHoverButton: #1fb51f87;
   --staticBGcolor: #3679321c;
-  --postMaxHeight: 512px;
+  --postMaxHeight: 36.5rem;
   --postMaxWidth: 100%;
-  --postContentMaxWidth: 512px;
+  --postContentMaxWidth: 36.5rem;
+  --backgroundGradient: linear-gradient(180deg, var(var(--staticBGcolor)), white)
 
 
 }
@@ -122,7 +123,7 @@ a {
 /* Page styles */
 
 .page-container {
-  max-width: 1080px;
+  max-width: 77rem;
   margin: 0 auto;
 }
 

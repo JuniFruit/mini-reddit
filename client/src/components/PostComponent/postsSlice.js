@@ -37,7 +37,7 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts',
 
     });
 
-export const removePost = createAction('posts/removePost')
+
 
 const postsSlice = createSlice({
 
@@ -109,17 +109,18 @@ export const selectPostsData = (state, subreddit, sort) => state.postsReducer.da
 export const selectIsPostsLoading = (state) => state.postsReducer.isPostsLoading;
 
 export const selectSinglePost = (state, subreddit) => {
-    if (!state.postsReducer.data[subreddit]) return;
+    // if (!state.postsReducer.data[subreddit]) return;
 
-    const singlePost = state.postsReducer.data[subreddit].singlePost;
+    const singlePost = state.postsReducer.data[subreddit]?.singlePost;
+    if (!singlePost) return;
 
-    return { children: [{ ...singlePost }], sr_detail: { ...state.postsReducer.data[subreddit].sr_detail } }
+    return { children: [ {...singlePost} ], sr_detail: { ...state.postsReducer.data[subreddit].sr_detail } }
 }
 
 
 
 export const selectPostsErr = (state) => state.postsReducer.errMessage;
 
-export const { addSinglePost, popSinglePost } = postsSlice.actions;
+export const { addSinglePost, popSinglePost, removePost } = postsSlice.actions;
 
 export default postsSlice.reducer;

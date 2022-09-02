@@ -7,10 +7,6 @@ import { BackButton } from './BackButton';
 import { SkeletonPost } from '../SkeletonComponents/SkeletonPost';
 
 
-
-
-
-
 // Renders a list of posts based on data from LoadPosts component
 
 export const PostsList = ({
@@ -18,11 +14,11 @@ export const PostsList = ({
     sort,
     subreddit,
     backToTop,
-    singlePost,
-    comments = [],
+    singlePost,    
     isMinified,
     after = 'not null',
     fakeAmount,
+    changeSort,
     isFetching }) => {
 
     const dispatch = useDispatch();
@@ -37,8 +33,9 @@ export const PostsList = ({
     }
     const renderPosts = () => {
        
+        if (!data.length) return <SkeletonPost isMinified={isMinified} amount={fakeAmount} />
+        
         const postsToRender = [].concat(data);
-
 
         return postsToRender.map((child, index) => {
 
@@ -66,8 +63,7 @@ export const PostsList = ({
                     post_hint={child.data.post_hint}
                     entire_data={child.data}
                     backToTop={backToTop}
-                    sr_detail={child.data.sr_detail}
-                    comments={comments}
+                    sr_detail={child.data.sr_detail}                  
                     singlePost={singlePost}
                     preview={child.data.preview}
                     isMinified={isMinified}
@@ -94,10 +90,11 @@ export const PostsList = ({
 
 
         <div className="posts" style={isMinified ? { width: "100%" } : { width: "50rem" }}>
-            {!sort ? renderBackButton() : <SortBar sort={sort} subreddit={subreddit} />}
+            {!sort ? renderBackButton() : <SortBar changeSort={changeSort} />}
 
             {renderPosts()}
             {isFetching ? <SkeletonPost isMinified={isMinified} amount={fakeAmount} /> : ''}
+            
             {after || singlePost ? '' : <h3 style={{ textAlign: "center" }}>You've reached the end</h3>}
         </div>
 

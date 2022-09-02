@@ -182,11 +182,10 @@
     width: 100%;
     max-width: var(--postContentMaxWidth);
     
+    
 }
 
-
-.post-media-container video {
-    width: 100%;
+.video-player {
     max-height: var(--postMaxHeight);
 }
 

@@ -5,7 +5,7 @@ import { SideListing } from "../SideListing/SideListing"
 import { BackToTopButton } from '../../features/BackToTopButton/BackToTopButton';
 import { LoadPosts } from '../PostComponent/LoadPosts';
 import { setStyles } from '../../utilities/utilities';
-
+import { useState } from 'react';
 
 
 
@@ -13,17 +13,14 @@ import { setStyles } from '../../utilities/utilities';
 
 export const PageContent = () => {
 
-    let { sort, subreddit, title } = useParams();
-    if (sort === undefined) sort = 'hot';
+    const [sort, setSort] = useState('hot');
 
-   
-    const renderPage = () => {
-       
-        if (subreddit) return <CommunityPage sort={sort} subreddit={subreddit} backToTop={backToTop} />;
-
-        return;
+    const changeSort = (value) => {
+        setSort(value)
     }
 
+    let {subreddit } = useParams();
+    
     const backToTop = () => {
         window.scrollTo({
             top: 0
@@ -37,12 +34,12 @@ export const PageContent = () => {
             {!subreddit && setStyles()}
 
             <div className='container'>
-                {renderPage()}
+                {subreddit ? <CommunityPage sort={sort} subreddit={subreddit} backToTop={backToTop} /> : ''}
                 <div className='page-container content-container'>
                     {!subreddit && <h4>Popular posts</h4>}
                     <div className='content-wrapper'>
-
-                        <LoadPosts sort={sort} subreddit={subreddit} backToTop={backToTop} />
+                        
+                        <LoadPosts sort={sort} subreddit={subreddit} backToTop={backToTop} changeSort={changeSort}/>
 
                         <div className='side-listing'>
                             <div>
