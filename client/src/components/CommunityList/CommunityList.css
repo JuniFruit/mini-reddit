@@ -1,8 +1,8 @@
 .communityList-container {
     width: 100%;
     background-color: white;
-    border-radius: .4rem;
-    
+    border-radius: .3rem;
+
 }
 
 .communityCard-container {
@@ -13,22 +13,57 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.055);
     margin: .3rem 0;
     cursor: pointer;
+    box-shadow: 0 .2rem .2rem var(--staticBGcolor);
 }
 
 .communityCard-container:hover {
-   background-color: rgba(0, 0, 0, 0.027);
+    background-color: rgba(0, 0, 0, 0.027);
 }
 
 .community-img {
-    width: 4rem;
-    height: 4rem;
+    width: 3.5rem;
+    height: 3.5rem;
     border-radius: 50%;
 }
 
-.community-description {
-    display: flex;
+.community-name {
+    font-weight: 600;
+    cursor: pointer;
+    font-size: .8rem;
 }
 
-.community-description > div > div {
-    margin: .3rem 1rem;
+.community-members {
+    font-size: .7rem;
+    font-weight: 400;
+    color: var(--postIconColor)
+}
+
+.community-dot {
+    margin: 0 .2rem;
+    display: flex;
+    align-items: center;
+}
+
+.community-description>div {
+    margin: 0 1rem;
+}
+.community-description > div> div {
+    margin: .3rem 0;
+}
+
+@media (max-width: 430px) {
+    .community-img {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .community-description-body>p {
+        font-size: .7rem;
+    }
+
+    .subreddit-item-button,
+    .community-members >p>span {
+        display: none;
+    }
+   
 }

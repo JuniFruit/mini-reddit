@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 import { elapsedTime } from '../../utilities/utilities';
 import { images } from '../../assets/images';
+import { useContext } from "react";
+import { MobileContext } from "../../app/App";
 
 //Renders a description and author credentials as well as a title of a post
 
 export const PostAuthor = (props) => {
+
+    /* eslint-disable */
+
+    const isMobile = useContext(MobileContext);
 
     const renderSubredditIcon = () => {
 
@@ -22,11 +28,18 @@ export const PostAuthor = (props) => {
             <div className='post-author'>
                 <div className='post-author-subreddit'>
                     {renderSubredditIcon()}
-                    <Link to={`/${props.subreddit}`} onClick={props.backToTop}><span>{props.subreddit}</span></Link>
+                    <Link to={`/${props.subreddit}`} onClick={props.backToTop} className="flex-align-center">
+                        <span>{props.subreddit}</span>
+                    </Link>
                 </div>
                 <p className='post-author-dot'>•</p>
                 <div className='post-author-description'>
-                    <p>Post created by {props.byUser} {elapsedTime(props.created_time)}</p>
+                    {!isMobile
+                        ?
+                        <p>Created by {props.byUser} {elapsedTime(props.created_time)}</p>
+                        :
+                        <p>{elapsedTime(props.created_time)} by {props.byUser}</p>
+                    }
                 </div>
 
             </div>
@@ -36,12 +49,12 @@ export const PostAuthor = (props) => {
                     ?
                     <div
                         className="thumbnail"
-                        style={{background: `url(${props.thumbnail}) center center / cover transparent`}}
+                        style={{ background: `url(${props.thumbnail}) center center / cover transparent` }}
                     >
-                        
+
                     </div>
                     :
-                    ''
+                    null
                 }
             </div>
 

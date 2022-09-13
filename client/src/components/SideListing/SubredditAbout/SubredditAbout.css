@@ -1,23 +1,23 @@
 div[class^='subreddit-about'][class$='header'] {
-    height: 3rem;
+    height: 2.5rem;
     background-color: var(--buttonMainColor);
     display: flex;
     align-items: center;
 }
 
 div[class^='subreddit-about'][class$='header'] > h3 {
-    margin-left: 1rem;
+    margin-left:.91rem;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: white;
 }
 
 div[class^='subreddit-about'][class$='container'] { 
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
 }
 
 div[class^='subreddit-about'] div:not([class$='header']) {
-    margin: .6rem 0;
+    margin: .5rem 0;
 }
 
 [class*="subreddit-about"] a {
@@ -29,24 +29,24 @@ div[class^='subreddit-about'] div:not([class$='header']) {
 }
 
 [class*="subreddit-about"] h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 [class*="subreddit-about"] h2 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
 }
 
 /* About  block */
 
 .subreddit-about-description {
     padding: 0 1rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
     
 }
 
 .subreddit-about-stats {
     display: flex;
     justify-content: space-between;
-    padding-left: 1rem
+    padding-left: .9rem
 }
 
 .subreddit-about-stats > div {
@@ -56,7 +56,7 @@ div[class^='subreddit-about'] div:not([class$='header']) {
 }
 
 .subreddit-about-stats div > span {
-    font-size: .9rem;
+    font-size: .8rem;
     font-weight: 600;
     color: var(--postIconColor)
 }
@@ -85,13 +85,13 @@ div[class^='subreddit-about'] div:not([class$='header']) {
 }
 
 .subreddit-creation-icon {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.3rem;
+    height: 1.3rem;
     color: var(--postIconColor)
 }
 
 .subreddit-about-noContent {
-    width: 5rem;
+    width: 4.5rem;
 
 }
 
@@ -99,22 +99,22 @@ div[class^='subreddit-about'] div:not([class$='header']) {
 /* Info block */
 
 .subreddit-about-info-text > div {
-    padding: 0 2.5rem;
+    padding: 0 2.3rem;
 }
 
 .subreddit-about-info-text ol > li {
-    padding: .7rem 0;
+    padding: .6rem 0;
     
-    font-size: 1.1rem;
-    line-height: 1.2rem;
+    font-size: 1rem;
+    line-height: 1.1rem;
     
 }
 
 .subreddit-about-info-text ul > li {
     padding: .7rem 0;
     
-    font-size: 1.1rem;
-    line-height: 1.2rem;
+    font-size: 1rem;
+    line-height: 1.1rem;
     
 }
 
@@ -124,4 +124,23 @@ div[class^='subreddit-about'] div:not([class$='header']) {
 
 .subreddit-about-mods-container > p {
     padding: .7rem
+}
+
+.mod-list {
+    padding: 0 .3rem;
+}
+
+.mod-item {
+    font-size: .9rem;
+    font-weight: 400;
+    margin: 0 .2rem;
+
+}
+
+.flair-text {
+    background-color: var(--postIconColor);
+    font-size: .8rem;
+    padding: 0 .2rem;
+    color: white;
+    
 }

@@ -25,5 +25,5 @@ export const Login = () => {
 
     }, []);
 
-    return
+    return null;
 }

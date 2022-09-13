@@ -7,6 +7,7 @@ import subredditListReducer from "../components/SideListing/SubredditTopList/sub
 import commentsReducer from "../features/CommentsFeature/commentsSlice";
 import commentsAuthorReducer from "../features/CommentsFeature/commentAuthorSlice";
 import searchResultsReducer from "../components/SearchResults/searchResultsSlice";
+import apiReducer from "../api/apiSlice";
 
 
 const store = configureStore({
@@ -18,7 +19,8 @@ const store = configureStore({
         subredditListReducer,
         commentsReducer,
         commentsAuthorReducer,
-        searchResultsReducer
+        searchResultsReducer,
+        apiReducer
      
     }
     

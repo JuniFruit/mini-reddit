@@ -1,26 +1,18 @@
 
 import './ErrorPopup.css';
-
+import React from 'react';
 
 
 export const ErrorPopup = ({ errMsg }) => {
 
-    if (!errMsg) return;
-    if (errMsg.includes('The user aborted a request.')) return;
+    if (!errMsg) return null;
+    if (errMsg.includes('The user aborted a request.')) return null;
+
     const handleClose = (e) => {
         
         e.currentTarget.parentNode.parentNode.style.setProperty('display', 'none')
     }
-
-    const renderHandlingAdvice = () => {
-        if (errMsg?.includes('FetchError')) {
-            return (
-                <div className='error-handling'>
-                    <span>Try to check your internet connection</span>
-                </div>
-            )
-        }
-    }
+    
 
 
     return (
@@ -31,8 +23,7 @@ export const ErrorPopup = ({ errMsg }) => {
                 <h4>Error</h4>
                 <p>{errMsg}</p>
 
-            </div>
-            {renderHandlingAdvice()}
+            </div>       
             <div className="error-close">
                 <button onClick={handleClose}>X</button>
             </div>

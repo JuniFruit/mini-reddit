@@ -1,5 +1,6 @@
 
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { MobileContext } from "../app/App"
 import { debounce } from "../utilities/utilities"
 
 /**
@@ -11,8 +12,12 @@ import { debounce } from "../utilities/utilities"
 export const usePaginate = (paginateOffset = 0.1) => {
     const [loadMore, setLoadMore] = useState(false)
 
+    const isMobile = useContext(MobileContext);
+
+
+
     useEffect(() => {
-       
+        if (isMobile) return;
         const handleScroll = () => {
             
             if (window.document.body.scrollHeight - (window.scrollY + window.innerHeight) < (window.document.body.scrollHeight * paginateOffset)) {

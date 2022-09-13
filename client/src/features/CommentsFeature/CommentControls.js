@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Icon from "../../assets/icons";
-import { truncLargeNumber } from "../../utilities/utilities";
+import { CommentVote } from "./CommentVote";
 import { WriteComment } from "./WriteComment";
+import { MobileContext } from '../../app/App';
+import { DropdownMenu } from "../Dropdown/DropdownMenu";
 
 export const CommentControls = (props) => {
 
     const [addReply, setAddReply] = useState(false)
 
+    const isMobile = useContext(MobileContext);
 
     const appendWriteComment = (e) => {
         e.preventDefault();
@@ -16,38 +19,84 @@ export const CommentControls = (props) => {
 
     }
 
+    const closeReply = () => {
+        setAddReply(false);
+    }
+
+    const renderDropdownControls = () => {
+
+
+        return (
+            <div className='dropdown' id="bottom-comment">
+                <button className="flex-align-center">
+                    <Icon icon="triple-dots" className="post-icons" />
+
+                </button>
+                <DropdownMenu>
+                    <div className="comment-reply" id="bottom-comment">
+                        <button onClick={appendWriteComment} className="flex-align-center">
+                            <p>Reply</p>
+                        </button>
+
+                    </div>
+                    <div className="comment-original" id="bottom-comment">
+
+                        <a className="flex-align-center" rel="noreferrer" href={`https://www.reddit.com/${props.permalink}`} target="_blank">Reddit</a>
+
+
+                    </div>
+                    <div className="comment-report" id="bottom-comment">
+                        <button>Report</button>
+                    </div>
+                </DropdownMenu>
+
+
+
+
+            </div>
+        )
+    }
+
     return (
         <>
             <div className="comment-controls flex-align-center" id="bottom-comment">
-                <div className='comment-vote-arrows-container'>
-                    <div className='comment-arrows'>
-                        <button><Icon icon="arrow-up2" className="ic_arrow_up2 post-icons" /></button>
-                        <span className='votes-number'>{truncLargeNumber(props.votes) < 2 ? 'Vote' : truncLargeNumber(props.votes)} </span>
-                        <button><Icon icon="arrow-down2" className="ic_arrow_down2 post-icons" /></button>
-                    </div>
-                </div>
-                <div className="comment-reply" id="bottom-comment">
-                    <button onClick={appendWriteComment} className="flex-align-center">
-                        <Icon icon="comment" className="ic_comment "></Icon>
-                        <span>Reply</span>
-                    </button>
+                <CommentVote
+                    votes={props.votes}
+                    isLiked={props.isLiked}
+                    thingName={props.thingName}
+                    changeLikesProp={props.changeLikesProp} />
+                {!isMobile
+                    ?
+                    <>
+                        <div className="comment-reply" id="bottom-comment">
+                            <button onClick={appendWriteComment} className="flex-align-center">
+                                <Icon icon="comment" className="post-icons"></Icon>
+                                <span>Reply</span>
+                            </button>
 
-                </div>
-                <div className="comment-original" id="bottom-comment">
+                        </div>
+                        <div className="comment-original" id="bottom-comment">
 
-                    <a className="flex-align-center" href={`https://www.reddit.com/${props.permalink}`} target="_blank">View on Reddit</a>
+                            <a
+                                className="flex-align-center"
+                                rel="noreferrer"
+                                href={`https://www.reddit.com/${props.permalink}`}
+                                target="_blank">Reddit
+                            </a>
 
 
-                </div>
-                <div className="comment-share" id="bottom-comment">
-                    <button>Share</button>
-                </div>
-                <div className="comment-report" id="bottom-comment">
-                    <button>Report</button>
-                </div>
+                        </div>
+
+                    </>
+                    :
+                    <>
+                        {renderDropdownControls()}
+                    </>
+
+                }
 
             </div>
-            {addReply ? <WriteComment /> : ''}
+            {addReply ? <WriteComment parent_id={props.thingName} closeReply={closeReply} addComment={props.addComment} /> : null}
         </>
 
     )

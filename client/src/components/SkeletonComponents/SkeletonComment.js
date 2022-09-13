@@ -1,19 +1,19 @@
-import './Skeleton.css'
+import { SkeletonRenderer } from './SkeletonRenderer';
 
-export const SkeletonComment = ({ amount = 1 }) => {
+export const SkeletonComment = ({ amount }) => {
 
-    const renderContent = () => {
-        if (amount < 1) return;
+    
 
-        const array = new Array(amount);
-        const node = (
+    return (
+        <SkeletonRenderer amount={amount}>
+            
             <div className="comment-container">
 
 
                 <div className="comment-wrapper">
                     <div className="comment-author flex-align-center">
                         <div className="author-img-container">
-                            <div className="skeleton skeleton-icon"></div>
+                            <div style={{width: "2.3rem", heigth: "2.3rem"}} className="skeleton skeleton-icon"></div>
                         </div>
                         <span className="skeleton skeleton-header"></span>
 
@@ -24,14 +24,9 @@ export const SkeletonComment = ({ amount = 1 }) => {
 
                 </div>
             </div>
-        )
-        return array.fill(node).map(node => node);
-    }
 
-    return (
-        <>
-            {renderContent()}
-        </>
+        </SkeletonRenderer>
+
     )
 
 }

@@ -2,7 +2,7 @@
 /* List of subreddits styles */
 
 .listing-header {
-    height: 6rem;
+    height: 5.5rem;
     
 }
 
@@ -15,7 +15,7 @@
 }
 
 .listing-heading {
-    margin: .7rem 1.5rem !important;
+    margin: .7rem 1.3rem !important;
     color: white;
 }
 
@@ -36,13 +36,13 @@
 }
 
 .subreddit-item > div {
-    padding: .3rem .6rem;
+    padding: .3rem .5rem;
 }
 
 
 
 .subreddit-item span {
-    font-size: 1rem;
+    font-size: .9rem;
     font-weight: 400;
     padding: 0 .3rem;
 }
@@ -50,8 +50,8 @@
 
 
 .subreddit-item-info img {
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
     border-radius: 50%;
 }
 
@@ -60,7 +60,8 @@
 }
 
 .subreddit-item-button a {
-    padding: .2rem .5rem;
+    padding: .2rem .4rem;
     font-weight: 400;
+    color: var(--staticButtonColor)
 }
 

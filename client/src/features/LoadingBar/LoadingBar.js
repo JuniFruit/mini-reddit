@@ -9,6 +9,7 @@ import { selectIsUserLoading } from '../../components/Login/loginSlice';
 import { selectIsCommentsListFetching } from '../CommentsFeature/commentsSlice';
 import { selectIsCommentsAuthorFetching } from '../CommentsFeature/commentAuthorSlice';
 import { selectIsSearchFetching } from '../../components/SearchResults/searchResultsSlice';
+import { selectIsApiLoading } from '../../api/apiSlice';
 
 // Renders loading bar at the bottom of the page when something is being fetched
 
@@ -20,8 +21,9 @@ export const LoadingBar = () => {
     const subDataLoading = useSelector(selectIsSubredditDataLoading);
     const userLoading = useSelector(selectIsUserLoading);
     const commentsLoading = useSelector(selectIsCommentsListFetching);
-    const commentAuthorData = useSelector(selectIsCommentsAuthorFetching)
-    const searchLoading = useSelector(selectIsSearchFetching)
+    const commentAuthorData = useSelector(selectIsCommentsAuthorFetching);
+    const searchLoading = useSelector(selectIsSearchFetching);
+    const apiLoading = useSelector(selectIsApiLoading);
 
 
     const renderLoadingBar = () => {
@@ -33,7 +35,8 @@ export const LoadingBar = () => {
             subsLoading,
             commentsLoading,
             commentAuthorData,
-            searchLoading
+            searchLoading,
+            apiLoading
         }
 
         if (Object.values(loadingStates).some(item => item === true)) {
@@ -56,7 +59,7 @@ export const LoadingBar = () => {
             )
 
         };
-        return '';
+        return null;
 
     }
 

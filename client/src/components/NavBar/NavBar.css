@@ -1,7 +1,7 @@
 .header {
     display: flex;
     align-items: center;
-    height: 60px;
+    height: var(----nav-bar-height);
     background-color: white;
     position: sticky;
     top: 0;
@@ -11,7 +11,7 @@
 
 .header-container {
     width: 100%;
-    padding: 0 15px;
+    padding: 0 .9rem;
     display: flex;
     align-items: center;
 
@@ -27,12 +27,15 @@
 
 .loginButton-container {
     margin-right: 5%;
+}
 
+.login-button {
+    max-height: 2.7rem;
 }
 
 .loginButton-container > button {
     color: var(--staticButtonColor)!important;
-    border: .1rem solid var(--staticButtonColor)!important;
+    border: 1px solid var(--staticButtonColor)!important;
 }
 .loginButton-container > button:hover {
     background-color: var(--staticOnHoverButton)!important;
@@ -43,12 +46,12 @@
 /* sizing different parts of logo */
 
 .char {
-    width: 2.5rem;
-    height: 3.5rem;
+    width: 2.2rem;
+    height: 3rem;
 }
 
 .reddit span {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 500;
 }
 
@@ -71,9 +74,67 @@
 }
 
 .logo-container {
-    padding: 3px 5px;
+    padding: .2rem .3rem;
 }
 
 .logo-container > span {
     pointer-events: none;
+}
+
+/* Mobile */
+
+.hamburger-menu > button > svg {
+    color: var(--staticButtonColor);
+    width: 2.2rem;
+    height: 2.2rem;
+}
+
+.hamburger-menu-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    height: 100vh;
+    width: 100vw;
+    opacity: 0;
+    pointer-events: none;
+    transform-origin: top;
+    transform: scale(0);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    transition: all .15s ease-in-out;
+
+}
+
+.hamburger-menu-container-active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+}
+
+.hamburger-menu-active > button {
+    
+    height: 2.5rem!important;
+}
+
+
+
+@media (max-width: 1025px) {
+    .loginButton-container {
+        margin-right: 2%;
+    }
+
+    .login-button {
+        border: none !important;
+    }
+}
+
+@media  screen and (max-width: 430px) {
+    .mini-span, .char {
+        display: none;
+    }
+
+    
 }

@@ -1,11 +1,15 @@
 import './Post.css';
 import { Post } from './Post';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { removePost } from './postsSlice.js';
 import { SortBar } from '../SortBar/SortBar';
 import { BackButton } from './BackButton';
 import { SkeletonPost } from '../SkeletonComponents/SkeletonPost';
-
+import { setLikes } from "./postsSlice";
+import { hidePostApi } from '../../api/apiSlice';
+import { selectToken } from '../Login/loginSlice';
+import { redirectToRedditLogin } from '../../utilities/utilities';
+import { useLocation } from 'react-router-dom';
 
 // Renders a list of posts based on data from LoadPosts component
 
@@ -22,13 +26,33 @@ export const PostsList = ({
     isFetching }) => {
 
     const dispatch = useDispatch();
+    const token = useSelector(selectToken);
+    const location = useLocation();
+
+    const changeLikesProp = (thingName, dir) => {
+        let likesProp; 
+        if (dir === '0') likesProp = null;
+        if (dir === '1') likesProp = true;
+        if (dir === '-1') likesProp = false;
+        
+        const index = data.findIndex(child => child.data.name === thingName);
+        dispatch(setLikes({
+            sort,
+            subreddit,           
+            likesProp,
+            index,
+            singlePost
+        }))
+    }
 
   
-    const hidePost = (id) => {
+    const hidePost = (thingName) => {
+        if (!token) return redirectToRedditLogin(location.pathname)
         let sr = subreddit
         if (!subreddit) sr = 'undefined';
 
-        dispatch(removePost({ id, sort, subreddit: sr }));
+        dispatch(hidePostApi(thingName, token))
+        dispatch(removePost({ name: thingName, sort, subreddit: sr }));
 
     }
     const renderPosts = () => {
@@ -39,13 +63,14 @@ export const PostsList = ({
 
         return postsToRender.map((child, index) => {
 
-            if (!child) return;
-            if (child.data.thumbnail === 'nsfw') return;
+            if (!child) return null;
+            if (child.data.thumbnail === 'nsfw') return null;
             return (
 
 
                 <Post
                     key={index}
+                    thingName={child.data.name}
                     hidePost={hidePost}
                     postId={child.data.id}
                     votes={child.data.ups}
@@ -67,6 +92,8 @@ export const PostsList = ({
                     singlePost={singlePost}
                     preview={child.data.preview}
                     isMinified={isMinified}
+                    isLiked={child.data.likes}
+                    changeLikesProp={changeLikesProp}
                 />
 
 
@@ -76,7 +103,7 @@ export const PostsList = ({
     }
 
     const renderBackButton = () => {
-        if (!singlePost) return;
+        if (!singlePost) return null;
 
         return (
             <div className='post-top-bar'>
@@ -89,13 +116,13 @@ export const PostsList = ({
     return (
 
 
-        <div className="posts" style={isMinified ? { width: "100%" } : { width: "50rem" }}>
-            {!sort ? renderBackButton() : <SortBar changeSort={changeSort} />}
+        <div className="posts">
+            {!sort ? renderBackButton() : <SortBar changeSort={changeSort} sort={sort}/>}
 
             {renderPosts()}
-            {isFetching ? <SkeletonPost isMinified={isMinified} amount={fakeAmount} /> : ''}
+            {isFetching ? <SkeletonPost isMinified={isMinified} amount={fakeAmount} /> : null}
             
-            {after || singlePost ? '' : <h3 style={{ textAlign: "center" }}>You've reached the end</h3>}
+            {after || singlePost ? null : <h3 style={{ textAlign: "center" }}>You've reached the end</h3>}
         </div>
 
 

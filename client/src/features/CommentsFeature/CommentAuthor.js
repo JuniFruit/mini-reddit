@@ -5,7 +5,7 @@ import { useEffect } from "react"
 import { fetchCommentUserData, selectCommentUserData } from "./commentAuthorSlice";
 
 export const CommentAuthor = (props) => {
-
+    /* eslint-disable */
     const dispatch = useDispatch();
     const user = useSelector(state => selectCommentUserData(state, props.author, props.commentSort));
     
@@ -21,10 +21,10 @@ export const CommentAuthor = (props) => {
             
         }
         
-    }, [])
+    }, [dispatch, user])
 
     
-    if (!user) return;
+    if (!user) return null;
     
     return (
         <div className="comment-author flex-align-center">

@@ -5,10 +5,11 @@ import { truncTitle } from '../../utilities/utilities';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 import { EmbeddedMedia } from './EmbeddedMedia';
 
-const IMAGE_REGEX = /.\w{3,4}$/gm;
+
 
 
 export const PostContent = (props) => {
+    /* eslint-disable */
 
     props.singlePost
         ?
@@ -16,14 +17,14 @@ export const PostContent = (props) => {
         :
         window.document.body.style.setProperty('--postMaxHeight', '36.5rem')
 
-    console.log(IMAGE_REGEX.test(props.entire_data.url))
-    const renderContent = () => {
+    
+    const renderContent = () => { 
+
         if (props.is_video === true) return <div className='post-media-container'>{renderPostVideo()}</div>;
         if (props.entire_data.media !== null) return <div className='post-media-container'><EmbeddedMedia data={props.entire_data} /></div>;
-        if (IMAGE_REGEX.test(props.entire_data.url) !== true) return renderLink();
-        if (IMAGE_REGEX.test(props.entire_data.url)) return <div className='post-media-container'>{renderPostImage()}</div>;
+        if (props.post_hint === 'image') return <div className='post-media-container'>{renderPostImage()}</div>;                
         if (props.selfText.length > 1) return renderHtmlDescription();
-
+        return renderLink();     
     }
 
     const changePostStyles = () => {
@@ -73,7 +74,7 @@ export const PostContent = (props) => {
 
         return (
             <div className='url' >
-                <a href={props.url} target="_blank">
+                <a href={props.url} rel="noreferrer" target="_blank">
                     {truncTitle(props.url)}
                 </a>
             </div>

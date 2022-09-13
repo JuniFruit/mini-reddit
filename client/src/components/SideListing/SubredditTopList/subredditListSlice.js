@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const fetchSubredditList = createAsyncThunk('subredditList/fetchSubredditList', async (loginBoolean, thunkAPI) => {
+export const fetchSubredditList = createAsyncThunk('subredditList/fetchSubredditList', async (token = '', thunkAPI) => {
 
-    try {
-        const endpoint = loginBoolean ? '/user_subreddits' : '/top_subreddits'
-        const response = await fetch(endpoint);
+    try {        
+        const response = await fetch(`/api/get_side_listing?token=${token}`);
+
         if (response.status !== 200 ) throw new Error(response.statusText)
         const data = await response.json();
         
@@ -20,7 +20,7 @@ const subredditListSlice = createSlice({
 
     name: 'subredditList',
     initialState: {
-        data: {},
+        data: [],        
         errMessage: '',
         isSubListLoading: false
         
@@ -34,7 +34,8 @@ const subredditListSlice = createSlice({
             })
             .addCase(fetchSubredditList.fulfilled, (state, action) => {
                 
-                state.data = [...action.payload.data]
+                state.data = [...action.payload.data];
+
                 state.errMessage = '';
                 state.isSubListLoading = false;
                 

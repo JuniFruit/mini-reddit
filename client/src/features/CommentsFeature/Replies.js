@@ -2,12 +2,12 @@ import { CommentsList } from "./CommentList"
 
 import { useState } from "react";
 
-export const Replies = ({ replies = [] }) => {
+export const Replies = ({ replies = [], changeLikesProp, addComment }) => {
    
     const [amountToRender, setAmountToRender] = useState(1) // I decided to minimize amount of replies being rendered at once
-    if (!replies) return;
+    if (!replies.length) return;
 
-    const filtered = replies.filter(child => child.kind !== 'more')
+    const filtered = replies.filter(child => child?.kind !== 'more' && child !== null)
     const repliesToRender = filtered.slice(0, amountToRender)
     
     const renderMoreButton = () => {
@@ -21,7 +21,7 @@ export const Replies = ({ replies = [] }) => {
     
     return (
         <>
-            <CommentsList comments={repliesToRender} />
+            <CommentsList comments={repliesToRender} changeLikesProp={changeLikesProp} addComment={addComment}/>
             {renderMoreButton()}
         </>
         )

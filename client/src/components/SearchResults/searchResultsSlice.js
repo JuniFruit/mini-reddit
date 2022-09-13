@@ -2,22 +2,20 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
 
-export const fetchSearchResults = createAsyncThunk('searchResults', async ({ after = '', query = '', previousChildren = [] }, thunkAPI) => {
+export const fetchSearchResults = createAsyncThunk('searchResults', async ({query = ''}, thunkAPI) => {
     try {
-        console.log(query)
-        const response = await fetch(`/search?q=${query}&after=${after}`);
+
+        const response = await fetch(`/api/search?q=${query}`);
         if (response.status !== 200) throw new Error(response.statusText);
 
         const data = await response.json();
-   
+      
         const dataToStore = {
-            [data[0].data.after.replace(/_\w+/, '')]: {
-                after: data[0].data.after,
-                children: [...previousChildren, ...data[0].data.children]
+            [data[0].data.after.replace(/_\w+/, '')]: {               
+                children: [...data[0].data.children]
             },
-            [data[1].data.after.replace(/_\w+/, '')]: {
-                after: data[1].data.after,
-                children: [...previousChildren, ...data[1].data.children]
+            [data[1].data.after.replace(/_\w+/, '')]: {         
+                children: [...data[1].data.children]
             }
         }
 
@@ -45,7 +43,7 @@ const searchResultsSlice = createSlice({
             .addCase(fetchSearchResults.fulfilled, (state, action) => {
                 
                 state.data = {
-                    ...state.data,
+                    
                     ...action.payload
                 }
                 state.errMessage = '';

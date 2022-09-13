@@ -3,10 +3,11 @@ import { addSinglePost } from "../../components/PostComponent/postsSlice";
 
 
 
-export const fetchPostComments = createAsyncThunk('comments', async ({ postId, title, subreddit, commentSort }, thunkAPI) => {
+export const fetchPostComments = createAsyncThunk('comments', async ({ postId, title, subreddit, commentSort, token = '' }, thunkAPI) => {
 
     try {
-        const response = await fetch(`/post_comments?subreddit=${subreddit}&title=${title}&postId=${postId}&sort=${commentSort}`);
+      
+        const response = await fetch(`/api/get_comments?subreddit=${subreddit}&title=${title}&postId=${postId}&sort=${commentSort}&token=${token}`);
 
         if (response.status !== 200) throw new Error(response.statusText)
         const data = await response.json();
@@ -25,10 +26,10 @@ export const fetchPostComments = createAsyncThunk('comments', async ({ postId, t
 })
 
 export const fetchMorePostComments = createAsyncThunk('moreComments', async ({ 
-    children, parent_id, name, postId, commentSort }, thunkAPI) => {
+    children, parent_id, name, postId, commentSort, token }, thunkAPI) => {
 
     try {
-        const response = await fetch(`/post_comments_more?children=${children.join(',')}&link_id=${parent_id}&name=${name}&sort=${commentSort}`)
+        const response = await fetch(`/api/get_more_comments?children=${children.join(',')}&link_id=${parent_id}&name=${name}&sort=${commentSort}&token=${token}`)
 
         if (response.status !== 200) throw new Error(response.statusText);
 
@@ -58,6 +59,15 @@ const commentsSlice = createSlice({
         data: {},
         isCommentsListFetching: false,       
         errMessage: ''
+    },
+    reducers: {
+        changeData: (state, action) => {
+            state.data[action.payload.postId][action.payload.commentSort] = action.payload.data;
+        },
+        addThread: (state, action) => {
+            state.data[action.payload.postId][action.payload.commentSort].unshift(action.payload.thread)
+        }
+        
     },
 
     
@@ -109,6 +119,7 @@ const commentsSlice = createSlice({
 export const selectPostComments = (state, id, commentSort) => state.commentsReducer.data[id]?.[commentSort]
 export const selectIsCommentsListFetching = (state) => state.commentsReducer.isCommentsListFetching;
 export const selectCommentsErr = (state) => state.commentsReducer.errMessage;
+export const {changeData, addThread} = commentsSlice.actions;
 
 
 

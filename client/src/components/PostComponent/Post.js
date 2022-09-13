@@ -3,27 +3,51 @@ import { PostAuthor } from './PostAuthor';
 import { PostVote } from './PostVote';
 import { PostContent } from './PostContent';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { MobileContext } from '../../app/App';
+import { copy } from '../../utilities/utilities';
 
 // Renders the entire post data
 
 export const Post = (props) => {
 
-
+    const isMobile = useContext(MobileContext);
     const navigate = useNavigate();
 
-    const handleHide = () => {
-        props.hidePost(props.postId)
-    }
+    const renderArrows = () => {
+        return (
+           
+            <div className='vote-arrows'>
+                <PostVote 
+                votes={props.votes} 
+                thingName={props.thingName} 
+                isLiked={props.isLiked}
+                changeLikesProp={props.changeLikesProp}/>
+            </div>
+           
+        )
+    }    
 
     const navigateToComments = () => {
 
         navigate(`${props.permalink}`)
     }
 
+    
+
     const copyToClipboard = (value) => {
-        console.log(window.location.href.split(/(\/r\w*?\d*?\/\w*?\d*?\w*)/)[0])
-        if (value === 'copy link') navigator.clipboard.writeText(`http://localhost:3000${props.permalink}`);
-        if (value === 'reddit link') navigator.clipboard.writeText(`https://www.reddit.com/${props.permalink}`)
+
+        const redditLink = `https://www.reddit.com/${props.permalink}`;
+        const localLink = `http://localhost:3000${props.permalink}`;
+
+        if (value === 'copy link') {
+            if (navigator.userAgent.match(/ipad|ipod|iphone/i)) return copy(localLink);
+            return navigator.clipboard.writeText(localLink)
+        };
+        if (value === 'reddit link') {
+            if (navigator.userAgent.match(/ipad|ipod|iphone/i)) return copy(redditLink);
+            return navigator.clipboard.writeText(redditLink)
+        }
     }
 
 
@@ -33,14 +57,14 @@ export const Post = (props) => {
 
 
         <div className='post-container'>
-            {props.isMinified
-                ? ''
+            {props.isMinified || isMobile
+                ? null
                 :
                 <div className='vote-arrows-container'>
-                    <div className='vote-arrows'>
-                        <PostVote votes={props.votes} />
-                    </div>
-                </div>}
+                    {renderArrows()}
+                </div>
+
+            }
 
             <div className='post-wrapper'>
                 <div className='post-header'>
@@ -56,15 +80,12 @@ export const Post = (props) => {
                         navigateToComments={navigateToComments}
                         isMinified={props.isMinified}
                         thumbnail={props.thumbnail}
-
-
-
                     />
                     <div className='post-content'>
 
                         {props.isMinified
                             ?
-                            ''
+                            null
                             :
                             <PostContent
                                 post_hint={props.post_hint}
@@ -79,11 +100,14 @@ export const Post = (props) => {
                     </div>
                     <PostBottomControls
                         num_comments={props.num_comments}
-                        permalink={props.permalink}
-                        handleHide={handleHide}
+                        permalink={props.permalink}                       
                         singlePost={props.singlePost}
                         copyToClipboard={copyToClipboard}
                         isMinified={props.isMinified}
+                        votes={props.votes}
+                        renderArrows={renderArrows}
+                        thingName={props.thingName}
+                        hidePost={props.hidePost}
                     />
                 </div>
 

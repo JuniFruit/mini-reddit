@@ -5,7 +5,9 @@ export const CommunityList = ({ communities = [] }) => {
 
 
     const renderCommunityCards = () => {
- 
+
+        /* eslint-disable */
+
         const dataToRender = [].concat(communities)
         return dataToRender.map(child => {
             if (!child) return;

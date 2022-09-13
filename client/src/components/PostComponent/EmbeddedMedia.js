@@ -12,7 +12,7 @@ export const EmbeddedMedia = ({data}) => {
         if (!Object.keys(data.media).length) return '';
         if (!data.media.type) return '';
 
-        if (data.media.type.includes('twitter')) return <TwitterTweetEmbed tweetId={data.media.oembed.url?.split('/')[5]} />;
+        if (data.media.type.includes('twitter')) return <TwitterTweetEmbed  tweetId={data.media.oembed.url?.split('/')[5]} />;
         if (data.media.type.includes('youtube')) return parse(data.media.oembed.html);
 
         

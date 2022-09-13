@@ -1,16 +1,35 @@
 
 .type-buttons {
-    padding: 1rem 0;
+    padding: .9rem 0;
 }
 
 .type-buttons > .button {
     margin: 0 .5rem;
     background-color: var(--staticButtonColor);
     color: white;
-    width: 8rem;
-    font-size: .9rem;
+    width: 6rem;
+    font-size: .8rem;
 }
 
 .type-buttons > .button:hover {
     background-color: var(--staticOnHoverButton);
+}
+
+
+.noResults-container {
+    background-color: white;
+    width: 100%;
+    padding: 1.7rem .4rem;
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+    align-items: center;
+    box-shadow: 0 .2rem .2rem var(--staticBGcolor);
+}
+
+.binoculars-icon {
+    width: 6rem;
+    height: 6rem;
+    color: var(--postIconColor);
+    margin: .9rem 0;
 }

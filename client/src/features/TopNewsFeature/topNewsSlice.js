@@ -5,7 +5,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 export const fetchTopNews = createAsyncThunk('news/fetchTopNews', async (country = '', thunkAPI) => {
 
     try {
-        const response = await fetch(`/news?country=${country}`);
+        const response = await fetch(`/api/news?country=${country}`);
         if (response.status !== 200 ) throw new Error(response.statusText)
         const data = await response.json();
         

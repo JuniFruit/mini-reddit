@@ -1,3 +1,4 @@
+/* eslint-disable */
 
 /* Determines how many news containers will be shown in Top news section */
 
@@ -16,6 +17,35 @@ export const numberOfNewsToShow = () => {
 export const randomNum = (num) => {
     return Math.floor(Math.random() * num);
 }
+
+
+/**
+ * 
+ * @param rangeLength length of a random range you want to get. For instance, if you want to get a range that starts at
+ * 5 and ends at 9 you'll specify rangeLength 4;
+ * @param  boundary max length;
+ * @returns [rangeStart, rangeEnd] = postitve integers;
+ */
+
+export const randomPositiveRange = (rangeLength, boundary) => {
+
+    // check if max size is bigger than desired length;
+    if (boundary < rangeLength) return;
+
+    const a = randomNum(boundary);
+    const b = randomNum(boundary);
+
+    const difference = (a * - 1) - (b * - 1);
+    if (Math.abs(difference) === rangeLength) {
+
+        const rangeStart = Math.min(a, b);
+        const rangeEnd = Math.max(a, b);
+        return [rangeStart, rangeEnd]
+    } else {
+        return randomPositiveRange(rangeLength, boundary);
+    }
+}
+
 
 /* Making resizing happening less often (not used)*/
 
@@ -89,9 +119,9 @@ export const redirectToRedditLogin = (location) => {
 
     const scope = 'history identity mysubreddits vote submit wikiread read report subscribe flair'
     window.location.href = `https://www.reddit.com/api/v1/authorize?client_id=N_FuvhLdY7m1D5QjJ6YRXA&response_type=code&state=test&redirect_uri=http://localhost:3000/reddit_login&duration=temporary&scope=${scope}`;
-    
+
     // Used to memo current location to navigate back to the same page after login
-    window.sessionStorage.setItem('currentHref', location) 
+    window.sessionStorage.setItem('currentHref', location)
 }
 
 
@@ -119,31 +149,139 @@ export const resetStyles = () => {
     window.document.documentElement.style.setProperty('--mainBGcolor', '#3679321c');
 }
 
-// Recursive function to add more comments to a particular place in a comments tree
 
-export const mapReplies = ({ arrToMap, idToFind, currentId, subredditId, dataToAdd }) => {
-    console.log(`arr ${arrToMap} currentId ${currentId} idToFind ${idToFind}`)
+/* Duration time formatting  */
 
-    
-    // currentId && currentId == subredditId
+const zeroFormatting = new Intl.NumberFormat(undefined, { minimumIntegerDigits: 2 })
 
-    if (idToFind === currentId) {
-        return  [...arrToMap, ...dataToAdd];
+export const timeForamatting = (value) => {
 
-       
-    }
+    if (!value) return `00:00`
+    const seconds = Math.floor(value % 60);
+    const minutes = Math.floor(value / 60) % 60;
+    const hours = Math.floor(value / 3600);
 
-    arrToMap.forEach = ((child) => {
-        if (!child.data.replies) return;
-
-        mapReplies({
-            arrToMap: child.data.replies.data.children,
-            idToFind,
-            currentId: child.data.name,
-            dataToAdd,
-            subredditId
-        })
-    })
+    if (hours === 0) return `${minutes}:${zeroFormatting.format(seconds)}`;
+    return `${hours}:${zeroFormatting.format(minutes)}:${zeroFormatting.format(seconds)}`
 }
 
-// reconstructing the replies tree to return it into the slice
+
+
+// Copy to clipboard function for iOS
+
+export const copy = (string) => {
+    let textarea;
+    let result;
+
+    try {
+        textarea = document.createElement('textarea');
+        textarea.setAttribute('readonly', true);
+        textarea.setAttribute('contenteditable', true);
+        textarea.style.position = 'fixed'; // prevent scroll from jumping to the bottom when focus is set.
+        textarea.value = string;
+
+        document.body.appendChild(textarea);
+
+        textarea.focus();
+        textarea.select();
+
+        const range = document.createRange();
+        range.selectNodeContents(textarea);
+
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+
+        textarea.setSelectionRange(0, textarea.value.length);
+        result = document.execCommand('copy');
+    } catch (err) {
+        console.error(err);
+        result = null;
+    } finally {
+        document.body.removeChild(textarea);
+    }
+}
+
+/**
+ * Maps all comments and changes given prop. Returns fully reconstructed comment tree which then can be passed into redux
+ * @param dataToMap array of comments to map
+ * @param nameToFind fullname of a thing to find
+ * @param likesProp value to which "likes" prop needs to be changed 
+ * @param commentToAdd new comment object that needs to be appended to a thing  
+ * @returns array of reconstructed comments with changed values
+ */
+
+export const mapReplies = ({ dataToMap, nameToFind, likesProp, commentToAdd = null }) => {
+
+    if (!dataToMap) return;
+    return dataToMap.reduce((tree, item) => {
+        // if item is null return composed tree
+        if (!item) return [...tree];
+
+        // if we encounter kind = more, just return tree and this "more" item as it is 
+        if (item.kind === 'more') return [...tree, { ...item }]
+
+        if (item.data.name === nameToFind) {
+
+            // if item does already have replies, just add the comment to the arr and copy all the prev data 
+            if (item.data.replies) {
+
+                return [...tree, {
+                    ...item,
+                    data: {
+                        ...item.data,
+                        likes: likesProp,
+                        replies: {
+                            ...item.data.replies,
+                            data: {
+                                ...item.data.replies.data,
+                                children: [...item.data.replies.data.children, commentToAdd]
+
+                            }
+                        }
+                    }
+
+                }]
+
+                // otherwise, just create replies object and add the necessary data 
+
+            } else {
+                return [...tree, {
+                    ...item,
+                    data: {
+                        ...item.data,
+                        likes: likesProp,
+                        replies: {
+
+                            data: {
+
+                                children: [commentToAdd]
+
+                            }
+                        }
+                    }
+
+                }]
+            }
+
+        };
+
+        // if item doesn't have replies just return constructed tree and the item itself
+        if (!item.data.replies) return [...tree, item];
+
+        return [...tree, {
+            ...item,
+            data: {
+                ...item.data,
+                replies: {
+                    ...item.data.replies,
+                    data: {
+                        ...item.data.replies.data,
+                        children: mapReplies({ dataToMap: item.data.replies.data.children, nameToFind, likesProp, commentToAdd })
+                    }
+                }
+            }
+        }]
+    }, [])
+
+}

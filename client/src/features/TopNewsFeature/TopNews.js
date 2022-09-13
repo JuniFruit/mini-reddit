@@ -1,48 +1,58 @@
-import React, { createElement } from 'react'
 import { NewsContainer } from "./NewsContainer";
 import './TopNews.css';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { numberOfNewsToShow } from "../../utilities/utilities";
-import { selectTopNews, fetchTopNews, selectUserGeo } from "./topNewsSlice";
+import { selectTopNews, fetchTopNews, selectUserGeo, selectIsNewsLoading } from "./topNewsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { randomNum } from '../../utilities/utilities';
+import { randomPositiveRange } from '../../utilities/utilities';
 import { DropdownMenu } from '../Dropdown/DropdownMenu';
+import { SkeletonNewsContainer } from '../../components/SkeletonComponents/SkeletonNewsContainer';
 
-const COUNTRIES = ['Canada', 'Russia', 'Turkey',]
+const COUNTRY_CODES = ['au', 'be', 'bg', 'br', 'ca', 'ch', 'cn', 'co', 'cu', 'cz', 'de', 'fr', 'gb', 'gr',
+'in', 'it', 'jp', 'kr', 'lt', 'lv', 'ma', 'my', 'nl', 'pl', 'ru', 'sa', 'se', 'tr', 'ua', 'us']
 
 
 //Renders news at the top of the page 
 
+
+
 export let TopNews = () => {
+   
+    /* eslint-disable */
 
     const dispatch = useDispatch();
     const topNewsData = useSelector(selectTopNews);
     const userGeo = useSelector(selectUserGeo)
+    const isFetching = useSelector(selectIsNewsLoading)
 
     const [country, setCountry] = useState('')
 
     const [numberOfNews, setNumberOfNews] = useState(numberOfNewsToShow());
-  
 
+   
     const handleClick = (e) => {
         e.preventDefault();
         setCountry(e.currentTarget.lastChild.innerHTML)
+        dispatch(fetchTopNews(e.currentTarget.className))
+        window.sessionStorage.setItem('newsCountry', e.currentTarget.lastChild.innerHTML)
     }
     const renderButtons = () => {
 
-        const nodes = COUNTRIES.map(country => {
+        const regionName = new Intl.DisplayNames(['en'], { type: 'region' })
+        const nodes = COUNTRY_CODES.map(country => {
             return (
-            <div>
-                <button onClick={handleClick}>
-                    <span>{country}</span>
-                </button>
-            </div>)
+                <div>
+                    <button className={country} onClick={handleClick}>
+                        <span>{regionName.of(country.toUpperCase())}</span>
+                    </button>
+                </div>)
         })
 
         return nodes.map(node => node)
     }
 
     renderButtons();
+
     useEffect(() => {
 
         const handleResize = () => {
@@ -55,22 +65,30 @@ export let TopNews = () => {
         }
     })
 
-    useEffect(() => {
-        if (topNewsData.length) return;
+   
+    useEffect(() => {       
 
-        const newsPromise = dispatch(fetchTopNews(country))
+        const newsPromise = dispatch(fetchTopNews())
         return () => {
             newsPromise.abort();
+           
         }
-    }, [numberOfNews, country]);
+       
+    }, []);
 
     const renderNews = () => {
-        if (!topNewsData.length) return '';
 
 
-        const dataToShow = topNewsData.slice(0, numberOfNews);
+
+        if (isFetching || !topNewsData.length) return <SkeletonNewsContainer amount={numberOfNews} />
+        
+        const [rangeStart, rangeEnd] = randomPositiveRange(numberOfNews, topNewsData.length);
+        const dataToShow = topNewsData.slice(rangeStart, rangeEnd);
 
         return dataToShow.map((child, index) => {
+
+            if (!child) return null;
+
             return <NewsContainer
                 key={index}
                 preview={child.urlToImage}
@@ -82,7 +100,7 @@ export let TopNews = () => {
     }
 
     const renderNewsBlock = () => {
-        if (!Object.values(topNewsData).length) return '';
+
         return (
             <div className="topNews-wrapper page-container">
                 <div className='topNews-header flex-align-center'>
@@ -90,7 +108,7 @@ export let TopNews = () => {
                     <div className='dropdown'>
                         <h4>{!country ? userGeo.country : country}</h4>
 
-
+                
                         <DropdownMenu>
                             {renderButtons()}
                         </DropdownMenu>
@@ -98,7 +116,6 @@ export let TopNews = () => {
                 </div>
 
                 <div className="news-container noselect">
-
                     {renderNews()}
                 </div>
             </div>
@@ -107,10 +124,7 @@ export let TopNews = () => {
     }
 
 
-    return (
-        renderNewsBlock()
-
-    )
+    return  renderNewsBlock()
 }
 
 TopNews = React.memo(TopNews)

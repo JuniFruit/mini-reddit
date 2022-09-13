@@ -1,6 +1,8 @@
 
 .profile-container {
     border-bottom: 1px solid var(--staticBGcolor);
+    display: flex;
+    align-items: center;
     cursor: pointer;
 }
 
@@ -10,9 +12,9 @@
 }
 
 .profile-icon img {
-    width: 2.5rem;
-    height: 2.5rem;   
-    border-radius: .5rem;
+    width: 2.2rem;
+    height: 2.2rem;   
+    border-radius: .4rem;
  
 }
 
@@ -20,22 +22,22 @@
 .profile-info {
     display: flex;
     flex-direction: column;
-    margin: 0 .5rem;
+    margin: 0 .4rem;
 }
 
 .profile-info span {
-    font-size: 1rem;
+    font-size: .9rem;
     font-weight: 500;
 }
 
 .profile-karma p{
-    font-size: .9rem;
+    font-size: .8rem;
     color: var(--postIconColor)
 }
 
 .ic_trophy {
-    width: .8rem;
-    height: .8rem;
+    width: .7rem;
+    height: .7rem;
     color: var(--postIconColor)
 }
 
@@ -46,13 +48,42 @@
 
 .profile-container > .menu > div > button > span {
     font-weight: 500;
-    margin-left: .5rem;
+    margin-left: .4rem;
 }
 
-@media screen and (max-width: 500px) {
-    .profile-info,
-        .profile-container button {
-        display: none;
+@media screen and (max-width: 768px) {
+    .profile-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+    }
+    .profile-container > div {
+        width: 100vw;
+        background-color: rgba(0, 0, 0, 0.04);
+        display: flex;
+        justify-content: center;
+        padding: .4rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.04)
+    }
+
+    .profile-container > div > button {
+      
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1rem;
+        
+    }
+
+    .profile-container > span {
+        width: 100vw;
+        background-color: rgba(0, 0, 0, 0.04);
+        font-size: 1rem;
+        padding: .4rem;
+        font-weight: 500;
+        text-align: center;
+        
     }
     
 }

@@ -1,15 +1,15 @@
 
 .error-section {
     position: sticky;
-    top: 5rem;
-    right: 2rem;
+    top: 4.5rem;
+    right: 1.7rem;
     z-index: 105;
 }
 
 .error-container {
     position: absolute;
     
-    right: 2rem;
+    right: 1.7rem;
 }
 
 .error-wrapper {
@@ -17,17 +17,17 @@
     background-color: white;
     border-radius: .4rem;
     min-height: 8rem;
-    max-height: 13rem;
-    min-width: 15rem;
-    max-width: 25rem;
-    padding: 1rem .6rem;
+    max-height: 11rem;
+    min-width: 13rem;
+    max-width: 23rem;
+    padding: .9rem .6rem;
     animation: slideIn .5s ease-in-out;
     position: sticky;
     box-shadow: -.2rem .2rem .5rem var(--postIconColor);
 }
 
 .error-close > button {
-    font-size: .8rem;
+    font-size: .7rem;
     font-weight: 500;
     color: var(--postIconColor);
     margin-right: .5rem;
@@ -38,17 +38,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: .6rem 0;
+    margin: .5rem 0;
 }
 
 .error-content > h4 {
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
+    margin-bottom: .9rem;
+    font-size: 1.1rem;
 
 }
 
 .error-content > p {
-    font-size: .9rem;
+    font-size: .8em;
 }
 
 .error-handling {
@@ -65,5 +65,18 @@
 
     to {
         transform: translateX(0);
+    }
+}
+
+
+@media (max-width: 430px) {
+    .error-wrapper {
+        margin: .5rem 0;    
+        border-radius: .3rem;
+        min-height: 4rem;
+        max-height: fit-content;
+        min-width: 7rem;
+        max-width: fit-content;
+        padding: .6rem .3rem;        
     }
 }

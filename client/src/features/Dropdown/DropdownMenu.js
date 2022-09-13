@@ -4,11 +4,9 @@ import './Dropdown.css'
 
 export const DropdownMenu = (props) => {
 
+    /* eslint-disable */
 
-    const menuNode = useRef(null)
-
-
-   
+    const menuNode = useRef(null)   
     useEffect(() => {
 
         const handleClick = (e) => {
@@ -23,6 +21,7 @@ export const DropdownMenu = (props) => {
 
         const listenToDropdownClick = () => {
 
+            
             if (!menuNode.current) return;
 
             menuNode.current.parentNode.addEventListener('click', handleClick)
@@ -33,20 +32,12 @@ export const DropdownMenu = (props) => {
             menuNode.current?.parentNode.removeEventListener('click', handleClick)
 
         }
-    }, [menuNode])
+    }, [])
 
 
     return (
 
-        <div ref={menuNode} className="menu"
-
-        // style={
-        //     isOpen ? 
-        //     {opacity: "1", pointerEvents: "auto", transform: "translateY(0)"} 
-        //     :
-        //      {opacity: "0", pointerEvents: "none", transform: "translateY(-.25rem)"}
-        // }
-        >
+        <div ref={menuNode} className="menu">
 
             {props.children}
         </div>

@@ -1,49 +1,52 @@
 import { images } from "../../assets/images"
-import { setStyles } from "../../utilities/utilities"
-import React, { useEffect, useState } from "react"
+import { redirectToRedditLogin, setStyles } from "../../utilities/utilities"
+import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { changeSubscription, fetchSubredditData, selectSubredditDataByName } from "../../features/subredditSlice";
+import { selectToken } from "../Login/loginSlice";
+import { useLocation } from "react-router-dom";
+import { subscribeToSubreddit } from "../../api/apiSlice";
+
 
 // Renders community header if a user is on a subreddit page 
 
 export let CommunityPage = ({ subreddit }) => {
 
-   
-    const [subredditData, setSubredditData] = useState({})
+    /* eslint-disable */
+
+
+    const dispatch = useDispatch();
+    const token = useSelector(selectToken);
+    const location = useLocation();
+
+
+    const subredditData = useSelector(state => selectSubredditDataByName(state, subreddit));
 
     useEffect(() => {
-        /* I had to make this call directly instead of grabbing data from the Store, 
-        because Store data is updating too many times which causes this component to re-render */
-        
-        const fetchSubredditData = async () => {
 
-            try {
-                const response = await fetch(`/subreddit_data?subreddit=${subreddit}`);
-                const json = await response.json();
-                setSubredditData(json.data)
-            } catch (e) {
-                console.log(e);
-            }
-        }
-        fetchSubredditData()
-        
+        if (subredditData) return;
 
-    }, [])
+        dispatch(fetchSubredditData({ subreddit, token }))
+
+
+    }, [dispatch, subreddit])
+
+    if (!subredditData) return null;
     
-    if (!Object.keys(subredditData).length) return;
-
     const setPageStyles = () => {
         if (!subreddit) return;
-        setStyles(subredditData.data.primary_color, subredditData.data.banner_background_color)
+        setStyles(subredditData.data.primary_color, subredditData.data?.banner_background_color)
 
     }
-    
+
     const setBannerStyles = () => {
 
         if (!subredditData.data.banner_background_image.length) return;
 
         return {
 
-            background: 
-            `url(${subredditData.data.banner_background_image.replace(/&amp;/, '&')}) center center / cover no-repeat transparent`
+            background:
+                `url(${subredditData.data.banner_background_image}) center center / cover no-repeat transparent`
         }
     }
 
@@ -53,10 +56,10 @@ export let CommunityPage = ({ subreddit }) => {
     }
 
     const renderSwitcher = () => {
-        if (!subredditData.data.primary_color) return;
+        if (!subredditData.data.primary_color) return null;
         return (
             <div className="community-theme-switch">
-                <span>Community theme</span>
+                <span>Theme</span>
                 <div className="theme-switch-button">
                     <label className="switch">
                         <input type="checkbox" defaultChecked onChange={handleSwitchChange}></input>
@@ -66,6 +69,27 @@ export let CommunityPage = ({ subreddit }) => {
 
             </div>
         )
+    }
+
+    const handleSubscribe = (e) => {
+        e.preventDefault();
+        if (!token) return redirectToRedditLogin(location.pathname);
+        if (e.currentTarget.innerHTML === 'Banned') return;
+        let action;
+        if (e.currentTarget.innerHTML === 'Join') action = 'sub';
+        if (e.currentTarget.innerHTML === 'Unjoin') action = 'unsub';
+
+        dispatch(subscribeToSubreddit({ action, token, thingName: subredditData.data.name }));
+        dispatch(changeSubscription({
+            action,
+            subreddit
+        }))
+    }
+
+    const renderBtnText = () => {
+        if (subredditData.data.user_is_subscriber) return 'Unjoin';
+        if (!subredditData.data.user_is_subscriber) return 'Join';
+        if (subredditData.data.user_is_banned) return 'Banned'
     }
 
     return (
@@ -78,10 +102,16 @@ export let CommunityPage = ({ subreddit }) => {
             </div>
             <div className="community-header-bar">
                 <div className="community-header-container">
-                    <div className="community-header-info flex-align-center">
+                    <div className="community-header-info">
                         <div className="community-header-img-container">
                             <img src={
-                                subredditData.data.community_icon ? subredditData.data.community_icon.replace(/&amp;/g, '&') : subredditData.data.icon_img}
+                                subredditData.data.community_icon
+                                    ?
+                                    subredditData.data.community_icon.replace(/&amp;/g, '&')
+                                    :
+                                    subredditData.data.icon_img
+                            }
+
                                 onError={(e) => { e.target.onerror = null; e.target.src = images.defaultCommunityImg }}
                             />
                         </div>
@@ -90,14 +120,19 @@ export let CommunityPage = ({ subreddit }) => {
                             <h2>{subredditData.data.display_name_prefixed}</h2>
                         </div>
                         <div className="community-header-button">
-                            <button className="button"> Join </button>
+                            <button onClick={handleSubscribe} className="button">
+                                {renderBtnText()}
+                            </button>
                         </div>
+
                     </div>
                 </div>
                 {renderSwitcher()}
 
 
             </div>
+
+
         </>
 
 

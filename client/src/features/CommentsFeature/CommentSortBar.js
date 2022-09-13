@@ -1,35 +1,65 @@
-import { useRef, useEffect } from "react";
+import { useContext } from "react";
+import { MobileContext } from "../../app/App";
+import { DropdownMenu } from "../Dropdown/DropdownMenu";
 
-export const CommentSortBar = ({changeCommentSort, commentSortBar}) => {
+const SORT_BUTTONS = ['Top', 'Random', 'New', 'Old', 'Controversial'];
 
-    const commentSortBarControls = useRef(null)
+export const CommentSortBar = ({ changeCommentSort, commentSort }) => {
+
+
+    const isMobile = useContext(MobileContext);
 
     const handleClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
         changeCommentSort(e.currentTarget.innerHTML.toLowerCase())
-  
+
+    }
+
+    const renderSortButtons = () => {
+        return SORT_BUTTONS.map(btn => {
+            return (
+                <div key={btn}>
+                    <button onClick={handleClick}>{btn}</button>
+                </div>
+            )
+        })
+
+
     }
 
 
-    useEffect(() => {
-        commentSortBarControls.current?.childNodes.forEach(child => child.addEventListener('click', handleClick));
-
-        return () => {
-            commentSortBarControls.current?.childNodes.forEach(child => child.removeEventListener('click', handleClick))
-        }
-    }, [])
 
     return (
-        <div ref={commentSortBarControls} className="comment-sortBar flex-align-center">
-            <button className="">Top</button>
-            <button className="">Random</button>
-            <button className="">New</button>
-            <button className="">Old</button>
-            <button className="">Controversial</button>
-            
-            
-        </div>
+        <>
+
+            {isMobile
+                ?
+                <div className="comment-sortBar flex-align-center dropdown">
+                    <div style={{marginLeft: ".5rem"}}>
+                        <button style={{fontSize: ".9rem"}} className="flex-align-center">
+                            Sort by {commentSort}
+
+                        </button>
+                    </div>
+
+                    <DropdownMenu>
+                        {renderSortButtons()}
+                    </DropdownMenu>
+
+
+
+
+                </div>
+                :
+                <div className="comment-sortBar flex-align-center">
+                    {renderSortButtons()}
+
+                </div>
+
+            }
+        </>
+
     )
 }

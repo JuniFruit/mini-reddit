@@ -1,13 +1,13 @@
-import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts',
-    async ({ isLogged = false, sort = '', subreddit, after = '', previousChildren = [] }, thunkAPI) => {
+    async ({ sort = '', subreddit, after = '', previousChildren = [], token = '', before = '' }, thunkAPI) => {
 
         try {
-            let endpoint = isLogged ? '/posts_auth' : '/posts_no_auth';
+            
+            const response = await fetch(`/api/get_posts?subreddit=${subreddit}&sort=${sort}&after=${after}&before=${before}&token=${token}`);
 
-            const response = await fetch(`${endpoint}?subreddit=${subreddit}&sort=${sort}&after=${after}&count=25`);
             if (response.status !== 200) throw new Error(response.statusText)
             const data = await response.json();
 
@@ -20,6 +20,7 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts',
 
                     [sort]: {
                         after: data.after,
+                        before: data.before,
                         dist: data.dist,
                         children: [...previousChildren, ...data.children]
                     }
@@ -49,7 +50,7 @@ const postsSlice = createSlice({
 
     },
     reducers: {
-        
+
         addSinglePost: (state, action) => {
 
             state.data[action.payload.subreddit] = {
@@ -57,17 +58,19 @@ const postsSlice = createSlice({
                 singlePost: action.payload.data[0],
                 sr_detail: action.payload.data[0].data.sr_detail
             }
-        },
-        popSinglePost: (state, action) => {
-            state.data[action.payload] = {
-                ...state.data[action.payload],
-                singlePost: ''
-            }
-        },
+        },     
         removePost: (state, action) => {
 
             state.data[action.payload.subreddit][action.payload.sort].children = state.data[action.payload.subreddit][action.payload.sort]
-                .children.filter(child => child.data.id !== action.payload.id)
+                .children.filter(child => child.data.name !== action.payload.name)
+        },
+        setLikes: (state, action) => {
+            if (action.payload.singlePost) {
+                state.data[action.payload.subreddit].singlePost.data.likes = action.payload.likesProp
+            }else {
+                state.data[action.payload.subreddit][action.payload.sort].children[action.payload.index].data.likes = action.payload.likesProp;
+
+            }
         }
 
     },
@@ -108,19 +111,18 @@ const postsSlice = createSlice({
 export const selectPostsData = (state, subreddit, sort) => state.postsReducer.data[subreddit] ? state.postsReducer.data[subreddit][sort] : null;
 export const selectIsPostsLoading = (state) => state.postsReducer.isPostsLoading;
 
-export const selectSinglePost = (state, subreddit) => {
-    // if (!state.postsReducer.data[subreddit]) return;
+export const selectSinglePost = (state, subreddit) => { 
 
     const singlePost = state.postsReducer.data[subreddit]?.singlePost;
     if (!singlePost) return;
 
-    return { children: [ {...singlePost} ], sr_detail: { ...state.postsReducer.data[subreddit].sr_detail } }
+    return { children: [{ ...singlePost }], sr_detail: { ...state.postsReducer.data[subreddit].sr_detail } }
 }
 
 
 
 export const selectPostsErr = (state) => state.postsReducer.errMessage;
 
-export const { addSinglePost, popSinglePost, removePost } = postsSlice.actions;
+export const { addSinglePost, removePost, setLikes } = postsSlice.actions;
 
 export default postsSlice.reducer;

@@ -5,7 +5,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 export const fetchCommentUserData = createAsyncThunk('commentUserData', async ({author, commentsSort}, thunkAPI) => {
 
     try {
-        const response = await fetch(`/user_about?user=${author}`);
+        const response = await fetch(`/api/user_about?user=${author}`);
     if (response.status !== 200) throw new Error(response.statusText);
 
         const data = await response.json();

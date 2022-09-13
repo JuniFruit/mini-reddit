@@ -10,6 +10,12 @@ export const BackButton = () => {
 
     const handleClick = () => {
         navigate(-1)
+
+        // return a user to the post he was redirected from. Timeout is used to wait for components to render 
+        setTimeout(() => {
+            window.scrollTo(0, window.localStorage.prevPos)
+           
+        }, 2000)
         
     }
     return (

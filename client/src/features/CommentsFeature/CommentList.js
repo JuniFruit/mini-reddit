@@ -3,7 +3,7 @@ import { Comment } from "./Comment"
 import './Comments.css'
 
 
-export const CommentsList = ({ comments = [], more, commentSort }) => {
+export const CommentsList = ({ comments = [], commentSort, changeLikesProp, addComment }) => {
 
 
    
@@ -11,8 +11,9 @@ export const CommentsList = ({ comments = [], more, commentSort }) => {
         const commentsToRender = [].concat(comments)
 
         return commentsToRender.map((child) => {
-            if (!child) return ;
-            if (child.kind === 'more') return // Doesn't render 'more' object which we got earlier
+           
+            if (!child) return null;
+            if (child.kind === 'more') return null;
 
             return (
             
@@ -24,10 +25,14 @@ export const CommentsList = ({ comments = [], more, commentSort }) => {
                         permalink={child.data.permalink}
                         replies={child.data.replies}
                         votes={child.data.ups}
-                        body={child.data.body}
-                        more={more}
+                        body={child.data.body}                   
                         commentSort={commentSort}
-
+                        isLiked={child.data.likes}
+                        thingName={child.data.name}
+                        changeLikesProp={changeLikesProp}
+                        addComment={addComment}
+                   
+                        
                     />
               
             )
