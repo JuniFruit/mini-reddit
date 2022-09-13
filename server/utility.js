@@ -2,9 +2,8 @@
 
 const errorMessage = (e) => {
 
-    return {
-       message: `Couldn't retrieve the data. Reason ${e}`
-    }
+    return `Couldn't retrieve the data. Reason ${e}`
+    
 }
 
 module.exports = errorMessage;
