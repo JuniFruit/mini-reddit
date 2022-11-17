@@ -11,7 +11,7 @@ const path = require('path')
 const User = require('./User');
 
 
-const REDIRECT_URI = 'https://reddit-mini-social.herokuapp.com/reddit_login';
+const REDIRECT_URI = 'https://mini-reddit.onrender.com/reddit_login';
 const BASE_AUTH_URL = 'https://oauth.reddit.com';
 const BASE_NO_AUTH_URL = 'https://www.reddit.com';
 
