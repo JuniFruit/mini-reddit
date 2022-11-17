@@ -116,8 +116,8 @@ export const truncTitle = (title, maxSize = 50) => {
 /* Redirects user to reddit to login user */
 
 export const redirectToRedditLogin = (location) => {
-    
-    const redirect_uri = 'https://reddit-mini-social.herokuapp.com/reddit_login';
+   
+    const redirect_uri = 'https://mini-reddit.onrender.com/reddit_login';
     const scope = 'history identity mysubreddits vote submit read report subscribe flair'
     window.location.href = `https://www.reddit.com/api/v1/authorize?client_id=N_FuvhLdY7m1D5QjJ6YRXA&response_type=code&state=test&redirect_uri=${redirect_uri}&duration=temporary&scope=${scope}`;
 
