@@ -7,15 +7,19 @@ const fetch = require('node-fetch')
 const cors = require('cors');
 const connectToMongo = require("./mongoose");
 const turndown = require('turndown');
-
+const path = require('path')
 const User = require('./User');
 
 
-const REDIRECT_URI = 'http://localhost:3000/reddit_login';
+const REDIRECT_URI = 'https://reddit-mini-social.herokuapp.com/reddit_login';
 const BASE_AUTH_URL = 'https://oauth.reddit.com';
 const BASE_NO_AUTH_URL = 'https://www.reddit.com';
 
 connectToMongo();
+
+
+app.use(express.static(path.resolve(__dirname, "./client/build")));
+
 
 
 
@@ -37,8 +41,7 @@ app.get("/api/find_user", async (req, res) => {
         });
 
 
-    } catch (e) {
-        console.log(e);
+    } catch (e) { 
         res.status(400).send(errorMessage(e));
     }
 })
@@ -87,14 +90,12 @@ app.get("/api/reddit_login", async (req, res) => {
         })
         const user = await userResponse.json();
 
-        const userToStore = await User.create({
+        await User.create({
             userId: user.id,
             name: user.name,
             icon: user.icon_img,
             total_karma: user.total_karma,            
             token: access_obj.access_token
-
-
         });       
        
       
@@ -111,8 +112,7 @@ app.get("/api/reddit_login", async (req, res) => {
 
 
 
-    } catch (e) {
-        console.log(e)
+    } catch (e) {       
         res.statusMessage = "Failed to login";
         res.status(400);
         res.json(e)
@@ -349,23 +349,19 @@ app.get('/api/user_about', async (req, res) => {
 /* Returns top news  */
 
 app.get('/api/news', async (req, res) => {
-
-    // Fetches user geo 
-
-    try {
-        const geoResponse = await fetch('http://ip-api.com/json/');
-        const userGeo = await geoResponse.json();
+     
+    try {      
 
         // Fetches top headlines in specified country from NewsApi
 
-        const country = req.query.country !== '' ? req.query.country : userGeo.countryCode;
+        const country = req.query.country
 
         const headlinesResponse = await fetch(`https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${process.env.NEWS_API_KEY}`)
+   
         const headlines = await headlinesResponse.json();
 
         const dataToSend = {
-            newsData: [...headlines.articles],
-            userGeo
+            newsData: [...headlines.articles]         
         }
 
         res.send(dataToSend);
@@ -375,6 +371,9 @@ app.get('/api/news', async (req, res) => {
     }
 })
 
+app.get("*", function (request, response) {
+    response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+  });
 
 
 app.listen(PORT, () => {

@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-const url = `mongodb+srv://JuniFruit:${process.env.MONG_PASS}@cluster0.klarz67.mongodb.net/?retryWrites=true&w=majority`;
+const url = process.env.MONGO_CONNECT;
 
 const connectToMongo = async () => {
 

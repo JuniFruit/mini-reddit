@@ -1,0 +1,352 @@
+.comments-block {
+    background-color: white;
+    border-radius: .3rem;
+    padding: .4rem 0;
+    width: var(--postWidth);
+    max-width: 40rem;
+}
+
+.comment-container {
+    position: relative;
+    padding: .4rem 0;
+    padding-left: calc(var(--comment-margin-left) + .5rem);
+    width: 100%;
+
+}
+
+.comment-wrapper {
+    width: 100%;
+}
+
+.comment-wrapper:before {
+    content: '';
+    position: absolute;
+    top: calc(var(--comment-avatar-size) + .6rem);
+    left: calc((var(--comment-margin-left) + (var(--comment-avatar-size) / 2)) + .5rem);
+    bottom: 0;
+    width: .05rem;
+    background: rgba(0, 0, 0, 0.164);
+
+}
+
+/* Comment sortbar */
+.comment-sortBar {
+    padding: .4rem .3rem;
+    background-color: rgba(0, 0, 0, 0.055);
+    width: 100%;
+}
+
+.comment-sortBar>div {
+    padding: 0 .4rem;
+    width: 100%;
+}
+
+.comment-sortBar>div>button {
+    color: var(--buttonMainColor)
+}
+
+.comment-sortBar>div>button:hover {
+    color: var(--buttonMainOnHoverColor)
+}
+
+/* Author section */
+
+.author-img-container {
+    width: var(--comment-avatar-size);
+    height: var(--comment-avatar-size);
+    border-radius: 50%;
+    overflow: hidden;
+
+}
+
+.author-img-container img {
+    width: 100%;
+    height: 100%;
+}
+
+.comment-author>span {
+    margin: 0 .3rem;
+    font-size: .8rem;
+
+}
+
+.comment-author> :last-child {
+    font-size: .7rem;
+    font-weight: 400;
+    color: var(--postIconColor);
+}
+
+
+/* Comment body section */
+
+.comment-body {
+    font-size: .9rem;
+    font-weight: 400;
+    margin: 1.3rem 0;
+    padding-right: .3rem;
+    margin-left: calc(var(--comment-margin-left) + .9rem);
+    overflow-wrap: break-word;
+    overflow: hidden;
+
+}
+
+.comment-body ol,
+.comment-body ul {
+    margin-left: calc(var(--comment-margin-left) + .3rem)
+}
+
+
+li::marker {
+    font-size: .9rem;
+}
+
+.comment-body p img {
+    width: .9rem;
+    height: .9rem;
+}
+
+.comment-body a {
+    color: var(--buttonMainColor);
+
+}
+
+.comment-body a:hover {
+    color: var(--buttonMainOnHoverColor)
+}
+
+
+/* Controls section */
+
+.comment-controls {
+    margin-left: calc(var(--comment-margin-left) + .4rem)
+}
+
+.comment-arrows>span {
+
+    color: var(--postIconColor);
+    font-weight: 500;
+    font-size: .7rem;
+}
+
+.comment-controls>div {
+    margin: 0 .3rem;
+    border-radius: .2rem;
+    display: flex;
+    align-items: center;
+}
+
+
+
+.comment-controls>div:hover {
+    background-color: var(--mainBGcolor);
+}
+
+
+.comment-reply>button span {
+    margin-left: .4rem;
+}
+
+.comment-arrows button {
+    display: flex;
+    align-items: center;
+
+}
+
+#bottom-comment {
+    height: 1.7rem;
+    padding: 0 .2rem;
+
+}
+
+#bottom-comment>button,
+#bottom-comment>a {
+    color: var(--postIconColor);
+    font-weight: 500;
+    font-size: .7rem;
+    height: 100%;
+    width: 100%;
+}
+
+.loadMore-button {
+    color: var(--buttonMainColor);
+    padding: .4rem .4rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+.repliesMore-button {
+    color: var(--buttonMainColor);
+    font-size: .8rem;
+    text-align: left;
+    padding: .3rem calc(var(--comment-margin-left) + 1.3rem);
+
+}
+
+.loadMore-button:hover,
+.repliesMore-button:hover {
+    color: var(--buttonMainOnHoverColor);
+    text-decoration: underline;
+}
+
+/* Input comment */
+
+.textField {
+    margin: .9rem 1.3rem;
+    border: 1px solid rgba(0, 0, 0, 0.122);
+    border-radius: .4rem;
+    z-index: 90;
+}
+
+.textField>form>#textarea {
+    width: 100%;
+    height: 100%;    
+    min-height: 8rem;
+    resize: vertical;
+    -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    border: none;
+    line-height: 1.3rem;
+    padding: .4rem;
+
+}
+
+#textarea::data-text {
+    font-size: .9rem;
+}
+
+[contentEditable=true]:empty:not(:focus):before {
+    content: attr(data-text);
+    font-weight: 500;
+    color: var(--postIconColor)
+}
+
+#textarea li {
+    margin-left: .9rem;
+}
+
+#textarea a {
+    color: var(--buttonMainColor);
+    cursor: pointer;
+}
+
+#textarea a:hover {
+    color: var(--buttonMainOnHoverColor);
+    text-decoration: underline;
+}
+
+.textField:hover {
+    border-color: rgba(0, 0, 0, 0.280);
+}
+
+#textarea:focus {
+    outline: none;
+
+}
+
+.textField-bar {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.066);
+    padding: .3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.textField-bar>.button {
+    width: fit-content;
+    height: fit-content;
+    font-size: .7rem;
+    padding: .3rem .9rem;
+}
+
+.text-controls>button {
+    height: 100%;
+    padding: 0 .4rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+
+.text-controls>button>span {
+    height: 100%;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.414);
+}
+
+.text-controls>button:hover>svg,
+.text-controls>button:hover>span {
+    color: var(--buttonMainColor);
+}
+
+/* No comments */
+
+.nocomments-container {
+    padding: 1.7rem;
+}
+
+.nocomments-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nocomments-content>h2 {
+    font-size: 1.7rem;
+    font-weight: 700;
+}
+
+.nocomments-content>h4 {
+    color: var(--postIconColor);
+    font-weight: 400;
+}
+
+.quill-icon {
+    width: 6rem;
+    height: 6rem;
+    color: var(--postIconColor);
+    margin: .9rem 0;
+}
+
+@media (max-width: 768px) {   
+    .comment-body {
+        font-size: .8rem;   
+    } 
+    :root {
+        --comment-avatar-size: 2rem;
+    }
+    .comments-block {
+        max-width: 100%;
+    }
+    .textField>form>#textarea {
+        min-height: 3rem;       
+    }
+
+    .textField-bar>.button {
+        width: 100%;
+        font-size: .8rem;
+        padding: .3rem .3rem;
+        border: none;
+    }
+
+    .text-controls>button {
+        display: none;
+    }
+   
+}
+
+@media screen and (max-width: 430px) {
+
+    :root {
+        --comment-margin-left: .5rem;
+        --comment-avatar-size: 1.3rem;
+    }
+
+    .textField {
+        margin: .5rem .9rem;
+    }
+
+
+}
